@@ -1,9 +1,8 @@
-/**
- * Required External Modules and Interfaces
- */
-var jwt = require('jsonwebtoken');
-
-import express, { Request, Response } from "express";
+import jwt from "jsonwebtoken"
+import express from "express"
+import joi from "joi"
+import UserService, { IUserCreateParams } from "./user.service"
+import { validateRequest } from "../../middleware/validateRequest"
 
 /**
  * @swagger
@@ -25,7 +24,7 @@ import express, { Request, Response } from "express";
  * Router Definition
  */
 
-export const usersRouter = express.Router();
+export const usersRouter = express.Router()
 
 /**
  * @swagger
@@ -64,3 +63,40 @@ usersRouter.post('/login', function(req, res) {
     }
 
 });
+
+const registerSchema = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const schema = joi.object({
+    email: joi.string().email().lowercase().required(),
+    password: joi.string().min(8).required(),
+    firstName: joi.string().trim().required(),
+    lastName: joi.string().trim().uppercase().required(),
+    phoneNumber: joi.string().regex(/^\+\d+$/).optional()
+  })
+  validateRequest(req, next, schema)
+}
+
+const register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  UserService.create(req.body as IUserCreateParams)
+      .then(() => res.json({ message: 'Registration successful' }))
+      .catch(next)
+}
+
+/**
+ * @swagger
+ * paths:
+ *   /users/register:
+ *     post:
+ *       summary: Create a new user account
+ *       tags:
+ *         - User
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/User'
+ *       responses:
+ *         '201':
+ *           description: Created
+ */
+usersRouter.post('/register', registerSchema, register)

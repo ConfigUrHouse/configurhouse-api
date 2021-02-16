@@ -1,7 +1,7 @@
-import { Optional, Model, DataTypes, Association } from "sequelize";
-import { db } from '../../config/mysql.config';
+import { Optional, Model, DataTypes } from "sequelize"
+import { db } from '../../config/mysql.config'
 
-const sequelize = db.instance;
+const sequelize = db.instance
 
 export interface UserAttributes {
   id: number
@@ -9,11 +9,11 @@ export interface UserAttributes {
   password: string
   firstName: string
   lastName: string
-  phoneNumber: string
-  emailVerifiedAt: Date | undefined
+  phoneNumber?: string
+  emailVerifiedAt?: Date
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> { }
+export interface UserCreationAttributes extends Optional<UserAttributes, "id"> { }
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number
@@ -21,55 +21,52 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public password!: string
   public firstName!: string
   public lastName!: string
-  public phoneNumber!: string
-  public emailVerifiedAt: Date | undefined
+  public phoneNumber?: string
+  public emailVerifiedAt?: Date
 
   public readonly createdAt!: Date
   public readonly updatedAt!: Date
 }
 
-export const initialize = {
-  table: () => {
-    User.init(
-      {
-        id: {
-          type: DataTypes.INTEGER.UNSIGNED,
-          autoIncrement: true,
-          primaryKey: true,
-        },
-        email: {
-          type: new DataTypes.STRING(128),
-          allowNull: false,
-        },
-        password: {
-          type: new DataTypes.STRING(50),
-          allowNull: false,
-        },
-        firstName: {
-          type: new DataTypes.STRING(50),
-          field: "first_name",
-          allowNull: false,
-        },
-        lastName: {
-          type: new DataTypes.STRING(50),
-          field: "last_name",
-          allowNull: false,
-        },
-        phoneNumber: {
-          type: new DataTypes.STRING(128),
-          field: "phone_number",
-          allowNull: true,
-        },
-        emailVerifiedAt: {
-          type: DataTypes.DATE,
-          field: "email_verified_at",
-          allowNull: true,
-        }
-      },
-      {
-        tableName: "User",
-        sequelize: sequelize
-      }
-    )
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING(128),
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
+    firstName: {
+      type: DataTypes.STRING(50),
+      field: "first_name",
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING(50),
+      field: "last_name",
+      allowNull: false,
+    },
+    phoneNumber: {
+      type: DataTypes.STRING(128),
+      field: "phone_number",
+      allowNull: true,
+    },
+    emailVerifiedAt: {
+      type: DataTypes.DATE,
+      field: "email_verified_at",
+      allowNull: true,
+    }
+  },
+  {
+    tableName: "User",
+    sequelize: sequelize,
+    underscored: true
   }
-};
+)
