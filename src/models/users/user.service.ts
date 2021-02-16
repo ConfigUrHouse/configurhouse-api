@@ -13,7 +13,7 @@ export interface IUserCreateParams {
 export default class UserService {
     public static async create(params: IUserCreateParams) {
         if (await User.findOne({ where: { email: params.email } })) {
-            throw 'Email "' + params.email + '" is already taken'
+            throw new Error('Email "' + params.email + '" is already taken')
         }
         const hashedPassword = bcrypt.hashSync(params.password, 8)
         await User.create({
