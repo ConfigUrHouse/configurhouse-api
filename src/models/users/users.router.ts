@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken"
-import express from "express"
-import joi from "joi"
-import UserService, { IUserCreateParams } from "./user.service"
-import { validateRequest } from "../../middleware/validateRequest"
+import jwt from "jsonwebtoken";
+import express from "express";
+import joi from "joi";
+import UserService, { IUserCreateParams } from "./user.service";
+import { validateRequest } from "../../middleware/validate-request";
 
 /**
  * @swagger

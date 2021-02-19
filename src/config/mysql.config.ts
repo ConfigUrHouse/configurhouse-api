@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
 dotenv.config();
 
@@ -8,7 +8,7 @@ const instance = new Sequelize(process.env.DB as string, process.env.DB_USER as 
   dialect: process.env.DB_DIALECT as any,
 });
 
-export const db : Record<string,any> = {
+export const db: Record<string, any> = {
   sequelize: Sequelize,
-  instance: instance
-}
+  instance: instance,
+};
