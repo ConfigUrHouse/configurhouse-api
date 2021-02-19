@@ -1,8 +1,8 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 
 /**
-  * Swagger documentation
-  */
+ * Swagger documentation
+ */
 const options = {
   swaggerOptions: {
     authAction: {

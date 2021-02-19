@@ -1,4 +1,4 @@
-import express, { Response, Request, NextFunction } from 'express';
+import { Response, Request, NextFunction } from 'express';
 
 export class ErrorHandler extends Error {
   statusCode: number;

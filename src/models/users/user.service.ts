@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { ErrorHandler, handleError } from '../../middleware/error-handler';
 import { User } from './user.class';
 
 export interface IUserCreateParams {
@@ -13,7 +14,7 @@ export interface IUserCreateParams {
 export default class UserService {
   public static async create(params: IUserCreateParams) {
     if (await User.findOne({ where: { email: params.email } })) {
-      throw new Error('Email "' + params.email + '" is already taken');
+      throw new ErrorHandler(400, 'Email "' + params.email + '" is already taken');
     }
     const hashedPassword = bcrypt.hashSync(params.password, 8);
     await User.create({

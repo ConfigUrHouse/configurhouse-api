@@ -1,5 +1,6 @@
 import express from 'express';
 import joi from 'joi';
+import { ErrorHandler } from './error-handler';
 
 export const validateRequest = (req: express.Request, next: express.NextFunction, schema: joi.Schema) => {
   const options = {
@@ -9,7 +10,7 @@ export const validateRequest = (req: express.Request, next: express.NextFunction
   };
   const { error, value } = schema.validate(req.body, options);
   if (error) {
-    next(`Validation error: ${error.details.map((x) => x.message).join(', ')}`);
+    next(new ErrorHandler(400, `Validation error: ${error.details.map((x) => x.message).join(', ')}`));
   } else {
     req.body = value;
     next();

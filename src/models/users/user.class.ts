@@ -1,5 +1,6 @@
 import { Optional, Model, DataTypes } from 'sequelize';
 import { db } from '../../config/mysql.config';
+import joi from 'joi';
 
 const sequelize = db.instance;
 
@@ -28,6 +29,17 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public readonly updatedAt!: Date;
 }
 
+export const validationSchema = joi.object({
+  email: joi.string().email().lowercase().required(),
+  password: joi.string().min(8).required(),
+  firstName: joi.string().trim().required(),
+  lastName: joi.string().trim().uppercase().required(),
+  phoneNumber: joi
+    .string()
+    .regex(/^((\+)33|0)[0-9](\d{2}){4}$/)
+    .optional(),
+});
+
 User.init(
   {
     id: {
@@ -40,7 +52,7 @@ User.init(
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(128),
       allowNull: false,
     },
     firstName: {

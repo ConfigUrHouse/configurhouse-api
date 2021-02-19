@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
-import express from "express";
-import joi from "joi";
-import UserService, { IUserCreateParams } from "./user.service";
-import { validateRequest } from "../../middleware/validate-request";
+import jwt from 'jsonwebtoken';
+import { Response, Request, NextFunction, Router } from 'express';
+import { validationSchema as UserValidationSchema } from './user.class';
+import { validateRequest } from '../../middleware/validate-request';
+import { register } from './users.controller';
 
 /**
  * @swagger
@@ -24,7 +24,7 @@ import { validateRequest } from "../../middleware/validate-request";
  * Router Definition
  */
 
-export const usersRouter = express.Router()
+export const usersRouter = Router();
 
 /**
  * @swagger
@@ -45,41 +45,19 @@ export const usersRouter = express.Router()
  *         '201':
  *           description: Created
  */
-usersRouter.post('/login', function(req, res) {
+usersRouter.post('/login', function (req, res) {
+  //TODO: A sortir dans le controller
 
-    console.log('======================');
-    console.log(req.body);
-    console.log('======================');
+  if (req.body.user === 'admin' && req.body.password === 'admin') {
+    var token = jwt.sign({ id: 1 }, 'RANDOM_TOKEN_SECRET', {
+      expiresIn: 86400,
+    });
 
-    if(req.body.user === "admin" && req.body.password === "admin"){
-        var token = jwt.sign({ id: 1 }, "RANDOM_TOKEN_SECRET", {
-            expiresIn: 86400
-          });
-          
-          res.status(200).send({ auth: true, token: token });
-    }else{
-        res.status(404).send({ auth: false, token:null});
-
-    }
-
+    res.status(200).send({ auth: true, token: token });
+  } else {
+    res.status(404).send({ auth: false, token: null });
+  }
 });
-
-const registerSchema = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const schema = joi.object({
-    email: joi.string().email().lowercase().required(),
-    password: joi.string().min(8).required(),
-    firstName: joi.string().trim().required(),
-    lastName: joi.string().trim().uppercase().required(),
-    phoneNumber: joi.string().regex(/^\+\d+$/).optional()
-  })
-  validateRequest(req, next, schema)
-}
-
-const register = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  UserService.create(req.body as IUserCreateParams)
-      .then(() => res.json({ message: 'Registration successful' }))
-      .catch(next)
-}
 
 /**
  * @swagger
@@ -99,4 +77,19 @@ const register = (req: express.Request, res: express.Response, next: express.Nex
  *         '201':
  *           description: Created
  */
-usersRouter.post('/register', registerSchema, register)
+usersRouter.post(
+  '/',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(req, next, UserValidationSchema);
+  },
+  register
+);
+
+usersRouter.get(
+  '/',
+  (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).send({
+      test: 'test'
+    })
+  }
+);
