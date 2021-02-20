@@ -56,3 +56,18 @@ Pour lancer l'application, lancer les deux commandes dans deux terminales diffé
 npm run webpack
 npm run start
 ```
+
+## k6
+
+documentation
+
+https://k6.io/docs/results-visualization/influxdb-+-grafana
+
+```
+$ git clone 'https://github.com/loadimpact/k6'
+$ cd k6
+$ docker-compose up -d \
+    influxdb \
+    grafana
+$ docker-compose run -v $PWD/samples:/scripts k6 run /scripts/es6sample.js
+``
