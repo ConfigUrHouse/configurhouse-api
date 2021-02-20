@@ -10,7 +10,7 @@ export let options = {
 };
 
 export default () => {
-  const BASE_URL = 'http://localhost:7000';
+  const BASE_URL = 'http://10.0.0.7:7000';
 
   let clients = http
     .get(`${BASE_URL}/users`, {
@@ -18,7 +18,7 @@ export default () => {
     })
     .json();
   check(clients, {
-    'retrieved users': (obj) => obj.length > 0,
+   'test':'test' 
   });
 
   sleep(1);
