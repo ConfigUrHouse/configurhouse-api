@@ -7,7 +7,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import { db as mysql } from './config/mysql.config';
-import { usersRouter } from './models/users/users.router';
+import { usersRouter } from './models/users/user.router';
 import { handleNotFound, handleError } from './middleware/error-handler';
 import { specs } from './shared/swagger-specs';
 import { WebpackHotModule } from './interface/webpack-hot-module';

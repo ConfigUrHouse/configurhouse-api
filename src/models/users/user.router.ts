@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction, Router } from 'express';
 import { validationSchema as UserValidationSchema } from './user.class';
 import { validateRequest } from '../../middleware/validate-request';
-import { register } from './users.controller';
+import { register } from './user.controller';
 
 /**
  * @swagger
