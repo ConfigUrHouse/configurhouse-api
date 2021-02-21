@@ -1,6 +1,0 @@
-<testExecutions version="1">
-<file path="src/tests/foo.test.ts">
-<testCase name="basic" duration="2" />
-<testCase name="basic again" duration="0" />
-</file>
-</testExecutions>
