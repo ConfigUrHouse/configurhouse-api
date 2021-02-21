@@ -9,7 +9,7 @@
     "start": "node dist/index",
     "webpack": "webpack --config webpack.config.ts",
     "start2": "npx ts-node src/index.ts",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "keywords": [
     "heroku"
