@@ -10,8 +10,8 @@ jobs:
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
-      - name: Get master
-        run: git fetch origin master
+      - name: Get main
+        run: git fetch origin main
       - name: Install dependencies
         run:  npm install
       - name: Install Jest globally
