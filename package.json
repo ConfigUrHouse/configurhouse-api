@@ -7,8 +7,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/index",
-    "webpack": "webpack --config webpack.config.ts",
-    "start2": "npx ts-node src/index.ts"
+    "build": "webpack --config webpack.prod.config.js",
+    "webpack": "webpack --config webpack.dev.config.js",
+    "start2": "npx ts-node src/index.ts",
+    "test": "jest --coverage"
   },
   "keywords": [
     "heroku"
@@ -35,6 +37,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.9",
     "@types/helmet": "^4.0.0",
+    "@types/jest": "^26.0.20",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/morgan": "^1.9.2",
     "@types/node": "^14.14.13",
@@ -42,8 +45,12 @@
     "@types/swagger-jsdoc": "^3.0.2",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/webpack-env": "^1.16.0",
+    "jest": "^26.6.3",
+    "jest-sonar": "^0.2.12",
+    "jest-sonar-reporter": "^2.0.0",
     "sequelize-auto-migrations-v2": "^1.1.0",
     "sequelize-cli": "^6.2.0",
+    "ts-jest": "^26.5.1",
     "ts-loader": "6",
     "webpack": "4",
     "webpack-cli": "3",
