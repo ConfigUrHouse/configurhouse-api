@@ -5,13 +5,15 @@ import { db } from '../../config/mysql.config';
 const sequelize = db.instance;
 
 export interface TokenAttributes {
+  id: number;
   userId: number;
   token: string;
 }
 
-export interface TokenCreationAttributes extends Optional<TokenAttributes, 'userId'> {}
+export interface TokenCreationAttributes extends Optional<TokenAttributes, 'id'> {}
 
 export class Token extends Model<TokenAttributes, TokenCreationAttributes> implements TokenAttributes {
+  public id!: number;
   public userId!: number;
   public token!: string;
 
@@ -26,10 +28,14 @@ export const validationSchema = joi.object({
 
 Token.init(
   {
+    id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     userId: {
       type: DataTypes.INTEGER.UNSIGNED,
-      field: "user_id",
-      primaryKey: true,
+      field: "user_id"
     },
     token: {
       type: DataTypes.STRING(128),

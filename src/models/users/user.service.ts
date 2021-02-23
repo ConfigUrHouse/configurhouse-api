@@ -1,9 +1,8 @@
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto-random-string';
 import { ErrorHandler } from '../../middleware/error-handler';
 import { User } from './user.class';
 import { emailTransporter } from '../../config/email.config';
-import { Token } from './token.class';
+import TokenService from './token.service';
 
 export interface IUserCreateParams {
   firstName: string;
@@ -11,7 +10,6 @@ export interface IUserCreateParams {
   email: string;
   password: string;
   phoneNumber?: string;
-  emailVerifiedAt?: Date;
 }
 
 export default class UserService {
@@ -31,20 +29,7 @@ export default class UserService {
     if (!user) {
       throw new ErrorHandler(409, 'User registration failed')
     }
-    Token.destroy({ where: { userId: user.id } }) // use TokenService
-    const token = await Token.create({ // use TokenService
-      userId: user.id,
-      token: crypto({length: 16})
-    })
-    if (!token) throw new ErrorHandler(409, 'Token creation failed')
-    emailTransporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: params.email,
-      subject: 'Veuillez confirmer votre adresse email',
-      html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/users/verify?token=${token.token}&email=${params.email}">ici</a> pour vérifier votre adresse email.</p>`
-    }, (error: Error | null) => {
-      if (error) throw new ErrorHandler(500, `Email not sent : ${error.message}`)
-    })
+    this.sendVerificationEmail(params.email, user)
   }
 
   public static async findByEmail(email: string) {
@@ -53,5 +38,18 @@ export default class UserService {
     })
     if (!user) throw new ErrorHandler(404, `User with email ${email} not found`)
     return user
+  }
+
+  public static async sendVerificationEmail(email: string, user?: User) {
+    if (!user) user = await this.findByEmail(email)
+    const token = await TokenService.add(user.id)
+    emailTransporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Veuillez confirmer votre adresse email',
+      html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/users/verify?token=${token.token}&email=${email}">ici</a> pour vérifier votre adresse email.</p>`
+    }, (error: Error | null) => {
+      if (error) throw new ErrorHandler(500, `Email not sent : ${error.message}`)
+    })
   }
 }
