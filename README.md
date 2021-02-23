@@ -2,8 +2,6 @@
     <h1>ConfigUrHouse</h1>
 </div>
 
----
-
 # Installation
 
 ## Pré-requis
