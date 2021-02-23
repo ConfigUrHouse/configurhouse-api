@@ -26,3 +26,9 @@ export const verify = (req: Request, res: Response, next: NextFunction) => {
     })
     .catch(next)
 };
+
+export const sendVerificationEmail = (req: Request, res: Response, next: NextFunction) => {
+  UserService.sendVerificationEmail(req.query.email as string)
+    .then(() => res.json({ message: 'Verification email sent' }))
+    .catch(next)
+}
