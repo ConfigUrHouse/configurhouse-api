@@ -1,6 +1,7 @@
 import { Optional, Model, DataTypes } from 'sequelize';
 import { db } from '../../config/mysql.config';
 import joi from 'joi';
+import { Token } from './token.class'
 
 const sequelize = db.instance;
 
@@ -82,3 +83,6 @@ User.init(
     underscored: true,
   }
 );
+
+User.hasOne(Token)
+Token.belongsTo(User)

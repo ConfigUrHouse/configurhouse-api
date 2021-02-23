@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction, Router } from 'express';
-import { validationSchema as UserValidationSchema } from './user.class';
+import { validationSchema as userValidationSchema } from './user.class';
+import { validationSchema as tokenValidationSchema } from './token.class';
 import { validateRequest } from '../../middleware/validate-request';
-import { register } from './user.controller';
+import { register, verify } from './user.controller';
 
 /**
  * @swagger
@@ -80,7 +81,7 @@ usersRouter.post('/login', function (req, res) {
 usersRouter.post(
   '/',
   (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(req, next, UserValidationSchema);
+    validateRequest(req, next, userValidationSchema);
   },
   register
 );
@@ -93,3 +94,11 @@ usersRouter.get(
     })
   }
 );
+
+usersRouter.get(
+  '/verify',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(req, next, tokenValidationSchema)
+  },
+  verify
+)
