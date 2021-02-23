@@ -1,7 +1,7 @@
 import { Optional, Model, DataTypes } from 'sequelize';
 import { db } from '../../config/mysql.config';
 import joi from 'joi';
-import { Token } from './token.class'
+import { Token } from '../tokens/token.class'
 
 const sequelize = db.instance;
 

@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { ErrorHandler } from '../../middleware/error-handler';
 import { User } from './user.class';
 import { emailTransporter } from '../../config/email.config';
-import TokenService from './token.service';
+import TokenService from '../tokens/token.service';
 
 export interface IUserCreateParams {
   firstName: string;

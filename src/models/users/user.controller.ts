@@ -1,7 +1,7 @@
 import UserService, { IUserCreateParams } from './user.service';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
-import TokenService from './token.service';
+import TokenService from '../tokens/token.service';
 
 export const register = (req: Request, res: Response, next: NextFunction) => {
   UserService.create(req.body as IUserCreateParams)

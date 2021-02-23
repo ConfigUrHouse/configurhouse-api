@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction, Router } from 'express';
 import { emailSchema as emailValidationSchema, validationSchema as userValidationSchema } from './user.class';
-import { validationSchema as tokenValidationSchema } from './token.class';
+import { validationSchema as tokenValidationSchema } from '../tokens/token.class';
 import { validateRequest } from '../../middleware/validate-request';
 import { register, verify, sendVerificationEmail } from './user.controller';
 
@@ -77,9 +77,9 @@ usersRouter.post('/login', function (req, res) {
  *       responses:
  *         '201':
  *           description: Created
- *         '400'
+ *         '400':
  *           description: Bad request
- *         '409'
+ *         '409':
  *           description: Conflict
  */
 usersRouter.post(
@@ -124,9 +124,9 @@ usersRouter.get(
  *       responses:
  *         '201':
  *           description: Created
- *         '400'
+ *         '400':
  *           description: Bad request
- *         '409'
+ *         '409':
  *           description: User or token creation failed
  *         '500':
  *           description: Verification email not sent
