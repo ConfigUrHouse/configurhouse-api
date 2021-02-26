@@ -1,6 +1,7 @@
 import { Optional, Model, DataTypes } from 'sequelize';
 import { db } from '../../config/mysql.config';
 import joi from 'joi';
+import { Token } from '../tokens/token.class'
 
 const sequelize = db.instance;
 
@@ -39,6 +40,10 @@ export const validationSchema = joi.object({
     .regex(/^((\+)33|0)[0-9](\d{2}){4}$/)
     .optional(),
 });
+
+export const emailSchema = joi.object({
+  email: joi.string().email().lowercase().required()
+})
 
 User.init(
   {
@@ -82,3 +87,6 @@ User.init(
     underscored: true,
   }
 );
+
+User.hasOne(Token)
+Token.belongsTo(User)
