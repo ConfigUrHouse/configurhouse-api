@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction, Router } from 'express';
-import { validationSchema as UserValidationSchema } from './user.class';
+import { emailSchema as emailValidationSchema, validationSchema as userValidationSchema } from './user.class';
+import { validationSchema as tokenValidationSchema } from '../tokens/token.class';
 import { validateRequest } from '../../middleware/validate-request';
-import { login, refreshToken, register } from './user.controller';
+import { login, refreshToken, register, verify, sendVerificationEmail } from './user.controller';
 import joi from 'joi';
 import auth from '../../middleware/auth';
 
@@ -99,11 +100,100 @@ usersRouter.get('/refresh-token', auth, refreshToken);
  *       responses:
  *         '201':
  *           description: Created
+ *         '400':
+ *           description: Bad request
+ *         '409':
+ *           description: Conflict
  */
 usersRouter.post(
   '/',
   (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(req, next, UserValidationSchema);
+    validateRequest(req, next, userValidationSchema);
   },
   register
 );
+
+usersRouter.get(
+  '/',
+  (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).send({
+      test: 'test'
+    })
+  }
+);
+
+/**
+ * @swagger
+ * paths:
+ *   /users/verify:
+ *     post:
+ *       summary: Verify user email address
+ *       tags:
+ *         - User
+ *       parameters:
+ *         - in: query
+ *           name: email
+ *           schema:
+ *             type: string
+ *             format: email
+ *           required: true
+ *           description: email address of the user to verify
+ *         - in: query
+ *           name: token
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: token provided by the API to verify the user's email address
+ *       responses:
+ *         '201':
+ *           description: Created
+ *         '400':
+ *           description: Bad request
+ *         '409':
+ *           description: User or token creation failed
+ *         '500':
+ *           description: Verification email not sent
+ */
+usersRouter.get(
+  '/verify',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(req, next, tokenValidationSchema)
+  },
+  verify
+)
+
+/**
+ * @swagger
+ * paths:
+ *   /users/resend:
+ *     post:
+ *       summary: Send another verification email
+ *       tags:
+ *         - User
+ *       parameters:
+ *         - in: query
+ *           name: email
+ *           schema:
+ *             type: string
+ *             format: email
+ *           required: true
+ *           description: email address of the user to verify
+ *       responses:
+ *         '200':
+ *           description: Email sent
+ *         '400':
+ *           description: Bad request
+ *         '404':
+ *           description: User not found
+ *         '409':
+ *           description: Token creation failed
+ *         '500':
+ *           description: Email not sent
+ */
+usersRouter.get(
+  '/resend',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(req, next, emailValidationSchema)
+  },
+  sendVerificationEmail
+)
