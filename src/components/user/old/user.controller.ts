@@ -1,4 +1,4 @@
-import UserService, { IUserCreateParams } from './user.service';
+/*import UserService, { IUserCreateParams } from './user.service';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 import TokenService from '../tokens/token.service';
@@ -15,6 +15,7 @@ export const register = (req: Request, res: Response, next: NextFunction) => {
   UserService.create(req.body as IUserCreateParams)
     .then(() => res.json({ message: 'Registration successful' }))
     .catch(next);
+<<<<<<< HEAD:src/models/users/user.controller.ts
 };
 
 export const verify = (req: Request, res: Response, next: NextFunction) => {
@@ -65,3 +66,6 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
     }
   });
 };
+=======
+};*/
+>>>>>>> 🗃 Add all models:src/components/user/old/user.controller.ts

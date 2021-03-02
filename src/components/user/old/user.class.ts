@@ -1,5 +1,5 @@
-import { Optional, Model, DataTypes } from 'sequelize';
-import { db } from '../../config/mysql.config';
+/*import { Optional, Model, DataTypes } from 'sequelize';
+import { db } from '../../utils/mysql.config';
 import joi from 'joi';
 import { Token } from '../tokens/token.class'
 
@@ -25,7 +25,6 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public lastName!: string;
   public phoneNumber?: string;
   public emailVerifiedAt?: Date;
-
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -86,7 +85,11 @@ User.init(
     sequelize: sequelize,
     underscored: true,
   }
+<<<<<<< HEAD:src/models/users/user.class.ts
 );
 
 User.hasOne(Token)
 Token.belongsTo(User)
+=======
+);*/
+>>>>>>> 🗃 Add all models:src/components/user/old/user.class.ts
