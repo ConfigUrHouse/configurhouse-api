@@ -75,6 +75,7 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         name: {
           type: DataTypes.STRING(200),

@@ -49,6 +49,7 @@ export class Email extends Model<EmailAttributes, EmailCreationAttributes> imple
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         send_at: {
           type: DataTypes.DATEONLY,

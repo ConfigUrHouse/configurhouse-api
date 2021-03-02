@@ -66,6 +66,7 @@ export class Consommation
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         nb_personnes: {
           type: DataTypes.FLOAT,

@@ -133,6 +133,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         firstname: {
           type: DataTypes.STRING(200),

@@ -34,6 +34,7 @@ export class TokenType extends Model<TokenTypeAttributes, TokenTypeCreationAttri
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         name: {
           type: DataTypes.STRING(200),

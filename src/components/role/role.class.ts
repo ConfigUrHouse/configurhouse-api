@@ -49,6 +49,7 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> implemen
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         name: {
           type: DataTypes.STRING(200),

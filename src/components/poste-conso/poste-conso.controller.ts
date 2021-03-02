@@ -1,9 +1,9 @@
-import { Asset } from './asset.class';
+import { PosteConso } from './poste-conso.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  Asset.findAll()
+  PosteConso.findAll()
     .then((data) => {
       res.send(data);
     })
@@ -15,7 +15,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.findByPk(id)
+  PosteConso.findByPk(id)
     .then((data) => {
       res.send(data);
     })
@@ -27,7 +27,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 export const update = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.update(req.body, {
+  PosteConso.update(req.body, {
     where: { id: id },
   })
     .then((num: any) => {
@@ -47,7 +47,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.destroy({
+  PosteConso.destroy({
     where: { id: id },
   })
     .then((num) => {
@@ -65,7 +65,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
-  Asset.destroy({
+  PosteConso.destroy({
     where: {},
     truncate: false,
   })

@@ -1,9 +1,9 @@
-import { Asset } from './asset.class';
+import { AssetType } from './asset-type.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  Asset.findAll()
+  AssetType.findAll()
     .then((data) => {
       res.send(data);
     })
@@ -15,7 +15,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.findByPk(id)
+  AssetType.findByPk(id)
     .then((data) => {
       res.send(data);
     })
@@ -27,7 +27,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 export const update = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.update(req.body, {
+  AssetType.update(req.body, {
     where: { id: id },
   })
     .then((num: any) => {
@@ -47,7 +47,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.destroy({
+  AssetType.destroy({
     where: { id: id },
   })
     .then((num) => {
@@ -65,7 +65,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
-  Asset.destroy({
+  AssetType.destroy({
     where: {},
     truncate: false,
   })

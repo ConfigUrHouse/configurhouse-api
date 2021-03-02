@@ -41,6 +41,7 @@ export class Token extends Model<TokenAttributes, TokenCreationAttributes> imple
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         value: {
           type: DataTypes.STRING(200),

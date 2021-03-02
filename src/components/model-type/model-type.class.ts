@@ -36,6 +36,7 @@ export class ModelType extends Model<ModelTypeAttributes, ModelTypeCreationAttri
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
+          autoIncrement: true,
         },
         name: {
           type: DataTypes.STRING(200),
