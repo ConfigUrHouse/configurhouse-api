@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './role.controlle
 
 export const roleRouter = Router();
 
-roleRouter.get("/", findAll);
+roleRouter.get('/', findAll);
 
-roleRouter.get("/:id", findOne);
+roleRouter.get('/:id', findOne);
 
-roleRouter.put("/:id", update);
+roleRouter.put('/:id', update);
 
-roleRouter.delete("/:id", deleteOne);
+roleRouter.delete('/:id', deleteOne);
 
-roleRouter.delete("/", deleteAll);
+roleRouter.delete('/', deleteAll);

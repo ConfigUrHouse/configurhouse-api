@@ -65,7 +65,7 @@ export class Configuration
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         name: {
           type: DataTypes.STRING(200),

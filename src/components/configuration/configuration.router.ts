@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './configuration.
 
 export const configurationRouter = Router();
 
-configurationRouter.get("/", findAll);
+configurationRouter.get('/', findAll);
 
-configurationRouter.get("/:id", findOne);
+configurationRouter.get('/:id', findOne);
 
-configurationRouter.put("/:id", update);
+configurationRouter.put('/:id', update);
 
-configurationRouter.delete("/:id", deleteOne);
+configurationRouter.delete('/:id', deleteOne);
 
-configurationRouter.delete("/", deleteAll);
+configurationRouter.delete('/', deleteAll);

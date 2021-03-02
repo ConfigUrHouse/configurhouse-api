@@ -37,9 +37,6 @@ import { userPoliceRouter } from './components/user-police/user-police.router';
 import { userRoleRouter } from './components/user-role/user-role.router';
 import { valueRouter } from './components/value/value.router';
 
-
-
-
 declare const module: WebpackHotModule;
 
 (async () => {

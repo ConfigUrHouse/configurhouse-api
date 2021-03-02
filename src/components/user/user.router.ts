@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './user.controlle
 
 export const userRouter = Router();
 
-userRouter.get("/", findAll);
+userRouter.get('/', findAll);
 
-userRouter.get("/:id", findOne);
+userRouter.get('/:id', findOne);
 
-userRouter.put("/:id", update);
+userRouter.put('/:id', update);
 
-userRouter.delete("/:id", deleteOne);
+userRouter.delete('/:id', deleteOne);
 
-userRouter.delete("/", deleteAll);
+userRouter.delete('/', deleteAll);

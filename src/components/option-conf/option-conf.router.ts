@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './option-conf.co
 
 export const optionConfRouter = Router();
 
-optionConfRouter.get("/", findAll);
+optionConfRouter.get('/', findAll);
 
-optionConfRouter.get("/:id", findOne);
+optionConfRouter.get('/:id', findOne);
 
-optionConfRouter.put("/:id", update);
+optionConfRouter.put('/:id', update);
 
-optionConfRouter.delete("/:id", deleteOne);
+optionConfRouter.delete('/:id', deleteOne);
 
-optionConfRouter.delete("/", deleteAll);
+optionConfRouter.delete('/', deleteAll);

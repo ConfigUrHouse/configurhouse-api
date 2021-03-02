@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './user-role.cont
 
 export const userRoleRouter = Router();
 
-userRoleRouter.get("/", findAll);
+userRoleRouter.get('/', findAll);
 
-userRoleRouter.get("/:id", findOne);
+userRoleRouter.get('/:id', findOne);
 
-userRoleRouter.put("/:id", update);
+userRoleRouter.put('/:id', update);
 
-userRoleRouter.delete("/:id", deleteOne);
+userRoleRouter.delete('/:id', deleteOne);
 
-userRoleRouter.delete("/", deleteAll);
+userRoleRouter.delete('/', deleteAll);

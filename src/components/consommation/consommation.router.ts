@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './consommation.c
 
 export const consommationRouter = Router();
 
-consommationRouter.get("/", findAll);
+consommationRouter.get('/', findAll);
 
-consommationRouter.get("/:id", findOne);
+consommationRouter.get('/:id', findOne);
 
-consommationRouter.put("/:id", update);
+consommationRouter.put('/:id', update);
 
-consommationRouter.delete("/:id", deleteOne);
+consommationRouter.delete('/:id', deleteOne);
 
-consommationRouter.delete("/", deleteAll);
+consommationRouter.delete('/', deleteAll);

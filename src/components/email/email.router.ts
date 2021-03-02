@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './email.controll
 
 export const emailRouter = Router();
 
-emailRouter.get("/", findAll);
+emailRouter.get('/', findAll);
 
-emailRouter.get("/:id", findOne);
+emailRouter.get('/:id', findOne);
 
-emailRouter.put("/:id", update);
+emailRouter.put('/:id', update);
 
-emailRouter.delete("/:id", deleteOne);
+emailRouter.delete('/:id', deleteOne);
 
-emailRouter.delete("/", deleteAll);
+emailRouter.delete('/', deleteAll);

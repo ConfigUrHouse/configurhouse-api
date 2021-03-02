@@ -7,7 +7,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
     .then((data) => {
       res.send(data);
     })
-    .catch((err : any) => {
+    .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
@@ -19,7 +19,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
     .then((data) => {
       res.send(data);
     })
-    .catch((err : any) => {
+    .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
@@ -39,7 +39,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
         next(new ErrorHandler(500, 'Message to define'));
       }
     })
-    .catch((err : any) => {
+    .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
@@ -59,7 +59,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
         next(new ErrorHandler(500, 'Message to define'));
       }
     })
-    .catch((err : any) => {
+    .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
@@ -72,7 +72,7 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
     .then((nums) => {
       res.send({ message: 'Message to define' });
     })
-    .catch((err : any) => {
+    .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };

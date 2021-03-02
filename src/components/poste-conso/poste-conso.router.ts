@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './poste-conso.co
 
 export const posteConsoRouter = Router();
 
-posteConsoRouter.get("/", findAll);
+posteConsoRouter.get('/', findAll);
 
-posteConsoRouter.get("/:id", findOne);
+posteConsoRouter.get('/:id', findOne);
 
-posteConsoRouter.put("/:id", update);
+posteConsoRouter.put('/:id', update);
 
-posteConsoRouter.delete("/:id", deleteOne);
+posteConsoRouter.delete('/:id', deleteOne);
 
-posteConsoRouter.delete("/", deleteAll);
+posteConsoRouter.delete('/', deleteAll);

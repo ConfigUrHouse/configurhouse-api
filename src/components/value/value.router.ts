@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './value.controll
 
 export const valueRouter = Router();
 
-valueRouter.get("/", findAll);
+valueRouter.get('/', findAll);
 
-valueRouter.get("/:id", findOne);
+valueRouter.get('/:id', findOne);
 
-valueRouter.put("/:id", update);
+valueRouter.put('/:id', update);
 
-valueRouter.delete("/:id", deleteOne);
+valueRouter.delete('/:id', deleteOne);
 
-valueRouter.delete("/", deleteAll);
+valueRouter.delete('/', deleteAll);

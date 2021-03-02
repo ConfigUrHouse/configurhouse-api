@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './police.control
 
 export const policeRouter = Router();
 
-policeRouter.get("/", findAll);
+policeRouter.get('/', findAll);
 
-policeRouter.get("/:id", findOne);
+policeRouter.get('/:id', findOne);
 
-policeRouter.put("/:id", update);
+policeRouter.put('/:id', update);
 
-policeRouter.delete("/:id", deleteOne);
+policeRouter.delete('/:id', deleteOne);
 
-policeRouter.delete("/", deleteAll);
+policeRouter.delete('/', deleteAll);

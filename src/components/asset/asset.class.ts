@@ -92,7 +92,7 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
-          autoIncrement: true
+          autoIncrement: true,
         },
         value: {
           type: DataTypes.STRING(200),

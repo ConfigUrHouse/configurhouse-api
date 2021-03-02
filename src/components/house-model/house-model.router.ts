@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './house-model.co
 
 export const houseModelRouter = Router();
 
-houseModelRouter.get("/", findAll);
+houseModelRouter.get('/', findAll);
 
-houseModelRouter.get("/:id", findOne);
+houseModelRouter.get('/:id', findOne);
 
-houseModelRouter.put("/:id", update);
+houseModelRouter.put('/:id', update);
 
-houseModelRouter.delete("/:id", deleteOne);
+houseModelRouter.delete('/:id', deleteOne);
 
-houseModelRouter.delete("/", deleteAll);
+houseModelRouter.delete('/', deleteAll);

@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './user-email.con
 
 export const userEmailRouter = Router();
 
-userEmailRouter.get("/", findAll);
+userEmailRouter.get('/', findAll);
 
-userEmailRouter.get("/:id", findOne);
+userEmailRouter.get('/:id', findOne);
 
-userEmailRouter.put("/:id", update);
+userEmailRouter.put('/:id', update);
 
-userEmailRouter.delete("/:id", deleteOne);
+userEmailRouter.delete('/:id', deleteOne);
 
-userEmailRouter.delete("/", deleteAll);
+userEmailRouter.delete('/', deleteAll);

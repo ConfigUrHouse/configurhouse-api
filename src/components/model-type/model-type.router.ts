@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './model-type.con
 
 export const modelTypeRouter = Router();
 
-modelTypeRouter.get("/", findAll);
+modelTypeRouter.get('/', findAll);
 
-modelTypeRouter.get("/:id", findOne);
+modelTypeRouter.get('/:id', findOne);
 
-modelTypeRouter.put("/:id", update);
+modelTypeRouter.put('/:id', update);
 
-modelTypeRouter.delete("/:id", deleteOne);
+modelTypeRouter.delete('/:id', deleteOne);
 
-modelTypeRouter.delete("/", deleteAll);
+modelTypeRouter.delete('/', deleteAll);

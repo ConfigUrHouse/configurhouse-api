@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './asset-type.con
 
 export const assetTypeRouter = Router();
 
-assetTypeRouter.get("/", findAll);
+assetTypeRouter.get('/', findAll);
 
-assetTypeRouter.get("/:id", findOne);
+assetTypeRouter.get('/:id', findOne);
 
-assetTypeRouter.put("/:id", update);
+assetTypeRouter.put('/:id', update);
 
-assetTypeRouter.delete("/:id", deleteOne);
+assetTypeRouter.delete('/:id', deleteOne);
 
-assetTypeRouter.delete("/", deleteAll);
+assetTypeRouter.delete('/', deleteAll);

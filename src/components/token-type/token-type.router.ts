@@ -3,12 +3,12 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './token-type.con
 
 export const tokenTypeRouter = Router();
 
-tokenTypeRouter.get("/", findAll);
+tokenTypeRouter.get('/', findAll);
 
-tokenTypeRouter.get("/:id", findOne);
+tokenTypeRouter.get('/:id', findOne);
 
-tokenTypeRouter.put("/:id", update);
+tokenTypeRouter.put('/:id', update);
 
-tokenTypeRouter.delete("/:id", deleteOne);
+tokenTypeRouter.delete('/:id', deleteOne);
 
-tokenTypeRouter.delete("/", deleteAll);
+tokenTypeRouter.delete('/', deleteAll);
