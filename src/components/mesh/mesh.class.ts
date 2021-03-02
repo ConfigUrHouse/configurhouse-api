@@ -8,7 +8,7 @@ export interface MeshAttributes {
   id_Asset: number;
 }
 
-export type MeshPk = "id";
+export type MeshPk = 'id';
 export type MeshId = Mesh[MeshPk];
 export type MeshCreationAttributes = Optional<MeshAttributes, MeshPk>;
 
@@ -36,46 +36,45 @@ export class Mesh extends Model<MeshAttributes, MeshCreationAttributes> implemen
   countOptionConfs!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Mesh {
-    Mesh.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    id_Asset: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Asset',
-        key: 'id'
+    Mesh.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        id_Asset: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Asset',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Mesh',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'Mesh_Asset_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Asset' }],
+          },
+        ],
       }
-    }
-  }, {
-    sequelize,
-    tableName: 'Mesh',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "Mesh_Asset_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Asset" },
-        ]
-      },
-    ]
-  });
-  return Mesh;
+    );
+    return Mesh;
   }
 }

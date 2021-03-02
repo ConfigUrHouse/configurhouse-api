@@ -11,7 +11,7 @@ export interface TokenAttributes {
   id_TokenType: number;
 }
 
-export type TokenPk = "id";
+export type TokenPk = 'id';
 export type TokenId = Token[TokenPk];
 export type TokenCreationAttributes = Optional<TokenAttributes, TokenPk>;
 
@@ -35,69 +35,66 @@ export class Token extends Model<TokenAttributes, TokenCreationAttributes> imple
   createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Token {
-    Token.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    value: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    expired_at: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
-    },
-    validate_at: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
-    },
-    id_User: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id'
+    Token.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        value: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        expired_at: {
+          type: DataTypes.DATEONLY,
+          allowNull: false,
+        },
+        validate_at: {
+          type: DataTypes.DATEONLY,
+          allowNull: false,
+        },
+        id_User: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
+        id_TokenType: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'TokenType',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Token',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'Token_User_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_User' }],
+          },
+          {
+            name: 'Token_TokenType0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_TokenType' }],
+          },
+        ],
       }
-    },
-    id_TokenType: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'TokenType',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'Token',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "Token_User_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_User" },
-        ]
-      },
-      {
-        name: "Token_TokenType0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_TokenType" },
-        ]
-      },
-    ]
-  });
-  return Token;
+    );
+    return Token;
   }
 }

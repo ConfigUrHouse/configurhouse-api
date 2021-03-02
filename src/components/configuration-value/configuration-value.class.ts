@@ -7,11 +7,13 @@ export interface ConfigurationValueAttributes {
   id_Configuration: number;
 }
 
-export type ConfigurationValuePk = "id" | "id_Configuration";
+export type ConfigurationValuePk = 'id' | 'id_Configuration';
 export type ConfigurationValueId = ConfigurationValue[ConfigurationValuePk];
 export type ConfigurationValueCreationAttributes = Optional<ConfigurationValueAttributes, ConfigurationValuePk>;
 
-export class ConfigurationValue extends Model<ConfigurationValueAttributes, ConfigurationValueCreationAttributes> implements ConfigurationValueAttributes {
+export class ConfigurationValue
+  extends Model<ConfigurationValueAttributes, ConfigurationValueCreationAttributes>
+  implements ConfigurationValueAttributes {
   id!: number;
   id_Configuration!: number;
 
@@ -27,48 +29,46 @@ export class ConfigurationValue extends Model<ConfigurationValueAttributes, Conf
   createId_Value!: Sequelize.BelongsToCreateAssociationMixin<Value>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof ConfigurationValue {
-    ConfigurationValue.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Value',
-        key: 'id'
-      }
-    },
-    id_Configuration: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Configuration',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'ConfigurationValue',
-    timestamps: false,
-    indexes: [
+    ConfigurationValue.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-          { name: "id_Configuration" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'Value',
+            key: 'id',
+          },
+        },
+        id_Configuration: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'Configuration',
+            key: 'id',
+          },
+        },
       },
       {
-        name: "ConfigurationValue_Configuration0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Configuration" },
-        ]
-      },
-    ]
-  });
-  return ConfigurationValue;
+        sequelize,
+        tableName: 'ConfigurationValue',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }, { name: 'id_Configuration' }],
+          },
+          {
+            name: 'ConfigurationValue_Configuration0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Configuration' }],
+          },
+        ],
+      }
+    );
+    return ConfigurationValue;
   }
 }

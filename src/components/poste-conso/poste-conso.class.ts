@@ -1,6 +1,9 @@
 import Sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import type { Consommation, ConsommationId } from '../consommation/consommation.class';
-import type { ConsommationPosteConso, ConsommationPosteConsoId } from '../consommation-poste-conso/consommation-poste-conso.class';
+import type {
+  ConsommationPosteConso,
+  ConsommationPosteConsoId,
+} from '../consommation-poste-conso/consommation-poste-conso.class';
 
 export interface PosteConsoAttributes {
   id: number;
@@ -8,11 +11,13 @@ export interface PosteConsoAttributes {
   description: string;
 }
 
-export type PosteConsoPk = "id";
+export type PosteConsoPk = 'id';
 export type PosteConsoId = PosteConso[PosteConsoPk];
 export type PosteConsoCreationAttributes = Optional<PosteConsoAttributes, PosteConsoPk>;
 
-export class PosteConso extends Model<PosteConsoAttributes, PosteConsoCreationAttributes> implements PosteConsoAttributes {
+export class PosteConso
+  extends Model<PosteConsoAttributes, PosteConsoCreationAttributes>
+  implements PosteConsoAttributes {
   id!: number;
   name!: string;
   description!: string;
@@ -36,42 +41,49 @@ export class PosteConso extends Model<PosteConsoAttributes, PosteConsoCreationAt
   addConsommationPosteConso!: Sequelize.HasManyAddAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   addConsommationPosteConsos!: Sequelize.HasManyAddAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   createConsommationPosteConso!: Sequelize.HasManyCreateAssociationMixin<ConsommationPosteConso>;
-  removeConsommationPosteConso!: Sequelize.HasManyRemoveAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
-  removeConsommationPosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
+  removeConsommationPosteConso!: Sequelize.HasManyRemoveAssociationMixin<
+    ConsommationPosteConso,
+    ConsommationPosteConsoId
+  >;
+  removeConsommationPosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<
+    ConsommationPosteConso,
+    ConsommationPosteConsoId
+  >;
   hasConsommationPosteConso!: Sequelize.HasManyHasAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   hasConsommationPosteConsos!: Sequelize.HasManyHasAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   countConsommationPosteConsos!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof PosteConso {
-    PosteConso.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'PosteConso',
-    timestamps: false,
-    indexes: [
+    PosteConso.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return PosteConso;
+      {
+        sequelize,
+        tableName: 'PosteConso',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return PosteConso;
   }
 }

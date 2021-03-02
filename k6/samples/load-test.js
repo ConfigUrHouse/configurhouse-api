@@ -18,7 +18,7 @@ export default () => {
     })
     .json();
   check(clients, {
-   'test':'test' 
+    test: 'test',
   });
 
   sleep(1);

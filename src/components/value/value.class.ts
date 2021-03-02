@@ -13,7 +13,7 @@ export interface ValueAttributes {
   id_Asset_AssetValue3D: number;
 }
 
-export type ValuePk = "id";
+export type ValuePk = 'id';
 export type ValueId = Value[ValuePk];
 export type ValueCreationAttributes = Optional<ValueAttributes, ValuePk>;
 
@@ -48,7 +48,10 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
   addId_Configuration_Configurations!: Sequelize.BelongsToManyAddAssociationsMixin<Configuration, ConfigurationId>;
   createId_Configuration_Configuration!: Sequelize.BelongsToManyCreateAssociationMixin<Configuration>;
   removeId_Configuration_Configuration!: Sequelize.BelongsToManyRemoveAssociationMixin<Configuration, ConfigurationId>;
-  removeId_Configuration_Configurations!: Sequelize.BelongsToManyRemoveAssociationsMixin<Configuration, ConfigurationId>;
+  removeId_Configuration_Configurations!: Sequelize.BelongsToManyRemoveAssociationsMixin<
+    Configuration,
+    ConfigurationId
+  >;
   hasId_Configuration_Configuration!: Sequelize.BelongsToManyHasAssociationMixin<Configuration, ConfigurationId>;
   hasId_Configuration_Configurations!: Sequelize.BelongsToManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countId_Configuration_Configurations!: Sequelize.BelongsToManyCountAssociationsMixin;
@@ -66,80 +69,75 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
   countConfigurationValues!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Value {
-    Value.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    is_default: {
-      type: DataTypes.TINYINT,
-      allowNull: false
-    },
-    id_OptionConf: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'OptionConf',
-        key: 'id'
+    Value.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        is_default: {
+          type: DataTypes.TINYINT,
+          allowNull: false,
+        },
+        id_OptionConf: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'OptionConf',
+            key: 'id',
+          },
+        },
+        id_Asset: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Asset',
+            key: 'id',
+          },
+        },
+        id_Asset_AssetValue3D: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Asset',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Value',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'Value_OptionConf_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_OptionConf' }],
+          },
+          {
+            name: 'Value_Asset0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Asset' }],
+          },
+          {
+            name: 'Value_Asset1_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Asset_AssetValue3D' }],
+          },
+        ],
       }
-    },
-    id_Asset: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Asset',
-        key: 'id'
-      }
-    },
-    id_Asset_AssetValue3D: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Asset',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'Value',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "Value_OptionConf_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_OptionConf" },
-        ]
-      },
-      {
-        name: "Value_Asset0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Asset" },
-        ]
-      },
-      {
-        name: "Value_Asset1_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Asset_AssetValue3D" },
-        ]
-      },
-    ]
-  });
-  return Value;
+    );
+    return Value;
   }
 }

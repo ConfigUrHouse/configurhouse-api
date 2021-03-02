@@ -7,7 +7,7 @@ export interface ModelTypeAttributes {
   description: string;
 }
 
-export type ModelTypePk = "id";
+export type ModelTypePk = 'id';
 export type ModelTypeId = ModelType[ModelTypePk];
 export type ModelTypeCreationAttributes = Optional<ModelTypeAttributes, ModelTypePk>;
 
@@ -30,35 +30,36 @@ export class ModelType extends Model<ModelTypeAttributes, ModelTypeCreationAttri
   countHouseModels!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof ModelType {
-    ModelType.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.STRING(5),
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'ModelType',
-    timestamps: false,
-    indexes: [
+    ModelType.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.STRING(5),
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return ModelType;
+      {
+        sequelize,
+        tableName: 'ModelType',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return ModelType;
   }
 }

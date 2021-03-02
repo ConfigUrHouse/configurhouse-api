@@ -7,7 +7,7 @@ export interface UserRoleAttributes {
   id_User: number;
 }
 
-export type UserRolePk = "id" | "id_User";
+export type UserRolePk = 'id' | 'id_User';
 export type UserRoleId = UserRole[UserRolePk];
 export type UserRoleCreationAttributes = Optional<UserRoleAttributes, UserRolePk>;
 
@@ -27,48 +27,46 @@ export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttribut
   createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserRole {
-    UserRole.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Role',
-        key: 'id'
-      }
-    },
-    id_User: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'UserRole',
-    timestamps: false,
-    indexes: [
+    UserRole.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-          { name: "id_User" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'Role',
+            key: 'id',
+          },
+        },
+        id_User: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
       },
       {
-        name: "UserRole_User0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_User" },
-        ]
-      },
-    ]
-  });
-  return UserRole;
+        sequelize,
+        tableName: 'UserRole',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }, { name: 'id_User' }],
+          },
+          {
+            name: 'UserRole_User0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_User' }],
+          },
+        ],
+      }
+    );
+    return UserRole;
   }
 }

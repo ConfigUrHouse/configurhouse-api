@@ -8,7 +8,7 @@ export interface EmailAttributes {
   description: string;
 }
 
-export type EmailPk = "id";
+export type EmailPk = 'id';
 export type EmailId = Email[EmailPk];
 export type EmailCreationAttributes = Optional<EmailAttributes, EmailPk>;
 
@@ -43,35 +43,36 @@ export class Email extends Model<EmailAttributes, EmailCreationAttributes> imple
   countUserEmails!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Email {
-    Email.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    send_at: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'Email',
-    timestamps: false,
-    indexes: [
+    Email.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        send_at: {
+          type: DataTypes.DATEONLY,
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return Email;
+      {
+        sequelize,
+        tableName: 'Email',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return Email;
   }
 }

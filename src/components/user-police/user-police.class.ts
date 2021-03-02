@@ -7,11 +7,13 @@ export interface UserPoliceAttributes {
   id_User: number;
 }
 
-export type UserPolicePk = "id" | "id_User";
+export type UserPolicePk = 'id' | 'id_User';
 export type UserPoliceId = UserPolice[UserPolicePk];
 export type UserPoliceCreationAttributes = Optional<UserPoliceAttributes, UserPolicePk>;
 
-export class UserPolice extends Model<UserPoliceAttributes, UserPoliceCreationAttributes> implements UserPoliceAttributes {
+export class UserPolice
+  extends Model<UserPoliceAttributes, UserPoliceCreationAttributes>
+  implements UserPoliceAttributes {
   id!: number;
   id_User!: number;
 
@@ -27,48 +29,46 @@ export class UserPolice extends Model<UserPoliceAttributes, UserPoliceCreationAt
   createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserPolice {
-    UserPolice.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Police',
-        key: 'id'
-      }
-    },
-    id_User: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'UserPolice',
-    timestamps: false,
-    indexes: [
+    UserPolice.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-          { name: "id_User" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'Police',
+            key: 'id',
+          },
+        },
+        id_User: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
       },
       {
-        name: "UserPolice_User0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_User" },
-        ]
-      },
-    ]
-  });
-  return UserPolice;
+        sequelize,
+        tableName: 'UserPolice',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }, { name: 'id_User' }],
+          },
+          {
+            name: 'UserPolice_User0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_User' }],
+          },
+        ],
+      }
+    );
+    return UserPolice;
   }
 }

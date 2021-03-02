@@ -10,7 +10,7 @@ export interface AssetAttributes {
   id_AssetType: number;
 }
 
-export type AssetPk = "id";
+export type AssetPk = 'id';
 export type AssetId = Asset[AssetPk];
 export type AssetCreationAttributes = Optional<AssetAttributes, AssetPk>;
 
@@ -86,46 +86,45 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   createId_AssetType_AssetType!: Sequelize.BelongsToCreateAssociationMixin<AssetType>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Asset {
-    Asset.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    value: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    id_AssetType: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'AssetType',
-        key: 'id'
+    Asset.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        value: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        id_AssetType: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'AssetType',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Asset',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'Asset_AssetType_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_AssetType' }],
+          },
+        ],
       }
-    }
-  }, {
-    sequelize,
-    tableName: 'Asset',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "Asset_AssetType_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_AssetType" },
-        ]
-      },
-    ]
-  });
-  return Asset;
+    );
+    return Asset;
   }
 }

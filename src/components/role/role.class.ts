@@ -8,7 +8,7 @@ export interface RoleAttributes {
   description: string;
 }
 
-export type RolePk = "id";
+export type RolePk = 'id';
 export type RoleId = Role[RolePk];
 export type RoleCreationAttributes = Optional<RoleAttributes, RolePk>;
 
@@ -43,35 +43,36 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> implemen
   countUserRoles!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Role {
-    Role.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'Role',
-    timestamps: false,
-    indexes: [
+    Role.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return Role;
+      {
+        sequelize,
+        tableName: 'Role',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return Role;
   }
 }

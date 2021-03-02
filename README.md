@@ -71,3 +71,4 @@ $ docker-compose up -d \
     grafana
 $ docker-compose run -v $PWD/samples:/scripts k6 run /scripts/es6sample.js
 ``
+```

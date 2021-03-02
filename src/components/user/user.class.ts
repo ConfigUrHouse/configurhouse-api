@@ -17,7 +17,7 @@ export interface UserAttributes {
   active: number;
 }
 
-export type UserPk = "id";
+export type UserPk = 'id';
 export type UserId = User[UserPk];
 export type UserCreationAttributes = Optional<UserAttributes, UserPk>;
 
@@ -127,47 +127,48 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   countUserRoles!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof User {
-    User.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    firstname: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    lastname: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    password: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    active: {
-      type: DataTypes.TINYINT,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'User',
-    timestamps: false,
-    indexes: [
+    User.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        firstname: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        lastname: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        email: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        password: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        active: {
+          type: DataTypes.TINYINT,
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return User;
+      {
+        sequelize,
+        tableName: 'User',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return User;
   }
 }

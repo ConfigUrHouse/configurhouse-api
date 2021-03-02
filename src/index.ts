@@ -10,7 +10,7 @@ import { db as mysql } from './components/utils/mysql.config';
 import { handleNotFound, handleError } from './middleware/error-handler';
 import { specs } from './shared/swagger-specs';
 import { WebpackHotModule } from './interface/webpack-hot-module';
-import { initModels } from "./components/utils/init-models.config";
+import { initModels } from './components/utils/init-models.config';
 
 declare const module: WebpackHotModule;
 
@@ -36,7 +36,6 @@ declare const module: WebpackHotModule;
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   app.use(handleNotFound);
   app.use(handleError);
-
 
   /**
    * Database initialization

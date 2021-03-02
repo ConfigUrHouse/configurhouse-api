@@ -11,11 +11,13 @@ export interface ConfigurationAttributes {
   id_HouseModel: number;
 }
 
-export type ConfigurationPk = "id";
+export type ConfigurationPk = 'id';
 export type ConfigurationId = Configuration[ConfigurationPk];
 export type ConfigurationCreationAttributes = Optional<ConfigurationAttributes, ConfigurationPk>;
 
-export class Configuration extends Model<ConfigurationAttributes, ConfigurationCreationAttributes> implements ConfigurationAttributes {
+export class Configuration
+  extends Model<ConfigurationAttributes, ConfigurationCreationAttributes>
+  implements ConfigurationAttributes {
   id!: number;
   name!: string;
   id_User!: number;
@@ -57,61 +59,58 @@ export class Configuration extends Model<ConfigurationAttributes, ConfigurationC
   createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Configuration {
-    Configuration.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    id_User: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id'
+    Configuration.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        id_User: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
+        id_HouseModel: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'HouseModel',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Configuration',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'Configuration_User_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_User' }],
+          },
+          {
+            name: 'Configuration_HouseModel0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_HouseModel' }],
+          },
+        ],
       }
-    },
-    id_HouseModel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'HouseModel',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'Configuration',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "Configuration_User_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_User" },
-        ]
-      },
-      {
-        name: "Configuration_HouseModel0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_HouseModel" },
-        ]
-      },
-    ]
-  });
-  return Configuration;
+    );
+    return Configuration;
   }
 }

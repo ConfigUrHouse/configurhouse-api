@@ -1,11 +1,11 @@
-const webpack = require("webpack");
-const path = require("path");
+const webpack = require('webpack');
+const path = require('path');
 const SwaggerJSDocWebpackPlugin = require('swagger-jsdoc-webpack-plugin');
 
 module.exports = {
-  entry: ["./src/index.ts"],
+  entry: ['./src/index.ts'],
   watch: false,
-  target: "node",
+  target: 'node',
   optimization: {
     minimize: true,
     splitChunks: {
@@ -15,45 +15,45 @@ module.exports = {
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           priority: -10,
-          filename: 'vendors.js'
+          filename: 'vendors.js',
         },
         default: {
           minChunks: 2,
           priority: -20,
-          reuseExistingChunk: true
-        }
-      }
-    }
+          reuseExistingChunk: true,
+        },
+      },
+    },
   },
   externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'mssql'],
   module: {
     rules: [
       {
         test: /.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
-      }
-    ]
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
   },
-  mode: "production",
+  mode: 'production',
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-      new SwaggerJSDocWebpackPlugin({
-        swaggerDefinition: {
-          openapi: '3.0.0',
-          info: {
-            title: 'Title',
-            version: '1.0.0',
-            description: 'Description',
-          },
+    new SwaggerJSDocWebpackPlugin({
+      swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+          title: 'Title',
+          version: '1.0.0',
+          description: 'Description',
         },
-        apis: ['./src/**/*.router.ts'],
-      }),
-    ],
+      },
+      apis: ['./src/**/*.router.ts'],
+    }),
+  ],
   output: {
-    path: path.join(__dirname, "dist"),
-    filename: "index.js"
-  }
+    path: path.join(__dirname, 'dist'),
+    filename: 'index.js',
+  },
 };

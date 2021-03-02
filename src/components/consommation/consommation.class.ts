@@ -1,5 +1,8 @@
 import Sequelize, { DataTypes, Model, Optional } from 'sequelize';
-import type { ConsommationPosteConso, ConsommationPosteConsoId } from '../consommation-poste-conso/consommation-poste-conso.class';
+import type {
+  ConsommationPosteConso,
+  ConsommationPosteConsoId,
+} from '../consommation-poste-conso/consommation-poste-conso.class';
 import type { HouseModel, HouseModelId } from '../house-model/house-model.class';
 import type { PosteConso, PosteConsoId } from '../poste-conso/poste-conso.class';
 
@@ -9,11 +12,13 @@ export interface ConsommationAttributes {
   id_HouseModel: number;
 }
 
-export type ConsommationPk = "id";
+export type ConsommationPk = 'id';
 export type ConsommationId = Consommation[ConsommationPk];
 export type ConsommationCreationAttributes = Optional<ConsommationAttributes, ConsommationPk>;
 
-export class Consommation extends Model<ConsommationAttributes, ConsommationCreationAttributes> implements ConsommationAttributes {
+export class Consommation
+  extends Model<ConsommationAttributes, ConsommationCreationAttributes>
+  implements ConsommationAttributes {
   id!: number;
   nb_personnes!: number;
   id_HouseModel!: number;
@@ -25,8 +30,14 @@ export class Consommation extends Model<ConsommationAttributes, ConsommationCrea
   addConsommationPosteConso!: Sequelize.HasManyAddAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   addConsommationPosteConsos!: Sequelize.HasManyAddAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   createConsommationPosteConso!: Sequelize.HasManyCreateAssociationMixin<ConsommationPosteConso>;
-  removeConsommationPosteConso!: Sequelize.HasManyRemoveAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
-  removeConsommationPosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
+  removeConsommationPosteConso!: Sequelize.HasManyRemoveAssociationMixin<
+    ConsommationPosteConso,
+    ConsommationPosteConsoId
+  >;
+  removeConsommationPosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<
+    ConsommationPosteConso,
+    ConsommationPosteConsoId
+  >;
   hasConsommationPosteConso!: Sequelize.HasManyHasAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   hasConsommationPosteConsos!: Sequelize.HasManyHasAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   countConsommationPosteConsos!: Sequelize.HasManyCountAssociationsMixin;
@@ -49,46 +60,45 @@ export class Consommation extends Model<ConsommationAttributes, ConsommationCrea
   createId_HouseModel_HouseModel!: Sequelize.BelongsToCreateAssociationMixin<HouseModel>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Consommation {
-    Consommation.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    nb_personnes: {
-      type: DataTypes.FLOAT,
-      allowNull: false
-    },
-    id_HouseModel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'HouseModel',
-        key: 'id'
+    Consommation.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        nb_personnes: {
+          type: DataTypes.FLOAT,
+          allowNull: false,
+        },
+        id_HouseModel: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'HouseModel',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Consommation',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'Consommation_HouseModel_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_HouseModel' }],
+          },
+        ],
       }
-    }
-  }, {
-    sequelize,
-    tableName: 'Consommation',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "Consommation_HouseModel_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_HouseModel" },
-        ]
-      },
-    ]
-  });
-  return Consommation;
+    );
+    return Consommation;
   }
 }

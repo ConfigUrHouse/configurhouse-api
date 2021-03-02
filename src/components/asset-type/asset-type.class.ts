@@ -7,7 +7,7 @@ export interface AssetTypeAttributes {
   description: string;
 }
 
-export type AssetTypePk = "id";
+export type AssetTypePk = 'id';
 export type AssetTypeId = AssetType[AssetTypePk];
 export type AssetTypeCreationAttributes = Optional<AssetTypeAttributes, AssetTypePk>;
 
@@ -30,35 +30,36 @@ export class AssetType extends Model<AssetTypeAttributes, AssetTypeCreationAttri
   countAssets!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof AssetType {
-    AssetType.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'AssetType',
-    timestamps: false,
-    indexes: [
+    AssetType.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return AssetType;
+      {
+        sequelize,
+        tableName: 'AssetType',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return AssetType;
   }
 }

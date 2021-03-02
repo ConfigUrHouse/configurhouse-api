@@ -8,7 +8,7 @@ export interface PoliceAttributes {
   description: string;
 }
 
-export type PolicePk = "id";
+export type PolicePk = 'id';
 export type PoliceId = Police[PolicePk];
 export type PoliceCreationAttributes = Optional<PoliceAttributes, PolicePk>;
 
@@ -43,35 +43,36 @@ export class Police extends Model<PoliceAttributes, PoliceCreationAttributes> im
   countUserPolice!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Police {
-    Police.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'Police',
-    timestamps: false,
-    indexes: [
+    Police.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return Police;
+      {
+        sequelize,
+        tableName: 'Police',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return Police;
   }
 }

@@ -6,7 +6,7 @@ export interface TokenTypeAttributes {
   name: string;
 }
 
-export type TokenTypePk = "id";
+export type TokenTypePk = 'id';
 export type TokenTypeId = TokenType[TokenTypePk];
 export type TokenTypeCreationAttributes = Optional<TokenTypeAttributes, TokenTypePk>;
 
@@ -28,31 +28,32 @@ export class TokenType extends Model<TokenTypeAttributes, TokenTypeCreationAttri
   countTokens!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof TokenType {
-    TokenType.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    }
-  }, {
-    sequelize,
-    tableName: 'TokenType',
-    timestamps: false,
-    indexes: [
+    TokenType.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
       },
-    ]
-  });
-  return TokenType;
+      {
+        sequelize,
+        tableName: 'TokenType',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      }
+    );
+    return TokenType;
   }
 }

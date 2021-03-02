@@ -13,11 +13,13 @@ export interface HouseModelAttributes {
   id_Asset_HouseModelAsset3D: number;
 }
 
-export type HouseModelPk = "id";
+export type HouseModelPk = 'id';
 export type HouseModelId = HouseModel[HouseModelPk];
 export type HouseModelCreationAttributes = Optional<HouseModelAttributes, HouseModelPk>;
 
-export class HouseModel extends Model<HouseModelAttributes, HouseModelCreationAttributes> implements HouseModelAttributes {
+export class HouseModel
+  extends Model<HouseModelAttributes, HouseModelCreationAttributes>
+  implements HouseModelAttributes {
   id!: number;
   name!: string;
   id_ModelType!: number;
@@ -77,76 +79,71 @@ export class HouseModel extends Model<HouseModelAttributes, HouseModelCreationAt
   createId_ModelType_ModelType!: Sequelize.BelongsToCreateAssociationMixin<ModelType>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof HouseModel {
-    HouseModel.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    id_ModelType: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'ModelType',
-        key: 'id'
+    HouseModel.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        id_ModelType: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'ModelType',
+            key: 'id',
+          },
+        },
+        id_Asset: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Asset',
+            key: 'id',
+          },
+        },
+        id_Asset_HouseModelAsset3D: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Asset',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'HouseModel',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'HouseModel_ModelType_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_ModelType' }],
+          },
+          {
+            name: 'HouseModel_Asset0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Asset' }],
+          },
+          {
+            name: 'HouseModel_Asset1_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Asset_HouseModelAsset3D' }],
+          },
+        ],
       }
-    },
-    id_Asset: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Asset',
-        key: 'id'
-      }
-    },
-    id_Asset_HouseModelAsset3D: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Asset',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'HouseModel',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "HouseModel_ModelType_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_ModelType" },
-        ]
-      },
-      {
-        name: "HouseModel_Asset0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Asset" },
-        ]
-      },
-      {
-        name: "HouseModel_Asset1_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Asset_HouseModelAsset3D" },
-        ]
-      },
-    ]
-  });
-  return HouseModel;
+    );
+    return HouseModel;
   }
 }

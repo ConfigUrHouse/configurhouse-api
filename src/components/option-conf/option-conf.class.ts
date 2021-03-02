@@ -10,11 +10,13 @@ export interface OptionConfAttributes {
   id_Mesh: number;
 }
 
-export type OptionConfPk = "id";
+export type OptionConfPk = 'id';
 export type OptionConfId = OptionConf[OptionConfPk];
 export type OptionConfCreationAttributes = Optional<OptionConfAttributes, OptionConfPk>;
 
-export class OptionConf extends Model<OptionConfAttributes, OptionConfCreationAttributes> implements OptionConfAttributes {
+export class OptionConf
+  extends Model<OptionConfAttributes, OptionConfCreationAttributes>
+  implements OptionConfAttributes {
   id!: number;
   name!: string;
   id_HouseModel!: number;
@@ -44,61 +46,58 @@ export class OptionConf extends Model<OptionConfAttributes, OptionConfCreationAt
   countValues!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof OptionConf {
-    OptionConf.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING(200),
-      allowNull: false
-    },
-    id_HouseModel: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'HouseModel',
-        key: 'id'
+    OptionConf.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        id_HouseModel: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'HouseModel',
+            key: 'id',
+          },
+        },
+        id_Mesh: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Mesh',
+            key: 'id',
+          },
+        },
+      },
+      {
+        sequelize,
+        tableName: 'OptionConf',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'OptionConf_HouseModel_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_HouseModel' }],
+          },
+          {
+            name: 'OptionConf_Mesh0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Mesh' }],
+          },
+        ],
       }
-    },
-    id_Mesh: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Mesh',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'OptionConf',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-      {
-        name: "OptionConf_HouseModel_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_HouseModel" },
-        ]
-      },
-      {
-        name: "OptionConf_Mesh0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Mesh" },
-        ]
-      },
-    ]
-  });
-  return OptionConf;
+    );
+    return OptionConf;
   }
 }

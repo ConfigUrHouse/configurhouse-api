@@ -7,7 +7,7 @@ export interface UserEmailAttributes {
   id_Email: number;
 }
 
-export type UserEmailPk = "id" | "id_Email";
+export type UserEmailPk = 'id' | 'id_Email';
 export type UserEmailId = UserEmail[UserEmailPk];
 export type UserEmailCreationAttributes = Optional<UserEmailAttributes, UserEmailPk>;
 
@@ -27,48 +27,46 @@ export class UserEmail extends Model<UserEmailAttributes, UserEmailCreationAttri
   createId_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserEmail {
-    UserEmail.init({
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
-    },
-    id_Email: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      references: {
-        model: 'Email',
-        key: 'id'
-      }
-    }
-  }, {
-    sequelize,
-    tableName: 'UserEmail',
-    timestamps: false,
-    indexes: [
+    UserEmail.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-          { name: "id_Email" },
-        ]
+        id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
+        id_Email: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'Email',
+            key: 'id',
+          },
+        },
       },
       {
-        name: "UserEmail_Email0_FK",
-        using: "BTREE",
-        fields: [
-          { name: "id_Email" },
-        ]
-      },
-    ]
-  });
-  return UserEmail;
+        sequelize,
+        tableName: 'UserEmail',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }, { name: 'id_Email' }],
+          },
+          {
+            name: 'UserEmail_Email0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Email' }],
+          },
+        ],
+      }
+    );
+    return UserEmail;
   }
 }
