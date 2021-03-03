@@ -1,6 +1,7 @@
 import Sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import type { TokenType, TokenTypeId } from '../token-type/token-type.class';
 import type { User, UserId } from '../user/user.class';
+import joi from 'joi';
 
 export interface TokenAttributes {
   id: number;
@@ -10,6 +11,11 @@ export interface TokenAttributes {
   id_User: number;
   id_TokenType: number;
 }
+
+export const validationSchema = joi.object({
+  token: joi.string().length(16).lowercase().required(),
+  email: joi.string().email().lowercase().required(),
+});
 
 export type TokenPk = 'id';
 export type TokenId = Token[TokenPk];

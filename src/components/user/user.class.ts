@@ -7,6 +7,7 @@ import type { Token, TokenId } from '../token/token.class';
 import type { UserEmail, UserEmailId } from '../user-email/user-email.class';
 import type { UserPolice, UserPoliceId } from '../user-police/user-police.class';
 import type { UserRole, UserRoleId } from '../user-role/user-role.class';
+import joi from 'joi';
 
 export interface UserAttributes {
   id: number;
@@ -16,6 +17,21 @@ export interface UserAttributes {
   password: string;
   active: number;
 }
+
+export const validationSchema = joi.object({
+  email: joi.string().email().lowercase().required(),
+  password: joi.string().min(8).required(),
+  firstname: joi.string().trim().required(),
+  lastname: joi.string().trim().uppercase().required(),
+  //phoneNumber: joi
+  //  .string()
+  //  .regex(/^((\+)33|0)[0-9](\d{2}){4}$/)
+  //  .optional(),
+});
+
+export const emailSchema = joi.object({
+  email: joi.string().email().lowercase().required(),
+});
 
 export type UserPk = 'id';
 export type UserId = User[UserPk];

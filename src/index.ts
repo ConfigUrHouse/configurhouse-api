@@ -6,11 +6,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
-import { db as mysql } from './components/utils/mysql.config';
+import { db as mysql } from './components/config/mysql.config';
 import { handleNotFound, handleError } from './middleware/error-handler';
 import { specs } from './shared/swagger-specs';
 import { WebpackHotModule } from './interface/webpack-hot-module';
-import { initModels } from './components/utils/init-models.config';
+import { initModels } from './components/config/init-models.config';
 
 /**
  * Routers import
