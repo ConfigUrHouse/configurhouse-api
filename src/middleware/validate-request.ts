@@ -8,7 +8,8 @@ export const validateRequest = (req: express.Request, next: express.NextFunction
     allowUnknown: true, // ignore unknown props
     stripUnknown: true, // remove unknown props
   };
-  const { error, value } = schema.validate(req.body, options);
+  const objectToValidate = req.method === "POST" ? req.body : req.query
+  const { error, value } = schema.validate(objectToValidate, options)
   if (error) {
     next(new ErrorHandler(400, `Validation error: ${error.details.map((x) => x.message).join(', ')}`));
   } else {
