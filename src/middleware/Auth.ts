@@ -1,16 +1,18 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import { Response, Request, NextFunction } from 'express';
+import { ErrorHandler } from './error-handler';
 
-export default (req: any, res: any, next: any) => {
-  try {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId = decodedToken.userId;
-    if (req.body.userId && req.body.userId !== userId) {
-      throw new Error('Invalid user ID');
+export default (req: Request, res: Response, next: NextFunction) => {
+  const currentToken = req.headers.authorization?.split(' ')[1] as string;
+  if (!currentToken) {
+    res.status(403).send({ success: 'false', message: 'Not authorized' });
+  }
+
+  jwt.verify(currentToken, process.env.APP_SECRET as string, (err, decoded) => {
+    if (err || !decoded) {
+      res.status(403).send({ success: 'false', message: 'Not authorized' });
     } else {
       next();
     }
-  } catch (e) {
-    throw new Error('Invalid token');
-  }
+  });
 };

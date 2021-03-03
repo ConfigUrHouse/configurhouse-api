@@ -3,7 +3,9 @@ import { Response, Request, NextFunction, Router } from 'express';
 import { emailSchema as emailValidationSchema, validationSchema as userValidationSchema } from './user.class';
 import { validationSchema as tokenValidationSchema } from '../tokens/token.class';
 import { validateRequest } from '../../middleware/validate-request';
-import { register, verify, sendVerificationEmail } from './user.controller';
+import { register, verify, login, refreshToken, sendVerificationEmail } from './user.controller';
+import joi from 'joi';
+import auth from '../../middleware/auth';
 
 /**
  * @swagger
@@ -21,10 +23,9 @@ import { register, verify, sendVerificationEmail } from './user.controller';
  *         type: string
  */
 
-/**
+ /**
  * Router Definition
  */
-
 export const usersRouter = Router();
 
 /**
@@ -36,29 +37,51 @@ export const usersRouter = Router();
  *       tags:
  *         - User
  *       requestBody:
- *         description: The credentials are admin/admin
+ *         description: email/password combination needed for login
  *         required: true
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/User'
  *       responses:
- *         '201':
- *           description: Created
+ *         '200':
+ *           description: Login successful
+ *         '400':
+ *           description: Incorrect email or password
+ *         '400':
+ *           description: Email not verified
  */
-usersRouter.post('/login', function (req, res) {
-  //TODO: A sortir dans le controller
+usersRouter.post(
+  '/login',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(
+      req,
+      next,
+      joi.object({
+        email: joi.string().email().lowercase().required(),
+        password: joi.string().min(8).required(),
+      })
+    );
+  },
+  login
+);
 
-  if (req.body.user === 'admin' && req.body.password === 'admin') {
-    var token = jwt.sign({ id: 1 }, 'RANDOM_TOKEN_SECRET', {
-      expiresIn: 86400,
-    });
+/**
+ * @swagger
+ * paths:
+ *   /users/refresh-token:
+ *     get:
+ *       summary: Refreshes a user's token by returning a new one
+ *       tags:
+ *         - User
+ *       responses:
+ *         '200':
+ *           description: Success
+ *         '403':
+ *           description: Not authorized
+ */
+usersRouter.get('/refresh-token', auth, refreshToken);
 
-    res.status(200).send({ auth: true, token: token });
-  } else {
-    res.status(404).send({ auth: false, token: null });
-  }
-});
 
 /**
  * @swagger
@@ -88,15 +111,6 @@ usersRouter.post(
     validateRequest(req, next, userValidationSchema);
   },
   register
-);
-
-usersRouter.get(
-  '/',
-  (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send({
-      test: 'test'
-    })
-  }
 );
 
 /**
