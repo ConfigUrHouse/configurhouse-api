@@ -1,52 +1,44 @@
 {
-	"info": {
-		"_postman_id": "c7ba84c2-ad18-434f-8362-828bfd809895",
-		"name": "configurhouse-api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Get /users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{configurhouseapi-url}}/users",
-					"host": [
-						"{{configurhouseapi-url}}"
-					],
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "POST /users",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\":\"wilmaxys@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstName\":\"Benjamin\",\n    \"lastName\":\"Ragot\",\n    \"phoneNumber\":\"0649140791\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{configurhouseapi-url}}/users",
-					"host": [
-						"{{configurhouseapi-url}}"
-					],
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "c7ba84c2-ad18-434f-8362-828bfd809895",
+    "name": "configurhouse-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get /users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{configurhouseapi-url}}/users",
+          "host": ["{{configurhouseapi-url}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /users",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\":\"wilmaxys@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstName\":\"Benjamin\",\n    \"lastName\":\"Ragot\",\n    \"phoneNumber\":\"0649140791\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{configurhouseapi-url}}/users",
+          "host": ["{{configurhouseapi-url}}"],
+          "path": ["users"]
+        }
+      },
+      "response": []
+    }
+  ]
 }
