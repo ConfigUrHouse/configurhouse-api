@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { Response, Request, NextFunction } from 'express';
-import { ErrorHandler } from './error-handler';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const currentToken = req.headers.authorization?.split(' ')[1] as string;

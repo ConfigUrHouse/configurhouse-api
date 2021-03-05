@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import { ErrorHandler } from '../../middleware/error-handler';
 import TokenService from '../token/token.service';
 import { Token } from '../token/token.class';
+import { TokenTypes } from '../token-type/token-type.class';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   User.findAll()
@@ -93,27 +94,22 @@ export const register = (req: Request, res: Response, next: NextFunction) => {
     .catch(next);
 };
 
-export const verify = (req: Request, res: Response, next: NextFunction) => {
-  UserService.findByEmail(req.query.email as string)
-    .then(user => {
-      if (user.active) res.status(202).json({ message: 'Email already verified'})
-      TokenService.findByToken(req.query.token as string)
-        .then((token: Token) => {
-          if (token?.id_User !== user.id) throw new ErrorHandler(403, 'Invalid token')
-          user.update({ emailVerifiedAt: Date.now() })
-            .then(_ => {
-              res.json({ message: 'Email verification successful' })
-            })
-            .catch(() => { throw new ErrorHandler(409, 'Email verification failed') })
-        })
-        .catch(next)
-    })
-    .catch(next)
+export const verify = async (req: Request, res: Response, next: NextFunction) => {
+  const user: User = await UserService.findByEmail(req.query.email as string);
+  if (user.active) res.status(202).json({ message: 'Email already verified' });
+  const token: Token = await TokenService.findByTypeAndValue(TokenTypes.EmailVerification, req.query.token as string);
+  if (token.id_User !== user.id || token.expired_at <= new Date(Date.now()))
+    return next(new ErrorHandler(403, 'Invalid token'));
+  const updatedToken: Token = await token.update({ validate_at: new Date(Date.now()) });
+  if (!updatedToken) return next(new ErrorHandler(409, 'Email verification failed'));
+  const updatedUser: User = await user.update({ active: 1 });
+  if (!updatedUser) return next(new ErrorHandler(409, 'Email verification failed'));
+  res.json({ success: true, message: 'Email verification successful' });
 };
 
 export const sendVerificationEmail = (req: Request, res: Response, next: NextFunction) => {
   UserService.sendVerificationEmail(req.query.email as string)
-    .then(() => res.json({ message: 'Verification email sent' }))
+    .then(() => res.json({ success: true, message: 'Verification email sent' }))
     .catch(next);
 };
 
