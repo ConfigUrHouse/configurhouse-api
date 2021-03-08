@@ -1,6 +1,10 @@
 import Sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import type { Token, TokenId } from '../token/token.class';
 
+export enum TokenTypes {
+  EmailVerification = 'EmailVerification',
+}
+
 export interface TokenTypeAttributes {
   id: number;
   name: string;

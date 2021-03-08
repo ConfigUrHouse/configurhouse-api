@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction, Router } from 'express';
 import { findAll, findOne, update, deleteAll, deleteOne } from './user.controller';
-import jwt from 'jsonwebtoken';
 import { emailSchema as emailValidationSchema, validationSchema as userValidationSchema } from './user.class';
 import { validationSchema as tokenValidationSchema } from '../token/token.class';
 import { validateRequest } from '../../middleware/validate-request';
@@ -30,12 +29,6 @@ import auth from '../../middleware/auth';
 export const userRouter = Router();
 
 userRouter.get('/', findAll);
-
-userRouter.get('/:id', findOne);
-
-userRouter.put('/:id', update);
-
-userRouter.delete('/:id', deleteOne);
 
 userRouter.delete('/', deleteAll);
 
@@ -196,3 +189,9 @@ userRouter.get(
   },
   sendVerificationEmail
 );
+
+userRouter.get('/:id', findOne);
+
+userRouter.put('/:id', update);
+
+userRouter.delete('/:id', deleteOne);

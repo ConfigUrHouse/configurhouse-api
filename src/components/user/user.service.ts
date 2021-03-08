@@ -4,6 +4,8 @@ import { User, UserAttributes } from './user.class';
 import { emailTransporter } from '../config/email.config';
 import TokenService from '../token/token.service';
 import { Token, TokenAttributes } from '../token/token.class';
+import { TokenType } from '../config/init-models.config';
+import { TokenTypes } from '../token-type/token-type.class';
 
 export default class UserService {
   public static async create(params: UserAttributes) {
@@ -34,20 +36,18 @@ export default class UserService {
 
   public static async sendVerificationEmail(email: string, user?: User) {
     if (!user) user = await this.findByEmail(email);
-    const token: Token = await TokenService.add(user.id);
+    if (user.active) throw new ErrorHandler(403, `User with email ${email} is already activated`);
+    const tokenType: TokenType = await TokenService.findTokenTypeByName(TokenTypes.EmailVerification);
+    const token: Token = await TokenService.add(user, tokenType);
     try {
-      await emailTransporter.sendMail(
-        {
-          from: process.env.EMAIL_USER,
-          to: email,
-          subject: 'Veuillez confirmer votre adresse email',
-          html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/users/verify?token=${token.value}&email=${email}">ici</a> pour vérifier votre adresse email.</p>`,
-        }
-      );
+      await emailTransporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Veuillez confirmer votre adresse email',
+        html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/user/verify?token=${token.value}&email=${email}">ici</a> pour vérifier votre adresse email.</p>`,
+      });
     } catch (error) {
       throw new ErrorHandler(500, `Email not sent : ${error.message}`);
     }
-  
-
   }
 }

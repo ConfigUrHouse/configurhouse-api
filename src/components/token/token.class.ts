@@ -6,8 +6,8 @@ import joi from 'joi';
 export interface TokenAttributes {
   id: number;
   value: string;
-  expired_at: string;
-  validate_at: string;
+  expired_at: Date;
+  validate_at?: Date;
   id_User: number;
   id_TokenType: number;
 }
@@ -24,8 +24,8 @@ export type TokenCreationAttributes = Optional<TokenAttributes, TokenPk>;
 export class Token extends Model<TokenAttributes, TokenCreationAttributes> implements TokenAttributes {
   id!: number;
   value!: string;
-  expired_at!: string;
-  validate_at!: string;
+  expired_at!: Date;
+  validate_at!: Date;
   id_User!: number;
   id_TokenType!: number;
 
@@ -54,12 +54,12 @@ export class Token extends Model<TokenAttributes, TokenCreationAttributes> imple
           allowNull: false,
         },
         expired_at: {
-          type: DataTypes.DATEONLY,
+          type: DataTypes.DATE,
           allowNull: false,
         },
         validate_at: {
-          type: DataTypes.DATEONLY,
-          allowNull: false,
+          type: DataTypes.DATE,
+          allowNull: true,
         },
         id_User: {
           type: DataTypes.INTEGER,
