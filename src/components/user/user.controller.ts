@@ -137,3 +137,9 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
     }
   });
 };
+
+export const sendPasswordResetEmail = (req: Request, res: Response, next: NextFunction) => {
+  UserService.sendPasswordResetEmail(req.query.email as string)
+    .then(() => res.json({ message: 'Password reset email sent' }))
+    .catch(next);
+};

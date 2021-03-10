@@ -50,4 +50,19 @@ export default class UserService {
       throw new ErrorHandler(500, `Email not sent : ${error.message}`);
     }
   }
+
+  public static async sendPasswordResetEmail(to: string | User) {
+    const user = to instanceof User ? to : await this.findByEmail(to);
+    const token: Token = await TokenService.add(user.id);
+    try {
+      await emailTransporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: 'Veuillez réinitialiser votre mot de passe',
+        html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/users/reset?token=${token.value}&email=${email}">ici</a> pour réinitialiser votre mot de passe.</p>`,
+      });
+    } catch (error) {
+      throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+    }
+  }
 }
