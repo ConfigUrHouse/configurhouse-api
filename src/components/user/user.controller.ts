@@ -7,11 +7,26 @@ import { ErrorHandler } from '../../middleware/error-handler';
 import TokenService from '../token/token.service';
 import { Token } from '../token/token.class';
 import { TokenTypes } from '../token-type/token-type.class';
+import { getPagination, getPagingData } from '../../shared/pagination';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  User.findAll()
+  const size = req.query.size ? parseInt(req.query.size as string) : undefined
+  const page = req.query.page ? parseInt(req.query.page as string) : 0
+  const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0} ;
+  const firstname = req.query.firstname as string
+  const lastname = req.query.lastname as string
+  const type = req.query.type
+  const filters: { firstname?: string, lastname?: string, type?: string } = {}
+  if (firstname) filters.firstname = firstname
+  if (lastname) filters.lastname = lastname
+  //TODO filter by type
+  User.findAndCountAll({
+    limit: limit,
+    offset: offset,
+    where: filters
+  })
     .then((data) => {
-      res.send(data);
+      res.send(getPagingData(data, page, limit));
     })
     .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));

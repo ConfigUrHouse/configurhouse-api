@@ -28,7 +28,23 @@ import auth from '../../middleware/auth';
  */
 export const userRouter = Router();
 
-userRouter.get('/', findAll);
+userRouter.get(
+  '/',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(
+      req,
+      next,
+      joi.object({
+        firstname: joi.string().trim(),
+        lastname: joi.string().trim(),
+        type: joi.string(),
+        size: joi.number(),
+        page: joi.number(),
+      })
+    );
+  },
+  findAll
+);
 
 userRouter.delete('/', deleteAll);
 
