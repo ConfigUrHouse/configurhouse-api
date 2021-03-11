@@ -22,7 +22,7 @@ export default class TokenService {
   }
 
   public static async findByTypeAndValue(type: TokenTypes, value: string): Promise<Token> {
-    const tokenType: TokenType = await TokenService.findTokenTypeByName(TokenTypes.EmailVerification);
+    const tokenType: TokenType = await TokenService.findTokenTypeByName(type);
     const result = await Token.findOne({
       where: { value: value, id_TokenType: tokenType.id },
     });

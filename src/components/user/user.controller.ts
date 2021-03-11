@@ -152,3 +152,32 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
     }
   });
 };
+
+export const sendPasswordResetEmail = (req: Request, res: Response, next: NextFunction) => {
+  UserService.sendPasswordResetEmail(req.query.email as string)
+    .then(() => res.json({ success: true, message: 'Password reset email sent' }))
+    .catch(next);
+};
+
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  const { email, password } = req.body;
+  try {
+    const user: User = await UserService.findByEmail(email);
+    if (!user.active) return next(new ErrorHandler(403, 'Email not verified'));
+
+    const token: Token = await TokenService.findByTypeAndValue(TokenTypes.PasswordReset, req.query.token as string);
+    if (token.id_User !== user.id || token.expired_at <= new Date(Date.now()))
+      return next(new ErrorHandler(403, 'Invalid token'));
+
+    const updatedToken: Token = await token.update({ validate_at: new Date(Date.now()) });
+    if (!updatedToken) return next(new ErrorHandler(409, 'Password reset failed'));
+
+    const hashedPassword = bcrypt.hashSync(password, 8);
+    const updatedUser: User = await user.update({ password: hashedPassword });
+    if (!updatedUser) return next(new ErrorHandler(409, 'Password reset failed'));
+  } catch (err) {
+    return next(err);
+  }
+
+  res.json({ success: true, message: 'Password reset successful' });
+};

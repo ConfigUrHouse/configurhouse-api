@@ -89,6 +89,7 @@ declare const module: WebpackHotModule;
   initModels(mysql.instance);
   await mysql.instance.sync({ force: true });
   TokenType.create({ name: 'EmailVerification' });
+  TokenType.create({ name: 'PasswordReset' });
 
   /**
    * Port gestion

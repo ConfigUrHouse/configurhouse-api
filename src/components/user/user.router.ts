@@ -1,5 +1,13 @@
 import { Response, Request, NextFunction, Router } from 'express';
-import { findAll, findOne, update, deleteAll, deleteOne } from './user.controller';
+import {
+  findAll,
+  findOne,
+  update,
+  deleteAll,
+  deleteOne,
+  sendPasswordResetEmail,
+  resetPassword,
+} from './user.controller';
 import { emailSchema as emailValidationSchema, validationSchema as userValidationSchema } from './user.class';
 import { validationSchema as tokenValidationSchema } from '../token/token.class';
 import { validateRequest } from '../../middleware/validate-request';
@@ -260,6 +268,99 @@ userRouter.get(
     validateRequest(req, next, emailValidationSchema);
   },
   sendVerificationEmail
+);
+
+/**
+ * @swagger
+ * paths:
+ *   /users/password-reset:
+ *     post:
+ *       summary: Reset the user's password
+ *       tags:
+ *         - User
+ *       parameters:
+ *         - in: query
+ *           name: token
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: token provided by the API to reset the user's password
+ *         - in: body
+ *           name: email
+ *           schema:
+ *             type: string
+ *             format: email
+ *           required: true
+ *           description: the user's email address
+ *         - in: body
+ *           name: password
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: the user's new password
+ *       responses:
+ *         '200':
+ *           description: Password reset
+ *         '400':
+ *           description: Bad request
+ *         '403':
+ *           description: Invalid token or email not verified
+ *         '404':
+ *           description: User not found
+ *         '409':
+ *           description: User or token update failed
+ *         '500':
+ *           description: Password reset email not sent
+ */
+userRouter.post(
+  '/password-reset',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(
+      req,
+      next,
+      joi.object({
+        email: joi.string().email().lowercase().required(),
+        password: joi.string().min(8).required(),
+      })
+    );
+  },
+  resetPassword
+);
+
+/**
+ * @swagger
+ * paths:
+ *   /users/password-reset:
+ *     get:
+ *       summary: Send another password reset email
+ *       tags:
+ *         - User
+ *       parameters:
+ *         - in: query
+ *           name: email
+ *           schema:
+ *             type: string
+ *             format: email
+ *           required: true
+ *           description: the user's email address
+ *       responses:
+ *         '200':
+ *           description: Email sent
+ *         '400':
+ *           description: Bad request
+ *         '404':
+ *           description: User not found
+ *         '409':
+ *           description: Token creation failed
+ *         '500':
+ *           description: Email not sent
+ */
+userRouter.get(
+  '/password-reset',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(req, next, emailValidationSchema);
+  },
+  sendPasswordResetEmail
 );
 
 userRouter.get('/:id', findOne);

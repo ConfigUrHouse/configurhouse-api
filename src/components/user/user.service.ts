@@ -3,7 +3,7 @@ import { ErrorHandler } from '../../middleware/error-handler';
 import { User, UserAttributes } from './user.class';
 import { emailTransporter } from '../config/email.config';
 import TokenService from '../token/token.service';
-import { Token, TokenAttributes } from '../token/token.class';
+import { Token } from '../token/token.class';
 import { TokenType } from '../config/init-models.config';
 import { TokenTypes } from '../token-type/token-type.class';
 
@@ -28,7 +28,7 @@ export default class UserService {
 
   public static async findByEmail(email: string) {
     const user = await User.findOne({
-      where: { email: email },
+      where: { email },
     });
     if (!user) throw new ErrorHandler(404, `User with email ${email} not found`);
     return user;
@@ -45,6 +45,23 @@ export default class UserService {
         to: email,
         subject: 'Veuillez confirmer votre adresse email',
         html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/user/verify?token=${token.value}&email=${email}">ici</a> pour vérifier votre adresse email.</p>`,
+      });
+    } catch (error) {
+      throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+    }
+  }
+
+  public static async sendPasswordResetEmail(to: string | User) {
+    const user = to instanceof User ? to : await this.findByEmail(to);
+
+    const tokenType = await TokenService.findTokenTypeByName(TokenTypes.PasswordReset);
+    const token = await TokenService.add(user, tokenType);
+    try {
+      await emailTransporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: 'Veuillez réinitialiser votre mot de passe',
+        html: `<p>Veuillez cliquer <a href="${process.env.APP_BASE_URL}/users/password-reset?token=${token.value}&email=${user.email}">ici</a> pour réinitialiser votre mot de passe.</p>`,
       });
     } catch (error) {
       throw new ErrorHandler(500, `Email not sent : ${error.message}`);
