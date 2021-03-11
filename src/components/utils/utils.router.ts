@@ -24,13 +24,7 @@ export const utilsRouter = Router();
  *             type: string
  *             format: email
  *           required: true
- *           description: email address of the recipient
- *         - in: query
- *           name: subject
- *           schema:
- *             type: string
- *           required: true
- *           description: subject of the email
+ *           description: email address of the sender
  *         - in: query
  *           name: content
  *           schema:
@@ -51,7 +45,6 @@ utilsRouter.post(
         next,
         joi.object({
           email: joi.string().email().lowercase().required(),
-          subject: joi.string().required(),
           content: joi.string().required(),
         })
       );
