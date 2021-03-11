@@ -21,6 +21,17 @@ import auth from '../../middleware/auth';
  *         type: string
  *       password:
  *         type: string
+ *   PaginatedArrayOfUsers:
+ *     type: object
+ *     properties:
+ *       totalItems:
+ *         type: integer
+ *       items:
+ *         type: User[]
+ *       totalPages:
+ *         type: integer
+ *       currentPage:
+ *         type: integer
  */
 
 /**
@@ -28,6 +39,50 @@ import auth from '../../middleware/auth';
  */
 export const userRouter = Router();
 
+//#region get /user
+/**
+ * @swagger
+ * 
+ * paths:
+ *   /user:
+ *     get:
+ *       summary: Retrieve all users
+ *       tags:
+ *         - User
+ *       parameters:
+ *         - in: query
+ *           name: firstname
+ *           schema:
+ *             type: string
+ *           description: First name of the users to get
+ *         - in: query
+ *           name: lastname
+ *           schema:
+ *             type: string
+ *           description: Last name of the users to get
+ *         - in: query
+ *           name: role
+ *           schema:
+ *             type: string
+ *           description: Role of the users to get
+ *         - in: query
+ *           name: size
+ *           schema:
+ *             type: integer
+ *           description: Number of users to get for pagination
+ *         - in: query
+ *           name: page
+ *           schema:
+ *             type: integer
+ *           description: Number of the page to get for pagination
+ *       responses:
+ *         200:
+ *           description: A paginated list of users
+ *           schema:
+ *             $ref: '#/definitions/PaginatedArrayOfUsers'
+ *         400:
+ *           description: Invalid request parameters
+ */
 userRouter.get(
   '/',
   (req: Request, res: Response, next: NextFunction) => {
@@ -37,7 +92,7 @@ userRouter.get(
       joi.object({
         firstname: joi.string().trim(),
         lastname: joi.string().trim(),
-        type: joi.string(),
+        role: joi.string(),
         size: joi.number(),
         page: joi.number(),
       })
@@ -45,13 +100,14 @@ userRouter.get(
   },
   findAll
 );
+//#endregion
 
 userRouter.delete('/', deleteAll);
 
 /**
  * @swagger
  * paths:
- *   /users/login:
+ *   /user/login:
  *     post:
  *       summary: Login to the api
  *       tags:
@@ -87,7 +143,7 @@ userRouter.post(
 /**
  * @swagger
  * paths:
- *   /users/refresh-token:
+ *   /user/refresh-token:
  *     get:
  *       summary: Refreshes a user's token by returning a new one
  *       tags:
@@ -103,7 +159,7 @@ userRouter.get('/refresh-token', auth, refreshToken);
 /**
  * @swagger
  * paths:
- *   /users/register:
+ *   /user/register:
  *     post:
  *       summary: Create a new user account
  *       tags:
@@ -133,7 +189,7 @@ userRouter.post(
 /**
  * @swagger
  * paths:
- *   /users/verify:
+ *   /user/verify:
  *     post:
  *       summary: Verify user email address
  *       tags:
@@ -173,7 +229,7 @@ userRouter.get(
 /**
  * @swagger
  * paths:
- *   /users/resend:
+ *   /user/resend:
  *     post:
  *       summary: Send another verification email
  *       tags:
