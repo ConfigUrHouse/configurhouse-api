@@ -1,98 +1,186 @@
 {
-  "info": {
-    "_postman_id": "4e26e8b4-abd6-4f60-96c3-50ff0e40cfac",
-    "name": "configurhouse-api",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "GET /user",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{configurhouseapi-url}}/user",
-          "host": ["{{configurhouseapi-url}}"],
-          "path": ["user"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "POST /user Benjamin",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"wilmaxys@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstName\":\"Benjamin\",\n    \"lastName\":\"Ragot\",\n    \"phoneNumber\":\"0649140791\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{configurhouseapi-url}}/user",
-          "host": ["{{configurhouseapi-url}}"],
-          "path": ["user"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "POST /user Marine",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"marine.khornya@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstname\":\"Marine\",\n    \"lastname\":\"Minard\",\n    \"phonenumber\":\"0649140791\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{configurhouseapi-url}}/user",
-          "host": ["{{configurhouseapi-url}}"],
-          "path": ["user"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "GET /user/resend Marine",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{configurhouseapi-url}}/user/resend?email=marine.khornya@gmail.com",
-          "host": ["{{configurhouseapi-url}}"],
-          "path": ["user", "resend"],
-          "query": [
-            {
-              "key": "email",
-              "value": "marine.khornya@gmail.com"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "GET /user/1",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{configurhouseapi-url}}/user/1",
-          "host": ["{{configurhouseapi-url}}"],
-          "path": ["user", "1"]
-        }
-      },
-      "response": []
-    }
-  ]
+	"info": {
+		"_postman_id": "4e26e8b4-abd6-4f60-96c3-50ff0e40cfac",
+		"name": "configurhouse-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user with pagination",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user?page=1&size=2",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user with pagination and filters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=Utilisateur",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "firstname",
+							"value": "Marine"
+						},
+						{
+							"key": "lastname",
+							"value": "Minard"
+						},
+						{
+							"key": "role",
+							"value": "Utilisateur"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /user Benjamin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"wilmaxys@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstName\":\"Benjamin\",\n    \"lastName\":\"Ragot\",\n    \"phoneNumber\":\"0649140791\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /user Marine",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"marine.khornya@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstname\":\"Marine\",\n    \"lastname\":\"Minard\",\n    \"phonenumber\":\"0649140791\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user/resend Marine",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user/resend?email=marine.khornya@gmail.com",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user",
+						"resend"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "marine.khornya@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{configurhouseapi-url}}/user/1",
+					"host": [
+						"{{configurhouseapi-url}}"
+					],
+					"path": [
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
 }
