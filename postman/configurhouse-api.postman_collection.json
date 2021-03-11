@@ -22,6 +22,72 @@
           "response": []
         },
         {
+          "name": "GET /user with pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{configurhouseapi-url}}/user?page=1&size=2",
+              "host": [
+                "{{configurhouseapi-url}}"
+              ],
+              "path": [
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /user with pagination and filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=Utilisateur",
+              "host": [
+                "{{configurhouseapi-url}}"
+              ],
+              "path": [
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "firstname",
+                  "value": "Marine"
+                },
+                {
+                  "key": "lastname",
+                  "value": "Minard"
+                },
+                {
+                  "key": "role",
+                  "value": "Utilisateur"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "POST /user Benjamin",
           "request": {
             "method": "POST",
