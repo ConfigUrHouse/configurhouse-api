@@ -3,6 +3,7 @@ import type { Token, TokenId } from '../token/token.class';
 
 export enum TokenTypes {
   EmailVerification = 'EmailVerification',
+  PasswordReset = 'PasswordReset',
 }
 
 export interface TokenTypeAttributes {
