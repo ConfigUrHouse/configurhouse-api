@@ -46,6 +46,7 @@ utilsRouter.post(
         joi.object({
           email: joi.string().email().lowercase().required(),
           content: joi.string().required(),
+          subject: joi.string().required(),
         })
       );
   },

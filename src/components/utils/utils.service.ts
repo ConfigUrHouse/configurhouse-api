@@ -5,11 +5,11 @@ import { emailTransporter } from '../config/email.config';
 
 export default class UtilsService {
 
-  public static async sendEmail(email: string, content:string) {
+  public static async sendEmail(email: string, content:string, subject:string) {
     emailTransporter.sendMail({
       from: email,
       to: process.env.EMAIL_USER,
-      subject: "Formulaire de contact ConfigUrHouse",
+      subject: subject,
       html: content,
     }, (error: Error | null) => {
       if (error) throw new ErrorHandler(500, `Email not sent : ${error.message}`)
