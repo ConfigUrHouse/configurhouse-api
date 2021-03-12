@@ -1,4 +1,4 @@
-import { User, UserAttributes } from './user.class';
+import { User, UserAttributes, UserData } from './user.class';
 import UserService from './user.service';
 import { Response, Request, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
@@ -12,7 +12,7 @@ import { getPagination, getPagingData } from '../../shared/pagination';
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined
   const page = req.query.page ? parseInt(req.query.page as string) : 0
-  const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0} ;
+  const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
   const firstname = req.query.firstname as string
   const lastname = req.query.lastname as string
   const type = req.query.type
@@ -26,7 +26,12 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
     where: filters
   })
     .then((data) => {
-      res.send(getPagingData(data, page, limit));
+      const { rows, count } = data
+      const securedData = {
+        rows: rows.map(getSecuredUserData),
+        count
+      }
+      res.send(getPagingData(securedData, page, limit));
     })
     .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
@@ -102,6 +107,8 @@ const getToken = (id: number) => {
   const token = jwt.sign({ id }, process.env.APP_SECRET as string, { expiresIn: '15m' });
   return { token, expiresAt: new Date(new Date().getTime() + 15 * 60000) };
 };
+
+const getSecuredUserData: (user: User) => UserData = ({ id, firstname, lastname, email, active }) => ({ id, firstname, lastname, email, active })
 
 export const register = (req: Request, res: Response, next: NextFunction) => {
   UserService.create(req.body as UserAttributes)
