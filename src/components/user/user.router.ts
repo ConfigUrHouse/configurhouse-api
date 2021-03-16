@@ -7,6 +7,7 @@ import {
   deleteOne,
   sendPasswordResetEmail,
   resetPassword,
+  updateRoles,
 } from './user.controller';
 import { emailSchema as emailValidationSchema, validationSchema as userValidationSchema } from './user.class';
 import { validationSchema as tokenValidationSchema } from '../token/token.class';
@@ -14,6 +15,8 @@ import { validateRequest } from '../../middleware/validate-request';
 import { register, verify, login, refreshToken, sendVerificationEmail } from './user.controller';
 import joi from 'joi';
 import auth from '../../middleware/auth';
+import { UserRoles } from '../user-role/user-role.class';
+import { validateAdminRole } from '../../middleware/validate-role';
 
 /**
  * @swagger
@@ -100,7 +103,7 @@ userRouter.get(
       joi.object({
         firstname: joi.string().trim(),
         lastname: joi.string().trim(),
-        role: joi.string(),
+        role: joi.string().valid(...Object.values(UserRoles)),
         size: joi.number(),
         page: joi.number(),
       })
@@ -364,6 +367,16 @@ userRouter.get(
 );
 
 userRouter.get('/:id', findOne);
+
+userRouter.put('/:id/update-roles', [
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(req, next, joi.object({
+      roles: joi.array().items(joi.number()).required()
+    }));
+  },
+  auth,
+  validateAdminRole
+], updateRoles);
 
 userRouter.put('/:id', update);
 
