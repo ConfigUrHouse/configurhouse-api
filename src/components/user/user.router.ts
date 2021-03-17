@@ -371,13 +371,16 @@ userRouter.get('/:id', findOne);
 userRouter.put('/:id/update-roles', [
   (req: Request, res: Response, next: NextFunction) => {
     validateRequest(req, next, joi.object({
-      roles: joi.array().items(joi.number()).required()
+      roles: joi.array().items(joi.number()).single().required()
     }));
   },
-  auth,
-  validateAdminRole
+  // auth,
+  // validateAdminRole
 ], updateRoles);
 
 userRouter.put('/:id', update);
 
-userRouter.delete('/:id', deleteOne);
+userRouter.delete('/:id', [
+  // auth,
+  // validateAdminRole
+], deleteOne);
