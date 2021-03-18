@@ -31,7 +31,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
     offset: offset,
     where: filters,
   })
-    .then(async (data: { rows: User[], count: number}) => {
+    .then(async (data: { rows: User[], count: number }) => {
       if (roleName) {
         const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles])
         const filteredRows = await asyncFilter(data.rows, (async (user: User) => {
@@ -53,7 +53,12 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 
   User.findByPk(id)
     .then((data) => {
-      res.send(data);
+      if (data) {
+        res.send(data);
+      }
+      else {
+        next(new ErrorHandler(404, 'User not found'))
+      }
     })
     .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
@@ -229,6 +234,6 @@ export const updateRoles = async (req: Request, res: Response, next: NextFunctio
         return next(new ErrorHandler(500, 'Unable to create UserRole'))
       }
     }
-    res.json({ success: true, message: 'User roles updated'})
+    res.json({ success: true, message: 'User roles updated' })
   })
 }
