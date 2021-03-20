@@ -125,8 +125,6 @@ const getToken = (id: number) => {
   return { token, expiresAt: new Date(new Date().getTime() + 15 * 60000) };
 };
 
-const getSecuredUserData: (user: User) => UserData = ({ id, firstname, lastname, email, active }) => ({ id, firstname, lastname, email, active })
-
 export const register = (req: Request, res: Response, next: NextFunction) => {
   UserService.create(req.body as UserAttributes)
     .then(() => res.json({ message: 'Registration successful' }))
@@ -213,7 +211,7 @@ export const updateRoles = async (req: Request, res: Response, next: NextFunctio
   const availableRoles: Role[] = await Role.findAll()
   const roleIds: number[] = req.body.roles.map((role: string) => parseInt(role))
   const roles = roleIds.map(roleId => {
-    const role = availableRoles.find(role => role.id === roleId)
+    const role = availableRoles.find(availableRole => availableRole.id === roleId)
     if (!role) return null
     return role
   })
@@ -229,7 +227,7 @@ export const updateRoles = async (req: Request, res: Response, next: NextFunctio
       }
     } else if (!hasRole && roleIds.includes(availableRole.id)) {
       try {
-        UserRole.create({ id: availableRole.id, id_User: user.id })
+        await UserRole.create({ id: availableRole.id, id_User: user.id })
       } catch (err) {
         return next(new ErrorHandler(500, 'Unable to create UserRole'))
       }

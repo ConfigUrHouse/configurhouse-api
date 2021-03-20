@@ -10,7 +10,7 @@ import { db as mysql } from './components/config/mysql.config';
 import { handleNotFound, handleError } from './middleware/error-handler';
 import { specs } from './shared/swagger-specs';
 import { WebpackHotModule } from './interface/webpack-hot-module';
-import { initModels, Role, TokenType, User, UserRole } from './components/config/init-models.config';
+import { initModels } from './components/config/init-models.config';
 
 /**
  * Routers import
