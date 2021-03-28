@@ -26,57 +26,47 @@ import { findAll, findOne, update, deleteAll, deleteOne } from './configuration.
 
 export const configurationRouter = Router();
 
-configurationRouter.use(auth);
+// TODO : Use auth for configurations
+//configurationRouter.use(auth);
 
 //#region GET /configuration
 /**
  * @swagger
+ *
  * paths:
  *   /configuration:
- *     post:
- *       summary: Get all configurations
+ *     get:
+ *       summary: Retrieve all configurations
  *       tags:
  *         - Configuration
  *       parameters:
  *         - in: query
- *           name: page
- *           schema:
- *             type: integer
- *           required: false
- *           description: page number to get
- *         - in: query
- *           name: size
- *           schema:
- *             type: integer
- *           required: false
- *           description: number of items to get per page
- *         - in: query
  *           name: name
  *           schema:
  *             type: string
- *           required: false
- *           description: name to filter by
+ *           description: Name of the configuration to get
  *         - in: query
  *           name: id_HouseModel
  *           schema:
  *             type: integer
- *             minimum: 1
- *           required: false
- *           description: house model id to filter by
+ *           description: Id of the house model to get
  *         - in: query
- *           name: id_User
+ *           name: size
  *           schema:
  *             type: integer
- *             minimum: 1
- *           required: false
- *           description: user id to filter by
+ *           description: Number of configurations to get for pagination
+ *         - in: query
+ *           name: page
+ *           schema:
+ *             type: integer
+ *           description: Number of the page to get for pagination
  *       responses:
- *         '200':
- *           description: Success
- *         '400':
- *           description: Bad request
- *         '500':
- *           description: Server error
+ *         200:
+ *           description: A paginated list of configurations
+ *           schema:
+ *             $ref: '#/definitions/PaginatedArrayOfConfigurations'
+ *         400:
+ *           description: Invalid request parameters
  */
 configurationRouter.get('/', findAll);
 //#endregion

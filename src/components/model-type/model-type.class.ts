@@ -43,7 +43,7 @@ export class ModelType extends Model<ModelTypeAttributes, ModelTypeCreationAttri
           allowNull: false,
         },
         description: {
-          type: DataTypes.STRING(5),
+          type: DataTypes.TEXT,
           allowNull: false,
         },
       },
