@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction, Router } from 'express';
 import { validateRequest } from '../../middleware/validate-request';
 import joi from 'joi';
-import {sendEmail} from './utils.controller';
+import { sendEmail } from './utils.controller';
 
 /**
  * Router Definition
@@ -41,13 +41,13 @@ utilsRouter.post(
   '/sendEmail',
   (req: Request, res: Response, next: NextFunction) => {
     validateRequest(
-        req,
-        next,
-        joi.object({
-          email: joi.string().email().lowercase().required(),
-          content: joi.string().required(),
-        })
-      );
+      req,
+      next,
+      joi.object({
+        email: joi.string().email().lowercase().required(),
+        content: joi.string().required(),
+      })
+    );
   },
   sendEmail
-)
+);

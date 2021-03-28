@@ -28,12 +28,8 @@
             "header": [],
             "url": {
               "raw": "{{configurhouseapi-url}}/user?page=1&size=2",
-              "host": [
-                "{{configurhouseapi-url}}"
-              ],
-              "path": [
-                "user"
-              ],
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["user"],
               "query": [
                 {
                   "key": "page",
@@ -55,12 +51,8 @@
             "header": [],
             "url": {
               "raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=Utilisateur",
-              "host": [
-                "{{configurhouseapi-url}}"
-              ],
-              "path": [
-                "user"
-              ],
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["user"],
               "query": [
                 {
                   "key": "page",
