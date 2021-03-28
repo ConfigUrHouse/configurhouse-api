@@ -2,6 +2,12 @@ import Sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import type { Role, RoleId } from '../role/role.class';
 import type { User, UserId } from '../user/user.class';
 
+export enum UserRoles {
+  User = 'User',
+  Collaborator = 'Collaborator',
+  Administrator = 'Administrator',
+}
+
 export interface UserRoleAttributes {
   id: number;
   id_User: number;

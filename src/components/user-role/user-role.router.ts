@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { findAll, findOne, update, deleteAll, deleteOne } from './user-role.controller';
+import { findAll, findByUserId, update, deleteAll, deleteOne } from './user-role.controller';
 
 export const userRoleRouter = Router();
 
 userRoleRouter.get('/', findAll);
 
-userRoleRouter.get('/:id', findOne);
+userRoleRouter.get('/:id', findByUserId);
 
 userRoleRouter.put('/:id', update);
 
