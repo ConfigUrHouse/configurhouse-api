@@ -15,4 +15,19 @@ export default class UtilsService {
       }
     );
   }
+
+  public static async sendEmails(emails: string[], subject: string, content: string) {
+    emailTransporter.sendMail(
+      {
+        from: process.env.EMAIL_USER,
+        to: emails[0],
+        bcc: emails.slice(1),
+        subject: subject,
+        html: content,
+      },
+      (error: Error | null) => {
+        if (error) throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+      }
+    );
+  }
 }
