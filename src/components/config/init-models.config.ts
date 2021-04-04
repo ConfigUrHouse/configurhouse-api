@@ -218,7 +218,7 @@ export function initModels(sequelize: Sequelize) {
   Consommation.hasMany(ConsommationPosteConso, { as: 'ConsommationPosteConsos', foreignKey: 'id' });
   UserEmail.belongsTo(Email, { as: 'id_Email_Email', foreignKey: 'id_Email' });
   Email.hasMany(UserEmail, { as: 'UserEmails', foreignKey: 'id_Email' });
-  Configuration.belongsTo(HouseModel, { as: 'id_HouseModel_HouseModel', foreignKey: 'id_HouseModel' });
+  Configuration.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
   HouseModel.hasMany(Configuration, { as: 'Configurations', foreignKey: 'id_HouseModel' });
   Consommation.belongsTo(HouseModel, { as: 'id_HouseModel_HouseModel', foreignKey: 'id_HouseModel' });
   HouseModel.hasMany(Consommation, { as: 'Consommations', foreignKey: 'id_HouseModel' });
@@ -238,7 +238,7 @@ export function initModels(sequelize: Sequelize) {
   Role.hasMany(UserRole, { as: 'UserRoles', foreignKey: 'id' });
   Token.belongsTo(TokenType, { as: 'id_TokenType_TokenType', foreignKey: 'id_TokenType' });
   TokenType.hasMany(Token, { as: 'Tokens', foreignKey: 'id_TokenType' });
-  Configuration.belongsTo(User, { as: 'id_User_User', foreignKey: 'id_User', onDelete: 'cascade' });
+  Configuration.belongsTo(User, { as: 'user', foreignKey: 'id_User', onDelete: 'cascade' });
   User.hasMany(Configuration, { as: 'Configurations', foreignKey: 'id_User' });
   Token.belongsTo(User, { as: 'id_User_User', foreignKey: 'id_User', onDelete: 'cascade' });
   User.hasMany(Token, { as: 'Tokens', foreignKey: 'id_User' });

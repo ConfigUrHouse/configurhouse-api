@@ -48,15 +48,15 @@ export class Configuration
   hasId_Values!: Sequelize.BelongsToManyHasAssociationsMixin<Value, ValueId>;
   countId_Values!: Sequelize.BelongsToManyCountAssociationsMixin;
   // Configuration belongsTo HouseModel via id_HouseModel
-  id_HouseModel_HouseModel!: HouseModel;
-  getId_HouseModel_HouseModel!: Sequelize.BelongsToGetAssociationMixin<HouseModel>;
-  setId_HouseModel_HouseModel!: Sequelize.BelongsToSetAssociationMixin<HouseModel, HouseModelId>;
-  createId_HouseModel_HouseModel!: Sequelize.BelongsToCreateAssociationMixin<HouseModel>;
+  houseModel!: HouseModel;
+  getHouseModel!: Sequelize.BelongsToGetAssociationMixin<HouseModel>;
+  setHouseModel!: Sequelize.BelongsToSetAssociationMixin<HouseModel, HouseModelId>;
+  createHouseModel!: Sequelize.BelongsToCreateAssociationMixin<HouseModel>;
   // Configuration belongsTo User via id_User
-  id_User_User!: User;
-  getId_User_User!: Sequelize.BelongsToGetAssociationMixin<User>;
-  setId_User_User!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  user!: User;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Configuration {
     Configuration.init(

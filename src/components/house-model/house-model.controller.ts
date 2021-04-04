@@ -1,14 +1,22 @@
 import { HouseModel } from './house-model.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
+import { getPagination, getPagingData } from '../../shared/pagination';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  HouseModel.findAll()
+  const size = req.query.size ? parseInt(req.query.size as string) : undefined;
+  const page = req.query.page ? parseInt(req.query.page as string) : 0;
+  const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
+
+  HouseModel.findAndCountAll({
+    limit: limit,
+    offset: offset,
+  })
     .then((data) => {
-      res.send(data);
+      res.send({ success: true, ...getPagingData(data, page, limit) });
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      return next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Server error'));
     });
 };
 

@@ -14,30 +14,30 @@ import { asyncFilter } from '../../shared/tools';
 import { Role } from '../role/role.class';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  const size = req.query.size ? parseInt(req.query.size as string) : undefined
-  const page = req.query.page ? parseInt(req.query.page as string) : 0
+  const size = req.query.size ? parseInt(req.query.size as string) : undefined;
+  const page = req.query.page ? parseInt(req.query.page as string) : 0;
   const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
-  const firstname = req.query.firstname as string
-  const lastname = req.query.lastname as string
-  const roleName = req.query.role as string
-  const filters: { firstname?: string, lastname?: string, role?: string } = {}
+  const firstname = req.query.firstname as string;
+  const lastname = req.query.lastname as string;
+  const roleName = req.query.role as string;
+  const filters: { firstname?: string; lastname?: string; role?: string } = {};
   if (firstname) filters.firstname = firstname;
   if (lastname) filters.lastname = lastname;
   User.findAndCountAll({
     attributes: {
-      exclude: ['password']
+      exclude: ['password'],
     },
     limit: limit,
     offset: offset,
     where: filters,
   })
-    .then(async (data: { rows: User[], count: number }) => {
+    .then(async (data: { rows: User[]; count: number }) => {
       if (roleName) {
-        const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles])
-        const filteredRows = await asyncFilter(data.rows, (async (user: User) => {
-          const userRoles = await user.getUserRoles()
-          return userRoles.some(userRole => userRole.id === role.id)
-        }))
+        const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles]);
+        const filteredRows = await asyncFilter(data.rows, async (user: User) => {
+          const userRoles = await user.getUserRoles();
+          return userRoles.some((userRole) => userRole.id === role.id);
+        });
         res.send(getPagingData({ ...data, rows: filteredRows }, page, limit));
       } else {
         res.send(getPagingData(data, page, limit));
@@ -53,15 +53,14 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 
   User.findByPk(id, {
     attributes: {
-      exclude: ['password']
+      exclude: ['password'],
     },
   })
     .then((data) => {
       if (data) {
         res.send(data);
-      }
-      else {
-        next(new ErrorHandler(404, 'User not found'))
+      } else {
+        next(new ErrorHandler(404, 'User not found'));
       }
     })
     .catch((err: any) => {
@@ -210,32 +209,33 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
 
 export const updateRoles = async (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
-  const user = await User.findByPk(id)
-  if (!user) return next(new ErrorHandler(404, 'User not found'))
-  const availableRoles: Role[] = await Role.findAll()
-  const roleIds: number[] = req.body.roles.map((role: string) => parseInt(role))
-  const roles = roleIds.map(roleId => {
-    const role = availableRoles.find(availableRole => availableRole.id === roleId)
-    if (!role) return null
-    return role
-  })
-  if (roles.indexOf(null) !== -1) return next(new ErrorHandler(400, `Invalid role id '${roleIds[roles.indexOf(null)]}'`))
-  const currentRoles: UserRole[] = await user.getUserRoles()
-  availableRoles.forEach(async availableRole => {
-    const hasRole = currentRoles.some(role => role.id === availableRole.id)
+  const user = await User.findByPk(id);
+  if (!user) return next(new ErrorHandler(404, 'User not found'));
+  const availableRoles: Role[] = await Role.findAll();
+  const roleIds: number[] = req.body.roles.map((role: string) => parseInt(role));
+  const roles = roleIds.map((roleId) => {
+    const role = availableRoles.find((availableRole) => availableRole.id === roleId);
+    if (!role) return null;
+    return role;
+  });
+  if (roles.indexOf(null) !== -1)
+    return next(new ErrorHandler(400, `Invalid role id '${roleIds[roles.indexOf(null)]}'`));
+  const currentRoles: UserRole[] = await user.getUserRoles();
+  availableRoles.forEach(async (availableRole) => {
+    const hasRole = currentRoles.some((role) => role.id === availableRole.id);
     if (hasRole && !roleIds.includes(availableRole.id)) {
       try {
-        await UserRole.destroy({ where: { id: availableRole.id, id_User: user.id } })
+        await UserRole.destroy({ where: { id: availableRole.id, id_User: user.id } });
       } catch (err) {
-        return next(new ErrorHandler(500, 'Unable to delete UserRole'))
+        return next(new ErrorHandler(500, 'Unable to delete UserRole'));
       }
     } else if (!hasRole && roleIds.includes(availableRole.id)) {
       try {
-        await UserRole.create({ id: availableRole.id, id_User: user.id })
+        await UserRole.create({ id: availableRole.id, id_User: user.id });
       } catch (err) {
-        return next(new ErrorHandler(500, 'Unable to create UserRole'))
+        return next(new ErrorHandler(500, 'Unable to create UserRole'));
       }
     }
-    res.json({ success: true, message: 'User roles updated' })
-  })
-}
+    res.json({ success: true, message: 'User roles updated' });
+  });
+};

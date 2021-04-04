@@ -17,10 +17,13 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
   if (id_HouseModel) filters.id_HouseModel = parseInt(id_HouseModel);
   if (id_User) filters.id_User = parseInt(id_User);
 
+  // TODO : replace id_User filter by id of logged in user
+
   Configuration.findAndCountAll({
     limit: limit,
     offset: offset,
     where: filters,
+    include: ['user', 'houseModel'],
   })
     .then((data) => {
       res.send({ success: true, ...getPagingData(data, page, limit) });

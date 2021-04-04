@@ -91,7 +91,7 @@ declare const module: WebpackHotModule;
    */
   initModels(mysql.instance);
   await mysql.instance.sync();
-  initData();
+  await initData();
 
   /**
    * Port gestion

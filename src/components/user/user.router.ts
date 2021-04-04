@@ -101,7 +101,7 @@ export const userRouter = Router();
 //#region get /user
 /**
  * @swagger
- * 
+ *
  * paths:
  *   /user:
  *     get:
