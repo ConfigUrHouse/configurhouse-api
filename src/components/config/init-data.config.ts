@@ -1,5 +1,6 @@
 import { TokenTypes } from '../token-type/token-type.class';
-import { Asset, AssetType, Configuration, HouseModel, ModelType, TokenType, User } from './init-models.config';
+import { UserRoles } from '../user-role/user-role.class';
+import { Asset, AssetType, Configuration, HouseModel, ModelType, TokenType, User, Role } from './init-models.config';
 
 export async function initData() {
   try {
@@ -9,6 +10,7 @@ export async function initData() {
     await initModelTypes();
     await initHouseModels();
     await initConfigurations();
+    await initRoles();
   } catch (error) {
     console.error(error);
   }
@@ -85,5 +87,17 @@ async function initConfigurations() {
   const model2 = await HouseModel.findOne({ where: { name: 'House model 2' } });
   if (user && !(await Configuration.findOne({ where: { name: 'Configuration 2', id_User: user.id } })) && model2) {
     Configuration.create({ name: 'Configuration 2', id_User: user.id, id_HouseModel: model2.id });
+  }
+}
+
+async function initRoles() {
+  if (!(await Role.findOne({ where: { name: UserRoles.User } }))) {
+    Role.create({ name: UserRoles.User, description: 'Un utilisateur' });
+  }
+  if (!(await Role.findOne({ where: { name: UserRoles.Collaborator } }))) {
+    Role.create({ name: UserRoles.Collaborator, description: 'Un collaborateur' });
+  }
+  if (!(await Role.findOne({ where: { name: UserRoles.Administrator } }))) {
+    Role.create({ name: UserRoles.Administrator, description: 'Un administrateur' });
   }
 }

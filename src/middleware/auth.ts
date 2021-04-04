@@ -11,6 +11,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
     if (err || !decoded) {
       res.status(403).send({ success: 'false', message: 'Not authorized' });
     } else {
+      res.locals = {
+        ...res.locals,
+        userId: (decoded as any).id
+    };
       next();
     }
   });
