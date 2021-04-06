@@ -15,7 +15,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 export const findByUserId = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  UserRole.findAll({ where: { id_User: id }})
+  UserRole.findAll({ where: { id_User: id } })
     .then((data) => {
       res.send(data);
     })
