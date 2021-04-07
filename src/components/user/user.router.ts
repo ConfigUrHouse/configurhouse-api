@@ -454,13 +454,13 @@ userRouter.put('/:id/update-roles', [
       roles: joi.array().items(joi.number()).single().required()
     }));
   },
-  // auth,
-  // validateAdminRole
+  auth,
+  validateAdminRole
 ], updateRoles);
 
 userRouter.put('/:id', update);
 
 userRouter.delete('/:id', [
-  // auth,
-  // validateAdminRole
+  auth,
+  validateAdminRole
 ], deleteOne);
