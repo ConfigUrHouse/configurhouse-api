@@ -11,9 +11,9 @@ import RoleService from '../role/role.service';
 
 export default class UserService {
   public static async isAdmin(user: User) {
-      const userRoles = await user.getUserRoles()
-      const adminRole = await RoleService.findRoleByName(UserRoles.Administrator)
-      return userRoles.some(userRole => userRole.id === adminRole.id)
+    const userRoles = await user.getUserRoles();
+    const adminRole = await RoleService.findRoleByName(UserRoles.Administrator);
+    return userRoles.some((userRole) => userRole.id === adminRole.id);
   }
 
   public static async create(params: UserAttributes) {
@@ -31,13 +31,13 @@ export default class UserService {
     if (!user) {
       throw new ErrorHandler(409, 'User registration failed');
     }
-    const role = await RoleService.findRoleByName(UserRoles.User)
+    const role = await RoleService.findRoleByName(UserRoles.User);
     const userRole = await UserRole.create({
       id: role.id,
-      id_User: user.id
-    })
+      id_User: user.id,
+    });
     if (!userRole) {
-      throw new ErrorHandler(409, 'UserRole creation failed')
+      throw new ErrorHandler(409, 'UserRole creation failed');
     }
     await this.sendVerificationEmail(params.email, user);
   }

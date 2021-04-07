@@ -13,8 +13,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
     } else {
       res.locals = {
         ...res.locals,
-        userId: (decoded as any).id
-    };
+        userId: (decoded as any).id,
+      };
       next();
     }
   });

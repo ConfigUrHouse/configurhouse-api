@@ -448,19 +448,31 @@ userRouter.get('/:id', findOne);
  *         500:
  *           description: Unable to update user role
  */
-userRouter.put('/:id/update-roles', [
-  (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(req, next, joi.object({
-      roles: joi.array().items(joi.number()).single().required()
-    }));
-  },
-  // auth,
-  // validateAdminRole
-], updateRoles);
+userRouter.put(
+  '/:id/update-roles',
+  [
+    (req: Request, res: Response, next: NextFunction) => {
+      validateRequest(
+        req,
+        next,
+        joi.object({
+          roles: joi.array().items(joi.number()).single().required(),
+        })
+      );
+    },
+    // auth,
+    // validateAdminRole
+  ],
+  updateRoles
+);
 
 userRouter.put('/:id', update);
 
-userRouter.delete('/:id', [
-  // auth,
-  // validateAdminRole
-], deleteOne);
+userRouter.delete(
+  '/:id',
+  [
+    // auth,
+    // validateAdminRole
+  ],
+  deleteOne
+);
