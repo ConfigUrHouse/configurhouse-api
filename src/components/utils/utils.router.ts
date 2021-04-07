@@ -14,7 +14,7 @@ export const utilsRouter = Router();
  * paths:
  *   /utils/sendEmail:
  *     post:
- *       summary: Send email
+ *       summary: Send email to ConfigUrHouse
  *       tags:
  *         - Utils
  *       parameters:
@@ -52,6 +52,42 @@ utilsRouter.post(
   sendEmail
 );
 
+/**
+ * @swagger
+ * paths:
+ *   /utils/sendEmails:
+ *     post:
+ *       summary: Send email to multiple users
+ *       tags:
+ *         - Utils
+ *       parameters:
+ *         - in: query
+ *           name: emails
+ *           schema:
+ *             type: array
+ *             minItems: 1
+ *             items:
+ *               type: string
+ *               format: email
+ *           required: true
+ *           description: email addresses of the recipients
+ *         - in: query
+ *           name: subject
+ *           schema:
+ *             type: string
+ *           description: subject of the email
+ *         - in: query
+ *           name: content
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: content of the email
+ *       responses:
+ *         '200':
+ *           description: Email sent
+ *         '400':
+ *           description: Bad request
+ */
 utilsRouter.post(
   '/sendEmails',
   [(req: Request, res: Response, next: NextFunction) => {
