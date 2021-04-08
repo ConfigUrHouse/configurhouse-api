@@ -74,14 +74,15 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: 'Message to define',
+          success: true,
+          message: 'Configuration deleted',
         });
       } else {
-        next(new ErrorHandler(500, 'Message to define'));
+        next(new ErrorHandler(404, 'Configuration non trouvée'));
       }
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, 'Erreur lors de la suppression'));
     });
 };
 
