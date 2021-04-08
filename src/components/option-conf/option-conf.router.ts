@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import auth from '../../middleware/auth';
+import { validateAdminRole } from '../../middleware/validate-role';
 import { findAll, findOne, update, deleteAll, deleteOne } from './option-conf.controller';
 
 export const optionConfRouter = Router();
@@ -7,8 +9,8 @@ optionConfRouter.get('/', findAll);
 
 optionConfRouter.get('/:id', findOne);
 
-optionConfRouter.put('/:id', update);
+optionConfRouter.put('/:id', [auth, validateAdminRole], update);
 
-optionConfRouter.delete('/:id', deleteOne);
+optionConfRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
-optionConfRouter.delete('/', deleteAll);
+optionConfRouter.delete('/', [auth, validateAdminRole], deleteAll);

@@ -1,14 +1,16 @@
 import { Router } from 'express';
+import auth from '../../middleware/auth';
+import { validateAdminRole } from '../../middleware/validate-role';
 import { findAll, findOne, update, deleteAll, deleteOne } from './token.controller';
 
 export const tokenRouter = Router();
 
-tokenRouter.get('/', findAll);
+tokenRouter.get('/', [auth, validateAdminRole], findAll);
 
-tokenRouter.get('/:id', findOne);
+tokenRouter.get('/:id', [auth, validateAdminRole], findOne);
 
-tokenRouter.put('/:id', update);
+tokenRouter.put('/:id', [auth, validateAdminRole], update);
 
-tokenRouter.delete('/:id', deleteOne);
+tokenRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
-tokenRouter.delete('/', deleteAll);
+tokenRouter.delete('/', [auth, validateAdminRole], deleteAll);

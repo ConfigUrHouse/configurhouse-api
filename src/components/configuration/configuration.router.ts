@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import auth from '../../middleware/auth';
+import { validateAdminRole } from '../../middleware/validate-role';
 import { findAll, findOne, update, deleteAll, deleteOne } from './configuration.controller';
 
 /**
@@ -73,8 +74,8 @@ configurationRouter.get('/', findAll);
 
 configurationRouter.get('/:id', findOne);
 
-configurationRouter.put('/:id', update);
+configurationRouter.put('/:id', [auth, validateAdminRole], update);
 
-configurationRouter.delete('/:id', deleteOne);
+configurationRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
-configurationRouter.delete('/', deleteAll);
+configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);

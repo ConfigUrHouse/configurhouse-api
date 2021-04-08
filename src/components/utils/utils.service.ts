@@ -20,7 +20,7 @@ export default class UtilsService {
     emailTransporter.sendMail(
       {
         from: process.env.EMAIL_USER,
-        to: "noreply@configurhouse.com",
+        to: 'noreply@configurhouse.com',
         bcc: emails,
         subject: subject,
         html: content,
