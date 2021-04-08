@@ -2,6 +2,8 @@ import { Response, Request, NextFunction, Router } from 'express';
 import { validateRequest } from '../../middleware/validate-request';
 import joi from 'joi';
 import { sendEmail, sendEmails } from './utils.controller';
+import auth from '../../middleware/auth';
+import { validateAdminRole } from '../../middleware/validate-role';
 
 /**
  * Router Definition
@@ -90,19 +92,20 @@ utilsRouter.post(
  */
 utilsRouter.post(
   '/sendEmails',
-  [(req: Request, res: Response, next: NextFunction) => {
-    validateRequest(
-      req,
-      next,
-      joi.object({
-        emails: joi.array().items(joi.string().email().lowercase()).required().min(1),
-        subject: joi.string().allow(""),
-        content: joi.string().required(),
-      })
-    );
-  },
-    // auth,
-    // validateAdminRole
+  [
+    (req: Request, res: Response, next: NextFunction) => {
+      validateRequest(
+        req,
+        next,
+        joi.object({
+          emails: joi.array().items(joi.string().email().lowercase()).required().min(1),
+          subject: joi.string().allow(''),
+          content: joi.string().required(),
+        })
+      );
+    },
+    auth,
+    validateAdminRole,
   ],
   sendEmails
-)
+);

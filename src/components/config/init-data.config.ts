@@ -108,167 +108,170 @@ async function initUsers() {
   if (!(await User.findByPk(123))) {
     User.create({
       id: 123,
-      firstname: "Admin",
-      lastname: "ADMIN",
-      email: "admin@configurhouse.com",
-      password: "$2a$08$x9sr7mvYceaGKqNWfGTbvueCe/riH1pNgzU/.twRfgCxVTAD8rIWq", // 'password'
+      firstname: 'Admin',
+      lastname: 'ADMIN',
+      email: 'admin@configurhouse.com',
+      password: '$2a$08$x9sr7mvYceaGKqNWfGTbvueCe/riH1pNgzU/.twRfgCxVTAD8rIWq', // 'password'
       active: 1,
-    })
+    });
   }
-  if (!(await User.findOne({ where: { email: "marine.khornya@gmail.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'marine.khornya@gmail.com' } }))) {
     User.create({
-      email: "marine.khornya@gmail.com",
-      firstname: "Marine",
-      lastname: "MINARD",
-      password: "$2a$08$x9sr7mvYceaGKqNWfGTbvueCe/riH1pNgzU/.twRfgCxVTAD8rIWq", // 'password'
-      active: 0
-    })
+      email: 'marine.khornya@gmail.com',
+      firstname: 'Marine',
+      lastname: 'MINARD',
+      password: '$2a$08$x9sr7mvYceaGKqNWfGTbvueCe/riH1pNgzU/.twRfgCxVTAD8rIWq', // 'password'
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "m.minard@iia-laval.fr" } }))) {
+  if (!(await User.findOne({ where: { email: 'm.minard@iia-laval.fr' } }))) {
     User.create({
-      email: "m.minard@iia-laval.fr",
-      firstname: "Marine",
-      lastname: "MINARD",
-      password: "password",
-      active: 0
-    })
+      email: 'm.minard@iia-laval.fr',
+      firstname: 'Marine',
+      lastname: 'MINARD',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test1@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test1@test.com' } }))) {
     User.create({
-      email: "test1@test.com",
-      firstname: "Test1",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test1@test.com',
+      firstname: 'Test1',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test2@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test2@test.com' } }))) {
     User.create({
-      email: "test2@test.com",
-      firstname: "Test2",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test2@test.com',
+      firstname: 'Test2',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test3@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test3@test.com' } }))) {
     User.create({
-      email: "test3@test.com",
-      firstname: "Test3",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test3@test.com',
+      firstname: 'Test3',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test4@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test4@test.com' } }))) {
     User.create({
-      email: "test4@test.com",
-      firstname: "Test4",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test4@test.com',
+      firstname: 'Test4',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test5@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test5@test.com' } }))) {
     User.create({
-      email: "test5@test.com",
-      firstname: "Test5",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test5@test.com',
+      firstname: 'Test5',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test6@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test6@test.com' } }))) {
     User.create({
-      email: "test6@test.com",
-      firstname: "Test6",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test6@test.com',
+      firstname: 'Test6',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test7@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test7@test.com' } }))) {
     User.create({
-      email: "test7@test.com",
-      firstname: "Test7",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test7@test.com',
+      firstname: 'Test7',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test8@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test8@test.com' } }))) {
     User.create({
-      email: "test8@test.com",
-      firstname: "Test8",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test8@test.com',
+      firstname: 'Test8',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test9@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test9@test.com' } }))) {
     User.create({
-      email: "test9@test.com",
-      firstname: "Test9",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test9@test.com',
+      firstname: 'Test9',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test10@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test10@test.com' } }))) {
     User.create({
-      email: "test10@test.com",
-      firstname: "Test10",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test10@test.com',
+      firstname: 'Test10',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
-  if (!(await User.findOne({ where: { email: "test11@test.com" } }))) {
+  if (!(await User.findOne({ where: { email: 'test11@test.com' } }))) {
     User.create({
-      email: "test11@test.com",
-      firstname: "Test11",
-      lastname: "Test",
-      password: "password",
-      active: 0
-    })
+      email: 'test11@test.com',
+      firstname: 'Test11',
+      lastname: 'Test',
+      password: 'password',
+      active: 0,
+    });
   }
 }
 
 async function initUserRoles() {
-  const adminRole = await Role.findOne({ where: { name: UserRoles.Administrator } })
-  const collabRole = await Role.findOne({ where: { name: UserRoles.Collaborator } })
-  const userRole = await Role.findOne({ where: { name: UserRoles.User } })
-  if (!await UserRole.findOne({
-    where:
-    {
-      id: adminRole?.id,
-      id_User: 123
-    }
-  }))
+  const adminRole = await Role.findOne({ where: { name: UserRoles.Administrator } });
+  const collabRole = await Role.findOne({ where: { name: UserRoles.Collaborator } });
+  const userRole = await Role.findOne({ where: { name: UserRoles.User } });
+  if (
+    !(await UserRole.findOne({
+      where: {
+        id: adminRole?.id,
+        id_User: 123,
+      },
+    }))
+  )
     UserRole.create({
       id: adminRole?.id,
-      id_User: 123
-    })
-  if (!await UserRole.findOne({
-    where:
-    {
-      id: collabRole?.id,
-      id_User: 123
-    }
-  }))
+      id_User: 123,
+    });
+  if (
+    !(await UserRole.findOne({
+      where: {
+        id: collabRole?.id,
+        id_User: 123,
+      },
+    }))
+  )
     UserRole.create({
       id: collabRole?.id,
-      id_User: 123
-    })
-  if (!await UserRole.findOne({
-    where:
-    {
-      id: userRole?.id,
-      id_User: 123
-    }
-  }))
+      id_User: 123,
+    });
+  if (
+    !(await UserRole.findOne({
+      where: {
+        id: userRole?.id,
+        id_User: 123,
+      },
+    }))
+  )
     UserRole.create({
       id: userRole?.id,
-      id_User: 123
-    })
+      id_User: 123,
+    });
 }

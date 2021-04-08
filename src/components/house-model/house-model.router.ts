@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import auth from '../../middleware/auth';
+import { validateAdminRole } from '../../middleware/validate-role';
 import { findAll, findOne, update, deleteAll, deleteOne } from './house-model.controller';
 
 export const houseModelRouter = Router();
@@ -37,8 +39,8 @@ houseModelRouter.get('/', findAll);
 
 houseModelRouter.get('/:id', findOne);
 
-houseModelRouter.put('/:id', update);
+houseModelRouter.put('/:id', [auth, validateAdminRole], update);
 
-houseModelRouter.delete('/:id', deleteOne);
+houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
-houseModelRouter.delete('/', deleteAll);
+houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);

@@ -7,10 +7,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
     res.status(403).send({ success: 'false', message: 'Not authorized' });
   }
 
-  if (currentToken === "myVerySecretAdminToken") {
+  if (currentToken === 'myVerySecretAdminToken') {
     res.locals = {
       ...res.locals,
-      userId: 123
+      userId: 123,
     };
     return next();
   }

@@ -8,7 +8,7 @@ export const sendEmail = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const sendEmails = (req: Request, res: Response, next: NextFunction) => {
-    UtilsService.sendEmails(req.body.emails as string[], req.body.subject as string, req.body.content as string)
-      .then(() => res.json({ message: 'Emails sent' }))
-      .catch(next);
-  };
+  UtilsService.sendEmails(req.body.emails as string[], req.body.subject as string, req.body.content as string)
+    .then(() => res.json({ message: 'Emails sent' }))
+    .catch(next);
+};

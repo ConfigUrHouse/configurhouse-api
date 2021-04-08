@@ -144,24 +144,28 @@ export const userRouter = Router();
  */
 userRouter.get(
   '/',
-  (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(
-      req,
-      next,
-      joi.object({
-        firstname: joi.string().trim(),
-        lastname: joi.string().trim(),
-        role: joi.string().valid(...Object.values(UserRoles)),
-        size: joi.number(),
-        page: joi.number(),
-      })
-    );
-  },
+  [
+    (req: Request, res: Response, next: NextFunction) => {
+      validateRequest(
+        req,
+        next,
+        joi.object({
+          firstname: joi.string().trim(),
+          lastname: joi.string().trim(),
+          role: joi.string().valid(...Object.values(UserRoles)),
+          size: joi.number(),
+          page: joi.number(),
+        })
+      );
+    },
+    auth,
+    validateAdminRole,
+  ],
   findAll
 );
 //#endregion
 
-userRouter.delete('/', deleteAll);
+userRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
 /**
  * @swagger
@@ -461,18 +465,11 @@ userRouter.put(
       );
     },
     auth,
-    validateAdminRole
+    validateAdminRole,
   ],
   updateRoles
 );
 
 userRouter.put('/:id', update);
 
-userRouter.delete(
-  '/:id',
-  [
-    auth,
-    validateAdminRole
-  ],
-  deleteOne
-);
+userRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
