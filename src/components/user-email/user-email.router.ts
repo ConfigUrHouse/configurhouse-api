@@ -1,14 +1,16 @@
 import { Router } from 'express';
+import auth from '../../middleware/auth';
+import { validateAdminRole, validateCollaboratorRole } from '../../middleware/validate-role';
 import { findAll, findOne, update, deleteAll, deleteOne } from './user-email.controller';
 
 export const userEmailRouter = Router();
 
-userEmailRouter.get('/', findAll);
+userEmailRouter.get('/', [auth, validateCollaboratorRole], findAll);
 
-userEmailRouter.get('/:id', findOne);
+userEmailRouter.get('/:id', [auth, validateCollaboratorRole], findOne);
 
-userEmailRouter.put('/:id', update);
+userEmailRouter.put('/:id', [auth, validateAdminRole], update);
 
-userEmailRouter.delete('/:id', deleteOne);
+userEmailRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
-userEmailRouter.delete('/', deleteAll);
+userEmailRouter.delete('/', [auth, validateAdminRole], deleteAll);

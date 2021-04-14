@@ -28,12 +28,8 @@
             "header": [],
             "url": {
               "raw": "{{configurhouseapi-url}}/user?page=1&size=2",
-              "host": [
-                "{{configurhouseapi-url}}"
-              ],
-              "path": [
-                "user"
-              ],
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["user"],
               "query": [
                 {
                   "key": "page",
@@ -54,13 +50,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=Utilisateur",
-              "host": [
-                "{{configurhouseapi-url}}"
-              ],
-              "path": [
-                "user"
-              ],
+              "raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=User",
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["user"],
               "query": [
                 {
                   "key": "page",
@@ -80,7 +72,7 @@
                 },
                 {
                   "key": "role",
-                  "value": "Utilisateur"
+                  "value": "User"
                 }
               ]
             }
@@ -250,6 +242,78 @@
                   "value": ""
                 }
               ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /user/1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{configurhouseapi-url}}/user/1",
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["user", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /user/1/update-roles",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjE1ODk2NTI2LCJleHAiOjE2MTU4OTc0MjZ9.wQnhz4vVHTsc2DgxX8zCb_kfVpDLopfWUifwXLml0D4",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{configurhouseapi-url}}/user/1/update-roles?roles=1&roles=2&roles=3",
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["user", "1", "update-roles"],
+              "query": [
+                {
+                  "key": "roles",
+                  "value": "1"
+                },
+                {
+                  "key": "roles",
+                  "value": "2"
+                },
+                {
+                  "key": "roles",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /userRole/1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{configurhouseapi-url}}/userRole/1",
+              "host": ["{{configurhouseapi-url}}"],
+              "path": ["userRole", "1"]
             }
           },
           "response": []

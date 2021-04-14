@@ -18,6 +18,14 @@ export interface UserAttributes {
   active: number;
 }
 
+export interface UserData {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  active: number;
+}
+
 export const validationSchema = joi.object({
   email: joi.string().email().lowercase().required(),
   password: joi.string().min(8).required(),

@@ -10,7 +10,7 @@ import { db as mysql } from './components/config/mysql.config';
 import { handleNotFound, handleError } from './middleware/error-handler';
 import { specs } from './shared/swagger-specs';
 import { WebpackHotModule } from './interface/webpack-hot-module';
-import { initModels, TokenType } from './components/config/init-models.config';
+import { initModels } from './components/config/init-models.config';
 
 /**
  * Routers import
@@ -37,6 +37,7 @@ import { userPoliceRouter } from './components/user-police/user-police.router';
 import { userRoleRouter } from './components/user-role/user-role.router';
 import { valueRouter } from './components/value/value.router';
 import { utilsRouter } from './components/utils/utils.router';
+import { initData } from './components/config/init-data.config';
 
 declare const module: WebpackHotModule;
 
@@ -89,9 +90,8 @@ declare const module: WebpackHotModule;
    * Database initialization
    */
   initModels(mysql.instance);
-  await mysql.instance.sync({ force: true });
-  TokenType.create({ name: 'EmailVerification' });
-  TokenType.create({ name: 'PasswordReset' });
+  await mysql.instance.sync();
+  await initData();
 
   /**
    * Port gestion

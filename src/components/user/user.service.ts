@@ -6,8 +6,22 @@ import TokenService from '../token/token.service';
 import { Token } from '../token/token.class';
 import { TokenType } from '../config/init-models.config';
 import { TokenTypes } from '../token-type/token-type.class';
+import { UserRole, UserRoles } from '../user-role/user-role.class';
+import RoleService from '../role/role.service';
 
 export default class UserService {
+  public static async isAdmin(user: User) {
+    const userRoles = await user.getUserRoles();
+    const adminRole = await RoleService.findRoleByName(UserRoles.Administrator);
+    return userRoles.some((userRole) => userRole.id === adminRole.id);
+  }
+
+  public static async isCollaborator(user: User) {
+    const userRoles = await user.getUserRoles();
+    const collaboratorRole = await RoleService.findRoleByName(UserRoles.Collaborator);
+    return userRoles.some((userRole) => userRole.id === collaboratorRole.id);
+  }
+
   public static async create(params: UserAttributes) {
     if (await User.findOne({ where: { email: params.email } })) {
       throw new ErrorHandler(400, 'Email "' + params.email + '" is already taken');
@@ -22,6 +36,14 @@ export default class UserService {
     });
     if (!user) {
       throw new ErrorHandler(409, 'User registration failed');
+    }
+    const role = await RoleService.findRoleByName(UserRoles.User);
+    const userRole = await UserRole.create({
+      id: role.id,
+      id_User: user.id,
+    });
+    if (!userRole) {
+      throw new ErrorHandler(409, 'UserRole creation failed');
     }
     await this.sendVerificationEmail(params.email, user);
   }

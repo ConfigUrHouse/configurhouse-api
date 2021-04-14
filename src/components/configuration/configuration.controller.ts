@@ -1,14 +1,35 @@
 import { Configuration } from './configuration.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
+import { getPagination, getPagingData } from '../../shared/pagination';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  Configuration.findAll()
+  const size = req.query.size ? parseInt(req.query.size as string) : undefined;
+  const page = req.query.page ? parseInt(req.query.page as string) : 0;
+  const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
+
+  const name = req.query.name as string;
+  const id_HouseModel = req.query.id_HouseModel as string;
+  const id_User = req.query.id_User as string;
+
+  const filters: { name?: string; id_HouseModel?: number; id_User?: number } = {};
+  if (name) filters.name = name;
+  if (id_HouseModel) filters.id_HouseModel = parseInt(id_HouseModel);
+  if (id_User) filters.id_User = parseInt(id_User);
+
+  // TODO : replace id_User filter by id of logged in user
+
+  Configuration.findAndCountAll({
+    limit: limit,
+    offset: offset,
+    where: filters,
+    include: ['user', 'houseModel'],
+  })
     .then((data) => {
-      res.send(data);
+      res.send({ success: true, ...getPagingData(data, page, limit) });
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      return next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Server error'));
     });
 };
 
@@ -53,14 +74,15 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: 'Message to define',
+          success: true,
+          message: 'Configuration deleted',
         });
       } else {
-        next(new ErrorHandler(500, 'Message to define'));
+        next(new ErrorHandler(404, 'Configuration non trouvée'));
       }
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, 'Erreur lors de la suppression'));
     });
 };
 
