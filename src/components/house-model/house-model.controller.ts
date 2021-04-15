@@ -11,12 +11,13 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
   HouseModel.findAndCountAll({
     limit: limit,
     offset: offset,
+    include: ['asset', 'modelType'],
   })
     .then((data) => {
-      res.send({ success: true, ...getPagingData(data, page, limit) });
+      res.status(200).send({ success: true, ...getPagingData(data, page, limit) });
     })
-    .catch((err: any) => {
-      return next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Server error'));
+    .catch((err: Error) => {
+      return next(new ErrorHandler(500, err.message));
     });
 };
 
@@ -25,10 +26,24 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 
   HouseModel.findByPk(id)
     .then((data) => {
-      res.send(data);
+      if (data) {
+        res.status(200).send(data);
+      } else {
+        next(new ErrorHandler(404, 'HouseModel not found'));
+      }
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    .catch((err: Error) => {
+      next(new ErrorHandler(500, err.message));
+    });
+};
+
+export const create = (req: Request, res: Response, next: NextFunction) => {
+  HouseModel.create(req.body)
+    .then((model) => {
+      res.status(201).send({ success: true, model, message: 'HouseModel created successfully' });
+    })
+    .catch((err: Error) => {
+      next(new ErrorHandler(400, err.message));
     });
 };
 
@@ -40,15 +55,15 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
   })
     .then((num: any) => {
       if (num == 1) {
-        res.status(201).send({
-          message: 'Message to define',
+        res.status(200).send({
+          message: 'HouseModel updated successfully',
         });
       } else {
-        next(new ErrorHandler(500, 'Message to define'));
+        next(new ErrorHandler(404, 'HouseModel not found'));
       }
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    .catch((err: Error) => {
+      next(new ErrorHandler(400, err.message));
     });
 };
 
@@ -61,14 +76,14 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: 'Message to define',
+          message: 'HouseModel deleted successfully',
         });
       } else {
-        next(new ErrorHandler(500, 'Message to define'));
+        next(new ErrorHandler(404, 'HouseModel not found'));
       }
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    .catch((err: Error) => {
+      next(new ErrorHandler(400, err.message));
     });
 };
 
@@ -78,9 +93,11 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: 'Message to define' });
+      res.send({
+        message: 'HouseModels deleted successfully',
+      });
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    .catch((err: Error) => {
+      next(new ErrorHandler(400, err.message));
     });
 };
