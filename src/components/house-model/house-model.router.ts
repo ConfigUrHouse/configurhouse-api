@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import auth from '../../middleware/auth';
+import { validateAdminRole } from '../../middleware/validate-role';
 import { findAll, findOne, create, update, deleteAll, deleteOne } from './house-model.controller';
 
 export const houseModelRouter = Router();
@@ -129,7 +131,7 @@ houseModelRouter.post('/', create);
  *         400:
  *           description: Invalid request parameters
  */
-houseModelRouter.put('/:id', update);
+houseModelRouter.put('/:id', [auth, validateAdminRole], update);
 //#endregion
 
 //#region DELETE /houseModel/:id
@@ -156,7 +158,7 @@ houseModelRouter.put('/:id', update);
  *         404:
  *           description: HouseModel not found
  */
-houseModelRouter.delete('/:id', deleteOne);
+houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 //#endregion
 
-houseModelRouter.delete('/', deleteAll);
+houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);

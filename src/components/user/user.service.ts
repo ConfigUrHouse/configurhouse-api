@@ -16,6 +16,12 @@ export default class UserService {
     return userRoles.some((userRole) => userRole.id === adminRole.id);
   }
 
+  public static async isCollaborator(user: User) {
+    const userRoles = await user.getUserRoles();
+    const collaboratorRole = await RoleService.findRoleByName(UserRoles.Collaborator);
+    return userRoles.some((userRole) => userRole.id === collaboratorRole.id);
+  }
+
   public static async create(params: UserAttributes) {
     if (await User.findOne({ where: { email: params.email } })) {
       throw new ErrorHandler(400, 'Email "' + params.email + '" is already taken');
