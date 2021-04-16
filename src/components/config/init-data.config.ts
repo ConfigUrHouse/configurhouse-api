@@ -42,7 +42,7 @@ async function initAssets() {
     await Asset.create({ value: 'Asset 1', id_AssetType: type1.id });
   }
   const type2 = await AssetType.findOne({ where: { name: 'Asset type 2' } });
-  if (!(await Asset.findOne({ where: { value: 'Asset type 2' } })) && type2) {
+  if (!(await Asset.findOne({ where: { value: 'Asset 2' } })) && type2) {
     await Asset.create({ value: 'Asset 2', id_AssetType: type2.id });
   }
 }
@@ -64,7 +64,6 @@ async function initHouseModels() {
       name: 'House model 1',
       id_ModelType: type1.id,
       id_Asset: asset1.id,
-      id_Asset_HouseModelAsset3D: asset1.id,
     });
   }
 
@@ -75,7 +74,6 @@ async function initHouseModels() {
       name: 'House model 2',
       id_ModelType: type2.id,
       id_Asset: asset2.id,
-      id_Asset_HouseModelAsset3D: asset2.id,
     });
   }
 }

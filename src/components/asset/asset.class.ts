@@ -31,18 +31,6 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   hasHouseModel!: Sequelize.HasManyHasAssociationMixin<HouseModel, HouseModelId>;
   hasHouseModels!: Sequelize.HasManyHasAssociationsMixin<HouseModel, HouseModelId>;
   countHouseModels!: Sequelize.HasManyCountAssociationsMixin;
-  // Asset hasMany HouseModel via id_Asset_HouseModelAsset3D
-  id_Asset_HouseModelAsset3D_HouseModels!: HouseModel[];
-  getId_Asset_HouseModelAsset3D_HouseModels!: Sequelize.HasManyGetAssociationsMixin<HouseModel>;
-  setId_Asset_HouseModelAsset3D_HouseModels!: Sequelize.HasManySetAssociationsMixin<HouseModel, HouseModelId>;
-  addId_Asset_HouseModelAsset3D_HouseModel!: Sequelize.HasManyAddAssociationMixin<HouseModel, HouseModelId>;
-  addId_Asset_HouseModelAsset3D_HouseModels!: Sequelize.HasManyAddAssociationsMixin<HouseModel, HouseModelId>;
-  createId_Asset_HouseModelAsset3D_HouseModel!: Sequelize.HasManyCreateAssociationMixin<HouseModel>;
-  removeId_Asset_HouseModelAsset3D_HouseModel!: Sequelize.HasManyRemoveAssociationMixin<HouseModel, HouseModelId>;
-  removeId_Asset_HouseModelAsset3D_HouseModels!: Sequelize.HasManyRemoveAssociationsMixin<HouseModel, HouseModelId>;
-  hasId_Asset_HouseModelAsset3D_HouseModel!: Sequelize.HasManyHasAssociationMixin<HouseModel, HouseModelId>;
-  hasId_Asset_HouseModelAsset3D_HouseModels!: Sequelize.HasManyHasAssociationsMixin<HouseModel, HouseModelId>;
-  countId_Asset_HouseModelAsset3D_HouseModels!: Sequelize.HasManyCountAssociationsMixin;
   // Asset hasMany Mesh via id_Asset
   Meshes!: Mesh[];
   getMeshes!: Sequelize.HasManyGetAssociationsMixin<Mesh>;

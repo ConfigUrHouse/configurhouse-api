@@ -90,7 +90,11 @@ declare const module: WebpackHotModule;
    * Database initialization
    */
   initModels(mysql.instance);
+
   await mysql.instance.sync();
+  // Réinitialiser la BDD avec force
+  // await mysql.instance.sync({ force: true });
+
   await initData();
 
   /**

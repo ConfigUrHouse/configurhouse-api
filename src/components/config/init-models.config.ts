@@ -200,10 +200,8 @@ export function initModels(sequelize: Sequelize) {
     foreignKey: 'id',
     otherKey: 'id_Configuration',
   });
-  HouseModel.belongsTo(Asset, { as: 'id_Asset_Asset', foreignKey: 'id_Asset' });
+  HouseModel.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
   Asset.hasMany(HouseModel, { as: 'HouseModels', foreignKey: 'id_Asset' });
-  HouseModel.belongsTo(Asset, { as: 'id_Asset_HouseModelAsset3D_Asset', foreignKey: 'id_Asset_HouseModelAsset3D' });
-  Asset.hasMany(HouseModel, { as: 'id_Asset_HouseModelAsset3D_HouseModels', foreignKey: 'id_Asset_HouseModelAsset3D' });
   Mesh.belongsTo(Asset, { as: 'id_Asset_Asset', foreignKey: 'id_Asset' });
   Asset.hasMany(Mesh, { as: 'Meshes', foreignKey: 'id_Asset' });
   Value.belongsTo(Asset, { as: 'id_Asset_Asset', foreignKey: 'id_Asset' });
@@ -226,7 +224,7 @@ export function initModels(sequelize: Sequelize) {
   HouseModel.hasMany(OptionConf, { as: 'OptionConfs', foreignKey: 'id_HouseModel' });
   OptionConf.belongsTo(Mesh, { as: 'id_Mesh_Mesh', foreignKey: 'id_Mesh' });
   Mesh.hasMany(OptionConf, { as: 'OptionConfs', foreignKey: 'id_Mesh' });
-  HouseModel.belongsTo(ModelType, { as: 'id_ModelType_ModelType', foreignKey: 'id_ModelType' });
+  HouseModel.belongsTo(ModelType, { as: 'modelType', foreignKey: 'id_ModelType' });
   ModelType.hasMany(HouseModel, { as: 'HouseModels', foreignKey: 'id_ModelType' });
   Value.belongsTo(OptionConf, { as: 'id_OptionConf_OptionConf', foreignKey: 'id_OptionConf' });
   OptionConf.hasMany(Value, { as: 'Values', foreignKey: 'id_OptionConf' });

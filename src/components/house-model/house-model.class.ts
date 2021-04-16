@@ -10,7 +10,6 @@ export interface HouseModelAttributes {
   name: string;
   id_ModelType: number;
   id_Asset: number;
-  id_Asset_HouseModelAsset3D: number;
 }
 
 export type HouseModelPk = 'id';
@@ -24,18 +23,12 @@ export class HouseModel
   name!: string;
   id_ModelType!: number;
   id_Asset!: number;
-  id_Asset_HouseModelAsset3D!: number;
 
   // HouseModel belongsTo Asset via id_Asset
-  id_Asset_Asset!: Asset;
-  getId_Asset_Asset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
-  setId_Asset_Asset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
-  createId_Asset_Asset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
-  // HouseModel belongsTo Asset via id_Asset_HouseModelAsset3D
-  id_Asset_HouseModelAsset3D_Asset!: Asset;
-  getId_Asset_HouseModelAsset3D_Asset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
-  setId_Asset_HouseModelAsset3D_Asset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
-  createId_Asset_HouseModelAsset3D_Asset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
+  asset!: Asset;
+  getAsset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
+  setAsset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
+  createAsset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
   // HouseModel hasMany Configuration via id_HouseModel
   Configurations!: Configuration[];
   getConfigurations!: Sequelize.HasManyGetAssociationsMixin<Configuration>;
@@ -73,10 +66,10 @@ export class HouseModel
   hasOptionConfs!: Sequelize.HasManyHasAssociationsMixin<OptionConf, OptionConfId>;
   countOptionConfs!: Sequelize.HasManyCountAssociationsMixin;
   // HouseModel belongsTo ModelType via id_ModelType
-  id_ModelType_ModelType!: ModelType;
-  getId_ModelType_ModelType!: Sequelize.BelongsToGetAssociationMixin<ModelType>;
-  setId_ModelType_ModelType!: Sequelize.BelongsToSetAssociationMixin<ModelType, ModelTypeId>;
-  createId_ModelType_ModelType!: Sequelize.BelongsToCreateAssociationMixin<ModelType>;
+  modelType!: ModelType;
+  getModelType!: Sequelize.BelongsToGetAssociationMixin<ModelType>;
+  setModelType!: Sequelize.BelongsToSetAssociationMixin<ModelType, ModelTypeId>;
+  createModelType!: Sequelize.BelongsToCreateAssociationMixin<ModelType>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof HouseModel {
     HouseModel.init(
@@ -107,14 +100,6 @@ export class HouseModel
             key: 'id',
           },
         },
-        id_Asset_HouseModelAsset3D: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Asset',
-            key: 'id',
-          },
-        },
       },
       {
         sequelize,
@@ -133,14 +118,9 @@ export class HouseModel
             fields: [{ name: 'id_ModelType' }],
           },
           {
-            name: 'HouseModel_Asset0_FK',
+            name: 'HouseModel_Asset_FK',
             using: 'BTREE',
             fields: [{ name: 'id_Asset' }],
-          },
-          {
-            name: 'HouseModel_Asset1_FK',
-            using: 'BTREE',
-            fields: [{ name: 'id_Asset_HouseModelAsset3D' }],
           },
         ],
       }
