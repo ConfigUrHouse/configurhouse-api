@@ -83,7 +83,7 @@ export default class UserService {
         from: process.env.EMAIL_USER,
         to: user.email,
         subject: 'Veuillez réinitialiser votre mot de passe',
-        html: `<p>Veuillez cliquer <a href="${process.env.APP_BASE_URL}/users/password-reset?token=${token.value}&email=${user.email}">ici</a> pour réinitialiser votre mot de passe.</p>`,
+        html: `<p>Veuillez cliquer <a href="${process.env.API_BASE_URL}/user/password-reset?token=${token.value}&email=${user.email}">ici</a> pour réinitialiser votre mot de passe.</p>`,
       });
     } catch (error) {
       throw new ErrorHandler(500, `Email not sent : ${error.message}`);

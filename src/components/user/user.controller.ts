@@ -13,7 +13,7 @@ import { UserRole, UserRoles } from '../user-role/user-role.class';
 import { asyncFilter } from '../../shared/tools';
 import { Role } from '../role/role.class';
 
-export const findAll = (req: Request, res: Response, next: NextFunction) => {
+export const findAll = async (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
   const page = req.query.page ? parseInt(req.query.page as string) : 0;
   const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
@@ -23,104 +23,102 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const filters: { firstname?: string; lastname?: string; role?: string } = {};
   if (firstname) filters.firstname = firstname;
   if (lastname) filters.lastname = lastname;
-  User.findAndCountAll({
-    attributes: {
-      exclude: ['password'],
-    },
-    limit: limit,
-    offset: offset,
-    where: filters,
-  })
-    .then(async (data: { rows: User[]; count: number }) => {
-      if (roleName) {
-        const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles]);
-        const filteredRows = await asyncFilter(data.rows, async (user: User) => {
-          const userRoles = await user.getUserRoles();
-          return userRoles.some((userRole) => userRole.id === role.id);
-        });
-        res.send(getPagingData({ ...data, rows: filteredRows }, page, limit));
-      } else {
-        res.send(getPagingData(data, page, limit));
-      }
+  try {
+    const data: { rows: User[]; count: number } = await User.findAndCountAll({
+      attributes: {
+        exclude: ['password'],
+      },
+      limit: limit,
+      offset: offset,
+      where: filters,
     })
-    .catch((err: Error) => {
-      next(new ErrorHandler(500, err.message));
-    });
+    if (roleName) {
+      const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles]);
+      const filteredRows = await asyncFilter(data.rows, async (user: User) => {
+        const userRoles = await user.getUserRoles();
+        return userRoles.some((userRole) => userRole.id === role.id);
+      });
+      res.send(getPagingData({ count: filteredRows.length, rows: filteredRows }, page, limit));
+    } else {
+      res.send(getPagingData(data, page, limit));
+    }
+  } catch (err) {
+    next(new ErrorHandler(500, err.message));
+  }
 };
 
-export const findOne = (req: Request, res: Response, next: NextFunction) => {
+export const findOne = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  User.findByPk(id, {
-    attributes: {
-      exclude: ['password'],
-    },
-  })
-    .then((data) => {
-      if (data) {
-        res.send(data);
-      } else {
-        next(new ErrorHandler(404, 'User not found'));
-      }
+  try {
+    const data = await User.findByPk(id, {
+      attributes: {
+        exclude: ['password'],
+      },
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
-    });
+    if (data) {
+      res.send(data);
+    } else {
+      next(new ErrorHandler(404, 'User not found'));
+    }
+  } catch (err) {
+    next(new ErrorHandler(500, err.message));
+  }
 };
 
-export const update = (req: Request, res: Response, next: NextFunction) => {
+export const update = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  User.update(req.body, {
-    where: { id: id },
-  })
-    .then((num: any) => {
-      if (num == 1) {
-        res.status(201).send({
-          success: true,
-          message: 'User updated',
-        });
-      } else {
-        next(new ErrorHandler(500, 'Message to define'));
-      }
+  try {
+    const [num] = await User.update(req.body, {
+      where: { id: id },
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
-    });
+    if (num === 1) {
+      res.status(201).send({
+        success: true,
+        message: 'User updated',
+      });
+    } else {
+      next(new ErrorHandler(500, 'User update failed'));
+    }
+  } catch (error) {
+    next(new ErrorHandler(500, error.message));
+  }
 };
 
-export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
+export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  User.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          success: true,
-          message: 'User deleted',
-        });
-      } else {
-        next(new ErrorHandler(500, 'Message to define'));
-      }
+  try {
+    const num = await User.destroy({
+      where: { id: id },
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
-    });
+    if (num === 1) {
+      res.send({
+        success: true,
+        message: 'User deleted',
+      });
+    } else {
+      next(new ErrorHandler(500, 'User deletion failed'));
+    }
+  } catch (error) {
+    next(new ErrorHandler(500, error.message));
+  }
 };
 
-export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
-  User.destroy({
-    where: {},
-    truncate: false,
-  })
-    .then((nums) => {
-      res.send({ message: 'Message to define' });
+export const deleteAll = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await User.destroy({
+      where: {},
+      truncate: false,
     })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    res.send({
+      success: true,
+      message: 'Users deleted',
     });
+  } catch (error) {
+    next(new ErrorHandler(500, error.message));
+  }
 };
 
 const getToken = (id: number) => {
@@ -128,10 +126,13 @@ const getToken = (id: number) => {
   return { token, expiresAt: new Date(new Date().getTime() + 15 * 60000) };
 };
 
-export const register = (req: Request, res: Response, next: NextFunction) => {
-  UserService.create(req.body as UserAttributes)
-    .then(() => res.json({ message: 'Registration successful' }))
-    .catch(next);
+export const register = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await UserService.create(req.body as UserAttributes)
+    res.json({ message: 'Registration successful' })
+  } catch (error) {
+    next(new ErrorHandler(500, error.message))
+  } 
 };
 
 export const verify = async (req: Request, res: Response, next: NextFunction) => {
@@ -147,10 +148,13 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
   res.json({ success: true, message: 'Email verification successful' });
 };
 
-export const sendVerificationEmail = (req: Request, res: Response, next: NextFunction) => {
-  UserService.sendVerificationEmail(req.query.email as string)
-    .then(() => res.json({ success: true, message: 'Verification email sent' }))
-    .catch(next);
+export const sendVerificationEmail = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await UserService.sendVerificationEmail(req.query.email as string);
+    res.json({ success: true, message: 'Verification email sent' });
+  } catch (error) {
+    next(new ErrorHandler(500, error.message));
+  }
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -178,10 +182,13 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
   });
 };
 
-export const sendPasswordResetEmail = (req: Request, res: Response, next: NextFunction) => {
-  UserService.sendPasswordResetEmail(req.query.email as string)
-    .then(() => res.json({ success: true, message: 'Password reset email sent' }))
-    .catch(next);
+export const sendPasswordResetEmail = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await UserService.sendPasswordResetEmail(req.query.email as string)
+    res.json({ success: true, message: 'Password reset email sent' })
+  } catch (error) {
+    next(new ErrorHandler(500, error.message))
+  }
 };
 
 export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {

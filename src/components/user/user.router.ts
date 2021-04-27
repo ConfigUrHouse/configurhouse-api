@@ -326,7 +326,7 @@ userRouter.get(
 /**
  * @swagger
  * paths:
- *   /users/password-reset:
+ *   /user/password-reset:
  *     post:
  *       summary: Reset the user's password
  *       tags:
@@ -383,7 +383,7 @@ userRouter.post(
 /**
  * @swagger
  * paths:
- *   /users/password-reset:
+ *   /user/password-reset:
  *     get:
  *       summary: Send another password reset email
  *       tags:
