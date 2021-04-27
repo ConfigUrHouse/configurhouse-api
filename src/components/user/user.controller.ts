@@ -31,7 +31,7 @@ export const findAll = async (req: Request, res: Response, next: NextFunction) =
       limit: limit,
       offset: offset,
       where: filters,
-    })
+    });
     if (roleName) {
       const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles]);
       const filteredRows = await asyncFilter(data.rows, async (user: User) => {
@@ -55,7 +55,7 @@ export const findOne = async (req: Request, res: Response, next: NextFunction) =
       attributes: {
         exclude: ['password'],
       },
-    })
+    });
     if (data) {
       res.send(data);
     } else {
@@ -72,7 +72,7 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const [num] = await User.update(req.body, {
       where: { id: id },
-    })
+    });
     if (num === 1) {
       res.status(201).send({
         success: true,
@@ -92,7 +92,7 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
   try {
     const num = await User.destroy({
       where: { id: id },
-    })
+    });
     if (num === 1) {
       res.send({
         success: true,
@@ -111,7 +111,7 @@ export const deleteAll = async (req: Request, res: Response, next: NextFunction)
     await User.destroy({
       where: {},
       truncate: false,
-    })
+    });
     res.send({
       success: true,
       message: 'Users deleted',
@@ -128,11 +128,11 @@ const getToken = (id: number) => {
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await UserService.create(req.body as UserAttributes)
-    res.json({ message: 'Registration successful' })
+    await UserService.create(req.body as UserAttributes);
+    res.json({ message: 'Registration successful' });
   } catch (error) {
-    next(new ErrorHandler(500, error.message))
-  } 
+    next(new ErrorHandler(500, error.message));
+  }
 };
 
 export const verify = async (req: Request, res: Response, next: NextFunction) => {
@@ -184,10 +184,10 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
 
 export const sendPasswordResetEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await UserService.sendPasswordResetEmail(req.query.email as string)
-    res.json({ success: true, message: 'Password reset email sent' })
+    await UserService.sendPasswordResetEmail(req.query.email as string);
+    res.json({ success: true, message: 'Password reset email sent' });
   } catch (error) {
-    next(new ErrorHandler(500, error.message))
+    next(new ErrorHandler(500, error.message));
   }
 };
 
