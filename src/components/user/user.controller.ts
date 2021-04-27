@@ -165,7 +165,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   } else if (!user.active) {
     res.status(400).send({ success: false, message: 'Email not verified' });
   } else {
-    res.status(200).send({ success: true, message: 'Login successful', ...getToken(user.id) });
+    res.status(200).send({ success: true, message: 'Login successful', ...getToken(user.id), userId: user.id });
   }
 };
 

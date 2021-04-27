@@ -101,7 +101,6 @@ utilsRouter.post(
           emails: joi.array().items(joi.string().email().lowercase()).required().min(1),
           subject: joi.string().allow(''),
           content: joi.string().required(),
-          subject: joi.string().required(),
         })
       );
     },
