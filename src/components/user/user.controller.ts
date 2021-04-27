@@ -123,7 +123,7 @@ export const deleteAll = async (req: Request, res: Response, next: NextFunction)
 
 const getToken = (id: number) => {
   const token = jwt.sign({ id }, process.env.APP_SECRET as string, { expiresIn: '15m' });
-  return { token, expiresAt: new Date(new Date().getTime() + 15 * 60000) };
+  return { token, expiresAt: new Date(new Date(Date.now()).getTime() + 15 * 60000) };
 };
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
@@ -171,7 +171,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const currentToken = req.headers.authorization?.split(' ')[1] as string;
-  jwt.verify(currentToken, process.env.APP_SECRET as string, (err, decoded: any) => {
+  jwt.verify(currentToken, process.env.APP_SECRET as string, undefined, (err, decoded: any) => {
     if (err) {
       res.status(500).send({ success: false, message: 'Server error' });
     } else if (!decoded) {

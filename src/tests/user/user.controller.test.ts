@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { send } from "node:process";
+import bcrypt from 'bcryptjs';
+import jwt, { GetPublicKeyOrSecret, Secret } from 'jsonwebtoken';
 import { Model } from "sequelize/types";
 import RoleService from "../../components/role/role.service";
 import { Token } from "../../components/token/token.class";
 import TokenService from "../../components/token/token.service";
 import { User } from "../../components/user/user.class";
-import { deleteAll, deleteOne, findAll, findOne, register, sendVerificationEmail, update, verify } from "../../components/user/user.controller";
+import { deleteAll, deleteOne, findAll, findOne, login, refreshToken, register, sendVerificationEmail, update, verify } from "../../components/user/user.controller";
 import UserService from "../../components/user/user.service";
 import { ErrorHandler } from "../../middleware/error-handler";
 import { getPagination, getPagingData } from "../../shared/pagination";
@@ -26,6 +27,7 @@ describe("User Controller", () => {
     res = testHelpers.mockRes();
     next = testHelpers.mockNext();
     jest.spyOn(Date, "now").mockReturnValue(new Date("2021-01-01T00:00:01Z").getTime());
+    jest.spyOn(jwt, "sign").mockImplementation(_ => "fakeToken");
     (getPagingData as any) = jest.fn((data, page, limit?) => data);
     (getPagination as any) = jest.fn((page, size) => ({ offset: page, limit: size }));
     (user as any) = {
@@ -307,6 +309,40 @@ describe("User Controller", () => {
 
       expect(spy).toHaveBeenCalledWith(req.query.email)
       expect(res.json).toHaveBeenCalledWith({ success: true, message: 'Verification email sent' })
+    })
+  })
+
+  describe("login", () => {
+    it("should log user in with a new token", async () => {
+      req.body = {
+        email: "john.doe@example.com",
+        password: "password"
+      }
+      jest.spyOn(User, "findOne").mockResolvedValue({ ...user, active: 1 } as User)
+      jest.spyOn(bcrypt, "compareSync").mockReturnValue(true)
+
+      await login(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(200)
+      expect(res.send).toHaveBeenCalledWith({ success: true, message: 'Login successful', token: "fakeToken", expiresAt: new Date("2021-01-01T00:15:01.000Z"), userId: user.id })
+    })
+  })
+
+  describe("refreshToken", () => {
+    it("should send a new token", async () => {
+      req.headers = {
+        authorization: "test fakeToken"
+      }
+      jest.spyOn(jwt, "verify").mockImplementation((token: string, secret: Secret | GetPublicKeyOrSecret, options: jwt.VerifyOptions | undefined, callback: jwt.VerifyCallback | undefined) => {
+        if (callback) {
+          callback.call(null, null, { id: "fakeId"})
+        }
+      })
+
+      await refreshToken(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(200)
+      expect(res.send).toHaveBeenCalledWith({ success: true, message: 'Token refresh successful', token: "fakeToken", expiresAt: new Date("2021-01-01T00:15:01.000Z")})
     })
   })
 })

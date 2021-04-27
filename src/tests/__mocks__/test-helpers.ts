@@ -8,7 +8,7 @@ export const testHelpers = {
         jest.clearAllTimers()
     },
     mockReq: () => {
-        return { query: {}, params: {}, body: {} } as Request;
+        return { query: {}, params: {}, body: {}, headers: {} } as Request;
     },
     mockRes: () => {
         const res = {} as Response
