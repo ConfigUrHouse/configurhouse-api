@@ -14,7 +14,7 @@ import { testHelpers } from "../__mocks__/test-helpers";
 describe("User Controller", () => {
   let req: Request
   let res: Response
-  let next: NextFunction = jest.fn()
+  let next: NextFunction
   let user: User
   let user1: User
   let user2: User
@@ -22,12 +22,10 @@ describe("User Controller", () => {
   let token: Token
 
   beforeEach(() => {
-    (req as any) = { query: {}, params: {} };
-    (res as any) = {}
-    res.send = jest.fn()
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
+    req = testHelpers.mockReq();
+    res = testHelpers.mockRes();
+    next = testHelpers.mockNext();
+    jest.spyOn(Date, "now").mockReturnValue(new Date("2021-01-01T00:00:01Z").getTime());
     (getPagingData as any) = jest.fn((data, page, limit?) => data);
     (getPagination as any) = jest.fn((page, size) => ({ offset: page, limit: size }));
     (user as any) = {
@@ -66,7 +64,7 @@ describe("User Controller", () => {
       id: 1,
       id_User: 123,
       value: "SomeToken",
-      expired_at: new Date("01/01/2021:00:00:00"),
+      expired_at: new Date("2021-01-01T00:00:02Z"),
     }
     token.update = jest.fn().mockReturnValue(token)
   })
