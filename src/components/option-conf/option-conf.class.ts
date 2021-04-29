@@ -23,15 +23,15 @@ export class OptionConf
   id_Mesh!: number;
 
   // OptionConf belongsTo HouseModel via id_HouseModel
-  id_HouseModel_HouseModel!: HouseModel;
-  getId_HouseModel_HouseModel!: Sequelize.BelongsToGetAssociationMixin<HouseModel>;
-  setId_HouseModel_HouseModel!: Sequelize.BelongsToSetAssociationMixin<HouseModel, HouseModelId>;
-  createId_HouseModel_HouseModel!: Sequelize.BelongsToCreateAssociationMixin<HouseModel>;
+  houseModel!: HouseModel;
+  getHouseModel!: Sequelize.BelongsToGetAssociationMixin<HouseModel>;
+  setHouseModel!: Sequelize.BelongsToSetAssociationMixin<HouseModel, HouseModelId>;
+  createHouseModel!: Sequelize.BelongsToCreateAssociationMixin<HouseModel>;
   // OptionConf belongsTo Mesh via id_Mesh
-  id_Mesh_Mesh!: Mesh;
-  getId_Mesh_Mesh!: Sequelize.BelongsToGetAssociationMixin<Mesh>;
-  setId_Mesh_Mesh!: Sequelize.BelongsToSetAssociationMixin<Mesh, MeshId>;
-  createId_Mesh_Mesh!: Sequelize.BelongsToCreateAssociationMixin<Mesh>;
+  mesh!: Mesh;
+  getMesh!: Sequelize.BelongsToGetAssociationMixin<Mesh>;
+  setMesh!: Sequelize.BelongsToSetAssociationMixin<Mesh, MeshId>;
+  createMesh!: Sequelize.BelongsToCreateAssociationMixin<Mesh>;
   // OptionConf hasMany Value via id_OptionConf
   Values!: Value[];
   getValues!: Sequelize.HasManyGetAssociationsMixin<Value>;

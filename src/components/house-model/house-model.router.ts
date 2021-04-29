@@ -34,15 +34,15 @@ export const houseModelRouter = Router();
  *         400:
  *           description: Invalid request parameters
  */
-houseModelRouter.get('/', findAll);
 //#endregion
+houseModelRouter.get('/', findAll);
 
 //#region GET /houseModel/:id
 /**
  * @swagger
  *
  * paths:
- *   /houseModel:
+ *   /houseModel/[id]:
  *     get:
  *       summary: Retrieve a house model
  *       tags:
@@ -61,8 +61,8 @@ houseModelRouter.get('/', findAll);
  *         404:
  *           description: HouseModel not found
  */
-houseModelRouter.get('/:id', findOne);
 //#endregion
+houseModelRouter.get('/:id', findOne);
 
 //#region POST /houseModel
 /**
@@ -96,15 +96,15 @@ houseModelRouter.get('/:id', findOne);
  *         400:
  *           description: Invalid request parameters
  */
-houseModelRouter.post('/', create);
 //#endregion
+houseModelRouter.post('/', create);
 
 //#region PUT /houseModel/:id
 /**
  * @swagger
  *
  * paths:
- *   /houseModel:
+ *   /houseModel/[id]:
  *     put:
  *       summary: Update a house model
  *       tags:
@@ -131,8 +131,8 @@ houseModelRouter.post('/', create);
  *         400:
  *           description: Invalid request parameters
  */
-houseModelRouter.put('/:id', [auth, validateAdminRole], update);
 //#endregion
+houseModelRouter.put('/:id', [auth, validateAdminRole], update);
 
 //#region DELETE /houseModel/:id
 /**
@@ -158,7 +158,7 @@ houseModelRouter.put('/:id', [auth, validateAdminRole], update);
  *         404:
  *           description: HouseModel not found
  */
-houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 //#endregion
+houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);

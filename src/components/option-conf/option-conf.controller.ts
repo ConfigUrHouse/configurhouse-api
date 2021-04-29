@@ -1,67 +1,91 @@
 import { OptionConf } from './option-conf.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
+import { getPagination, getPagingData } from '../../shared/pagination';
 
-export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  OptionConf.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+export const findAll = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const size = req.query.size ? parseInt(req.query.size as string) : undefined;
+    const page = req.query.page ? parseInt(req.query.page as string) : 0;
+    const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
+
+    const data = await OptionConf.findAndCountAll({
+      limit: limit,
+      offset: offset,
+      include: ['mesh', 'houseModel'],
     });
+    res.status(200).send({ success: true, ...getPagingData(data, page, limit) });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
 };
 
-export const findOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+export const findOne = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
 
-  OptionConf.findByPk(id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
-    });
+    const data = await OptionConf.findByPk(id);
+    if (!data) {
+      return next(new ErrorHandler(404, 'Option not found'));
+    }
+
+    res.status(200).send(data);
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
 };
 
-export const update = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const success = await OptionConf.create(req.body);
+    if (!success) {
+      return next(new ErrorHandler(400, 'Bad request'));
+    }
 
-  OptionConf.update(req.body, {
-    where: { id: id },
-  })
-    .then((num: any) => {
-      if (num == 1) {
-        res.status(201).send({
-          message: 'Message to define',
-        });
-      } else {
-        next(new ErrorHandler(500, 'Message to define'));
-      }
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    res.status(201).send({
+      message: 'Option created successfully',
     });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
 };
 
-export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+export const update = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
 
-  OptionConf.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: 'Message to define',
-        });
-      } else {
-        next(new ErrorHandler(500, 'Message to define'));
-      }
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+    const success = await OptionConf.update(req.body, {
+      where: { id },
     });
+    if (!success) {
+      return next(new ErrorHandler(400, 'Bad request'));
+    }
+
+    res.status(200).send({
+      message: 'Option updated successfully',
+    });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
+};
+
+export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
+
+    const success = await OptionConf.destroy({
+      where: { id },
+    });
+    if (!success) {
+      return next(new ErrorHandler(400, 'Option failed to delete'));
+    }
+
+    res.status(200).send({
+      message: 'Option deleted successfully',
+    });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {

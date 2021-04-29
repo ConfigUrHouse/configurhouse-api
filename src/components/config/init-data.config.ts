@@ -1,6 +1,17 @@
 import { TokenTypes } from '../token-type/token-type.class';
 import { UserRole, UserRoles } from '../user-role/user-role.class';
-import { Asset, AssetType, Configuration, HouseModel, ModelType, TokenType, User, Role } from './init-models.config';
+import {
+  Asset,
+  AssetType,
+  Configuration,
+  HouseModel,
+  ModelType,
+  TokenType,
+  User,
+  Role,
+  OptionConf,
+  Mesh,
+} from './init-models.config';
 
 export async function initData() {
   try {
@@ -13,6 +24,8 @@ export async function initData() {
     await initRoles();
     await initUsers();
     await initUserRoles();
+    await initMeshs();
+    await initOptionConfs();
   } catch (error) {
     console.error(error);
   }
@@ -272,4 +285,36 @@ async function initUserRoles() {
       id: userRole?.id,
       id_User: 123,
     });
+}
+
+async function initMeshs() {
+  const asset1 = await Asset.findOne({ where: { value: 'Asset 1' } });
+  if (!(await Mesh.findOne({ where: { name: 'Mesh 1' } })) && asset1) {
+    await Mesh.create({
+      name: 'Mesh 1',
+      id_Asset: asset1.id,
+    });
+  }
+
+  const asset2 = await Asset.findOne({ where: { value: 'Asset 2' } });
+  if (!(await Mesh.findOne({ where: { name: 'Mesh 2' } })) && asset2) {
+    await Mesh.create({
+      name: 'Mesh 2',
+      id_Asset: asset2.id,
+    });
+  }
+}
+
+async function initOptionConfs() {
+  const model1 = await HouseModel.findOne({ where: { name: 'House model 1' } });
+  const mesh1 = await Mesh.findOne({ where: { name: 'Mesh 1' } });
+  if (!(await OptionConf.findOne({ where: { name: 'Option 1' } })) && model1 && mesh1) {
+    await OptionConf.create({ name: 'Option 1', id_HouseModel: model1.id, id_Mesh: mesh1.id });
+  }
+
+  const model2 = await HouseModel.findOne({ where: { name: 'House model 2' } });
+  const mesh2 = await Mesh.findOne({ where: { name: 'Mesh 2' } });
+  if (!(await OptionConf.findOne({ where: { name: 'Option 2' } })) && model2 && mesh2) {
+    await OptionConf.create({ name: 'Option 2', id_HouseModel: model2.id, id_Mesh: mesh2.id });
+  }
 }
