@@ -220,9 +220,9 @@ export function initModels(sequelize: Sequelize) {
   HouseModel.hasMany(Configuration, { as: 'Configurations', foreignKey: 'id_HouseModel' });
   Consommation.belongsTo(HouseModel, { as: 'id_HouseModel_HouseModel', foreignKey: 'id_HouseModel' });
   HouseModel.hasMany(Consommation, { as: 'Consommations', foreignKey: 'id_HouseModel' });
-  OptionConf.belongsTo(HouseModel, { as: 'id_HouseModel_HouseModel', foreignKey: 'id_HouseModel' });
+  OptionConf.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
   HouseModel.hasMany(OptionConf, { as: 'OptionConfs', foreignKey: 'id_HouseModel' });
-  OptionConf.belongsTo(Mesh, { as: 'id_Mesh_Mesh', foreignKey: 'id_Mesh' });
+  OptionConf.belongsTo(Mesh, { as: 'mesh', foreignKey: 'id_Mesh' });
   Mesh.hasMany(OptionConf, { as: 'OptionConfs', foreignKey: 'id_Mesh' });
   HouseModel.belongsTo(ModelType, { as: 'modelType', foreignKey: 'id_ModelType' });
   ModelType.hasMany(HouseModel, { as: 'HouseModels', foreignKey: 'id_ModelType' });
