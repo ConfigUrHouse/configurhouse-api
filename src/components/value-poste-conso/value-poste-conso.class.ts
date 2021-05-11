@@ -52,7 +52,7 @@ export class ValuePosteConso
           },
         },
         modifier: {
-          type: DataTypes.DECIMAL(7,2),
+          type: DataTypes.DECIMAL(7, 2),
           allowNull: false,
         },
       },

@@ -124,25 +124,25 @@ async function initConfigurations() {
   const user2 = await User.findOne({ where: { email: userTestEmail } });
   if (user2 && model1) {
     const config = await Configuration.findOne({ where: { name: configurationT3Name, id_User: user2.id } });
-    const value1 = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
+    const valuePAC = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
     if (
-      value1 &&
+      valuePAC &&
       config &&
-      !(await ConfigurationValue.findOne({ where: { id: value1.id, id_Configuration: config.id } }))
+      !(await ConfigurationValue.findOne({ where: { id: valuePAC.id, id_Configuration: config.id } }))
     ) {
       await ConfigurationValue.create({
-        id: value1.id,
+        id: valuePAC.id,
         id_Configuration: config.id,
       });
     }
-    const value2 = await Value.findOne({ where: { name: 'Radiateurs électriques' } });
+    const valueBois = await Value.findOne({ where: { name: 'Bois' } });
     if (
-      value2 &&
+      valueBois &&
       config &&
-      !(await ConfigurationValue.findOne({ where: { id: value2.id, id_Configuration: config.id } }))
+      !(await ConfigurationValue.findOne({ where: { id: valueBois.id, id_Configuration: config.id } }))
     ) {
       await ConfigurationValue.create({
-        id: value2.id,
+        id: valueBois.id,
         id_Configuration: config.id,
       });
     }
@@ -152,8 +152,10 @@ async function initConfigurations() {
 async function initValues() {
   const asset1 = await Asset.findOne({ where: { value: 'Asset 1' } });
   const asset2 = await Asset.findOne({ where: { value: 'Asset 2' } });
-  const model = await HouseModel.findOne({ where: { name: houseModelT2Name } })
-  const optionConfChauffage = await OptionConf.findOne({ where: { name: 'Système de chauffage', id_HouseModel: model?.id } });
+  const model = await HouseModel.findOne({ where: { name: houseModelT2Name } });
+  const optionConfChauffage = await OptionConf.findOne({
+    where: { name: 'Système de chauffage', id_HouseModel: model?.id },
+  });
   const optionConfCharpente = await OptionConf.findOne({ where: { name: 'Charpente', id_HouseModel: model?.id } });
   if (!(await Value.findOne({ where: { name: 'Pompe à chaleur' } })) && asset1 && optionConfChauffage) {
     await Value.create({
@@ -201,7 +203,7 @@ async function initValuePosteConsos() {
   const posteConsoChauffage = await PosteConso.findOne({ where: { name: 'Chauffage' } });
   const posteConsoEau = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
   const valuePAC = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
-  const valueRadiateurs = await Value.findOne({ where: { name: 'Radiateurs électriques' } });
+  const valueBois = await Value.findOne({ where: { name: 'Bois' } });
   if (
     valuePAC &&
     posteConsoChauffage &&
@@ -225,13 +227,13 @@ async function initValuePosteConsos() {
     });
   }
   if (
-    valueRadiateurs &&
-    posteConsoEau &&
-    !(await ValuePosteConso.findOne({ where: { id: valueRadiateurs.id, id_PosteConso: posteConsoEau.id } }))
+    valueBois &&
+    posteConsoChauffage &&
+    !(await ValuePosteConso.findOne({ where: { id: valueBois.id, id_PosteConso: posteConsoChauffage.id } }))
   ) {
     ValuePosteConso.create({
-      id: valueRadiateurs.id,
-      id_PosteConso: posteConsoEau.id,
+      id: valueBois.id,
+      id_PosteConso: posteConsoChauffage.id,
       modifier: 150.0,
     });
   }
