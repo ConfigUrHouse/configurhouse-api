@@ -1,5 +1,5 @@
+import { UserRoles } from '../user-role/user-role.class';
 import { TokenTypes } from '../token-type/token-type.class';
-import { UserRole, UserRoles } from '../user-role/user-role.class';
 import {
   Asset,
   AssetType,
@@ -9,9 +9,16 @@ import {
   TokenType,
   User,
   Role,
+  ConfigurationValue,
+  Value,
   OptionConf,
+  Consommation,
+  PosteConso,
   Mesh,
+  UserRole,
+  ConsommationPosteConso,
 } from './init-models.config';
+import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 
 export async function initData() {
   try {
@@ -20,16 +27,29 @@ export async function initData() {
     await initAssets();
     await initModelTypes();
     await initHouseModels();
-    await initConfigurations();
     await initRoles();
     await initUsers();
     await initUserRoles();
     await initMeshs();
     await initOptionConfs();
+    await initValues();
+    await initConfigurations();
+    await initConsommations();
+    await initPostesConso();
+    await initConsommationsPostesConso();
+    await initValuePosteConsos();
   } catch (error) {
     console.error(error);
   }
 }
+
+const houseModelT2Name = 'T2';
+const houseModelT3Name = 'T3';
+const modelTypeT2Name = 'Modèle T2';
+const modelTypeT3Name = 'Modèle T3';
+const configurationT2Name = 'Configuration T2';
+const configurationT3Name = 'Configuration T3';
+const userTestEmail = 'barack.afritt@configurhouse.com';
 
 async function initTokenTypes() {
   if (!(await TokenType.findOne({ where: { name: TokenTypes.EmailVerification } }))) {
@@ -61,30 +81,30 @@ async function initAssets() {
 }
 
 async function initModelTypes() {
-  if (!(await ModelType.findOne({ where: { name: 'Model type 1' } }))) {
-    await ModelType.create({ name: 'Model type 1', description: 'Temp model type 1' });
+  if (!(await ModelType.findOne({ where: { name: modelTypeT2Name } }))) {
+    await ModelType.create({ name: modelTypeT2Name, description: 'Logement T2' });
   }
-  if (!(await ModelType.findOne({ where: { name: 'Model type 2' } }))) {
-    await ModelType.create({ name: 'Model type 2', description: 'Temp model type 2' });
+  if (!(await ModelType.findOne({ where: { name: modelTypeT3Name } }))) {
+    await ModelType.create({ name: modelTypeT3Name, description: 'Logement T3' });
   }
 }
 
 async function initHouseModels() {
-  const type1 = await ModelType.findOne({ where: { name: 'Model type 1' } });
+  const type1 = await ModelType.findOne({ where: { name: modelTypeT2Name } });
   const asset1 = await Asset.findOne({ where: { value: 'Asset 1' } });
-  if (!(await HouseModel.findOne({ where: { name: 'House model 1' } })) && type1 && asset1) {
+  if (!(await HouseModel.findOne({ where: { name: houseModelT2Name } })) && type1 && asset1) {
     await HouseModel.create({
-      name: 'House model 1',
+      name: houseModelT2Name,
       id_ModelType: type1.id,
       id_Asset: asset1.id,
     });
   }
 
-  const type2 = await ModelType.findOne({ where: { name: 'Model type 2' } });
+  const type2 = await ModelType.findOne({ where: { name: modelTypeT3Name } });
   const asset2 = await Asset.findOne({ where: { value: 'Asset 2' } });
-  if (!(await HouseModel.findOne({ where: { name: 'House model 2' } })) && type2 && asset2) {
+  if (!(await HouseModel.findOne({ where: { name: houseModelT3Name } })) && type2 && asset2) {
     await HouseModel.create({
-      name: 'House model 2',
+      name: houseModelT3Name,
       id_ModelType: type2.id,
       id_Asset: asset2.id,
     });
@@ -93,13 +113,160 @@ async function initHouseModels() {
 
 async function initConfigurations() {
   const user = await User.findOne({ where: { id: 1 } });
-  const model1 = await HouseModel.findOne({ where: { name: 'House model 1' } });
-  if (user && !(await Configuration.findOne({ where: { name: 'Configuration 1', id_User: user.id } })) && model1) {
-    Configuration.create({ name: 'Configuration 1', id_User: user.id, id_HouseModel: model1.id });
+  const model1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
+  if (user && !(await Configuration.findOne({ where: { name: configurationT2Name, id_User: user.id } })) && model1) {
+    await Configuration.create({ name: configurationT2Name, id_User: user.id, id_HouseModel: model1.id });
   }
-  const model2 = await HouseModel.findOne({ where: { name: 'House model 2' } });
-  if (user && !(await Configuration.findOne({ where: { name: 'Configuration 2', id_User: user.id } })) && model2) {
-    Configuration.create({ name: 'Configuration 2', id_User: user.id, id_HouseModel: model2.id });
+  const model2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
+  if (user && !(await Configuration.findOne({ where: { name: configurationT3Name, id_User: user.id } })) && model2) {
+    await Configuration.create({ name: configurationT3Name, id_User: user.id, id_HouseModel: model2.id });
+  }
+  const user2 = await User.findOne({ where: { email: userTestEmail } });
+  if (user2 && model1) {
+    const config = await Configuration.findOne({ where: { name: configurationT3Name, id_User: user2.id } });
+    const value1 = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
+    if (
+      value1 &&
+      config &&
+      !(await ConfigurationValue.findOne({ where: { id: value1.id, id_Configuration: config.id } }))
+    ) {
+      await ConfigurationValue.create({
+        id: value1.id,
+        id_Configuration: config.id,
+      });
+    }
+    const value2 = await Value.findOne({ where: { name: 'Radiateurs électriques' } });
+    if (
+      value2 &&
+      config &&
+      !(await ConfigurationValue.findOne({ where: { id: value2.id, id_Configuration: config.id } }))
+    ) {
+      await ConfigurationValue.create({
+        id: value2.id,
+        id_Configuration: config.id,
+      });
+    }
+  }
+}
+
+async function initValues() {
+  const asset1 = await Asset.findOne({ where: { value: 'Asset 1' } });
+  const asset2 = await Asset.findOne({ where: { value: 'Asset 2' } });
+  const optionConf1 = await OptionConf.findOne({ where: { name: 'Système de chauffage' } });
+  const optionConf2 = await OptionConf.findOne({ where: { name: 'Charpente' } });
+  if (!(await Value.findOne({ where: { name: 'Pompe à chaleur' } })) && asset1 && optionConf1) {
+    await Value.create({
+      name: 'Pompe à chaleur',
+      price: 1022.0,
+      id_Asset: asset1.id,
+      id_OptionConf: optionConf1.id,
+      id_Asset_AssetValue3D: 1,
+      is_default: 1,
+    });
+  }
+  if (!(await Value.findOne({ where: { name: 'Radiateurs électriques' } })) && asset2 && optionConf2) {
+    await Value.create({
+      name: 'Radiateurs électriques',
+      price: 135.0,
+      id_Asset: asset2.id,
+      id_OptionConf: optionConf2.id,
+      id_Asset_AssetValue3D: 1,
+      is_default: 1,
+    });
+  }
+}
+
+async function initValuePosteConsos() {
+  const posteConso1 = await PosteConso.findOne({ where: { name: 'Chauffage' } });
+  const posteConso2 = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
+  const value1 = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
+  const value2 = await Value.findOne({ where: { name: 'Radiateurs électriques' } });
+  if (
+    value1 &&
+    posteConso1 &&
+    !(await ValuePosteConso.findOne({ where: { id: value1.id, id_PosteConso: posteConso1.id } }))
+  ) {
+    ValuePosteConso.create({
+      id: value1.id,
+      id_PosteConso: posteConso1.id,
+      modifier: 80,
+    });
+  }
+  if (
+    value2 &&
+    posteConso2 &&
+    !(await ValuePosteConso.findOne({ where: { id: value2.id, id_PosteConso: posteConso2.id } }))
+  ) {
+    ValuePosteConso.create({
+      id: value2.id,
+      id_PosteConso: posteConso2.id,
+      modifier: 150,
+    });
+  }
+}
+
+async function initConsommations() {
+  const houseModel1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
+  if (houseModel1 && !(await Consommation.findOne({ where: { id_HouseModel: houseModel1.id } }))) {
+    await Consommation.create({
+      id_HouseModel: houseModel1.id,
+      nb_personnes: 1,
+    });
+  }
+  const houseModel2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
+  if (houseModel2 && !(await Consommation.findOne({ where: { id_HouseModel: houseModel2.id } }))) {
+    await Consommation.create({
+      id_HouseModel: houseModel2.id,
+      nb_personnes: 2,
+    });
+  }
+}
+
+async function initPostesConso() {
+  if (!(await PosteConso.findOne({ where: { name: 'Chauffage' } }))) {
+    await PosteConso.create({
+      name: 'Chauffage',
+      description: 'Energie consommée par les équipements de chauffage',
+    });
+  }
+  if (!(await PosteConso.findOne({ where: { name: 'Eau chaude' } }))) {
+    await PosteConso.create({
+      name: 'Eau chaude',
+      description: "Energie consommée pour la production d'eau chaude",
+    });
+  }
+}
+
+async function initConsommationsPostesConso() {
+  const houseModel1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
+  if (houseModel1) {
+    const consommation = await Consommation.findOne({ where: { id_HouseModel: houseModel1.id } });
+    const posteConso1 = await PosteConso.findOne({ where: { name: 'Chauffage' } });
+    if (
+      consommation &&
+      posteConso1 &&
+      !(await ConsommationPosteConso.findOne({ where: { id: consommation.id, id_PosteConso: posteConso1.id } }))
+    ) {
+      ConsommationPosteConso.create({
+        id: consommation.id,
+        id_PosteConso: posteConso1.id,
+        Conso_reference: 4092,
+        Conso: 3000,
+      });
+    }
+    const posteConso2 = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
+    if (
+      consommation &&
+      posteConso2 &&
+      !(await ConsommationPosteConso.findOne({ where: { id: consommation.id, id_PosteConso: posteConso2.id } }))
+    ) {
+      ConsommationPosteConso.create({
+        id: consommation.id,
+        id_PosteConso: posteConso2.id,
+        Conso_reference: 462,
+        Conso: 300,
+      });
+    }
   }
 }
 
@@ -116,6 +283,15 @@ async function initRoles() {
 }
 
 async function initUsers() {
+  if (!(await User.findOne({ where: { email: userTestEmail } }))) {
+    await User.create({
+      firstname: 'Barack',
+      lastname: 'AFRITT',
+      email: userTestEmail,
+      password: '$2a$08$x9sr7mvYceaGKqNWfGTbvueCe/riH1pNgzU/.twRfgCxVTAD8rIWq', // 'password'
+      active: 1,
+    });
+  }
   if (!(await User.findByPk(123))) {
     User.create({
       id: 123,
@@ -289,32 +465,40 @@ async function initUserRoles() {
 
 async function initMeshs() {
   const asset1 = await Asset.findOne({ where: { value: 'Asset 1' } });
-  if (!(await Mesh.findOne({ where: { name: 'Mesh 1' } })) && asset1) {
+  if (!(await Mesh.findOne({ where: { name: 'Mesh Chauffage' } })) && asset1) {
     await Mesh.create({
-      name: 'Mesh 1',
+      name: 'Mesh Chauffage',
       id_Asset: asset1.id,
     });
   }
 
   const asset2 = await Asset.findOne({ where: { value: 'Asset 2' } });
-  if (!(await Mesh.findOne({ where: { name: 'Mesh 2' } })) && asset2) {
+  if (!(await Mesh.findOne({ where: { name: 'Mesh Charpente' } })) && asset2) {
     await Mesh.create({
-      name: 'Mesh 2',
+      name: 'Mesh Charpente',
       id_Asset: asset2.id,
     });
   }
 }
 
 async function initOptionConfs() {
-  const model1 = await HouseModel.findOne({ where: { name: 'House model 1' } });
-  const mesh1 = await Mesh.findOne({ where: { name: 'Mesh 1' } });
-  if (!(await OptionConf.findOne({ where: { name: 'Option 1' } })) && model1 && mesh1) {
-    await OptionConf.create({ name: 'Option 1', id_HouseModel: model1.id, id_Mesh: mesh1.id });
+  const mesh1 = await Mesh.findOne({ where: { name: 'Mesh Chauffage' } });
+  const mesh2 = await Mesh.findOne({ where: { name: 'Mesh Charpente' } });
+  const model1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
+  if (
+    model1 &&
+    mesh1 &&
+    !(await OptionConf.findOne({ where: { name: 'Système de chauffage', id_HouseModel: model1.id } }))
+  ) {
+    await OptionConf.create({ name: 'Système de chauffage', id_HouseModel: model1.id, id_Mesh: mesh1.id });
   }
 
-  const model2 = await HouseModel.findOne({ where: { name: 'House model 2' } });
-  const mesh2 = await Mesh.findOne({ where: { name: 'Mesh 2' } });
-  if (!(await OptionConf.findOne({ where: { name: 'Option 2' } })) && model2 && mesh2) {
-    await OptionConf.create({ name: 'Option 2', id_HouseModel: model2.id, id_Mesh: mesh2.id });
+  if (model1 && mesh2 && !(await OptionConf.findOne({ where: { name: 'Charpente', id_HouseModel: model1.id } }))) {
+    await OptionConf.create({ name: 'Charpente', id_HouseModel: model1.id, id_Mesh: mesh2.id });
+  }
+
+  const model2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
+  if (model2 && mesh2 && !(await OptionConf.findOne({ where: { name: 'Charpente', id_HouseModel: model2.id } }))) {
+    await OptionConf.create({ name: 'Charpente', id_HouseModel: model2.id, id_Mesh: mesh2.id });
   }
 }

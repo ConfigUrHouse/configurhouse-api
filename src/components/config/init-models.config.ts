@@ -47,6 +47,7 @@ import { UserRole } from '../user-role/user-role.class';
 import type { UserRoleAttributes, UserRoleCreationAttributes } from '../user-role/user-role.class';
 import { Value } from '../value/value.class';
 import type { ValueAttributes, ValueCreationAttributes } from '../value/value.class';
+import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 
 export {
   Asset,
@@ -139,6 +140,7 @@ export function initModels(sequelize: Sequelize) {
   UserPolice.initModel(sequelize);
   UserRole.initModel(sequelize);
   Value.initModel(sequelize);
+  ValuePosteConso.initModel(sequelize);
 
   Configuration.belongsToMany(Value, {
     as: 'id_Values',
@@ -207,7 +209,7 @@ export function initModels(sequelize: Sequelize) {
   Value.belongsTo(Asset, { as: 'id_Asset_Asset', foreignKey: 'id_Asset' });
   Asset.hasMany(Value, { as: 'Values', foreignKey: 'id_Asset' });
   Value.belongsTo(Asset, { as: 'id_Asset_AssetValue3D_Asset', foreignKey: 'id_Asset_AssetValue3D' });
-  Asset.hasMany(Value, { as: 'id_Asset_AssetValue3D_Values', foreignKey: 'id_Asset_AssetValue3D' });
+  Asset.hasMany(Value, { as: '3DValues', foreignKey: 'id_Asset_AssetValue3D' });
   Asset.belongsTo(AssetType, { as: 'id_AssetType_AssetType', foreignKey: 'id_AssetType' });
   AssetType.hasMany(Asset, { as: 'Assets', foreignKey: 'id_AssetType' });
   ConfigurationValue.belongsTo(Configuration, { as: 'id_Configuration_Configuration', foreignKey: 'id_Configuration' });
@@ -248,6 +250,10 @@ export function initModels(sequelize: Sequelize) {
   User.hasMany(UserRole, { as: 'UserRoles', foreignKey: 'id_User' });
   ConfigurationValue.belongsTo(Value, { as: 'id_Value', foreignKey: 'id' });
   Value.hasMany(ConfigurationValue, { as: 'ConfigurationValues', foreignKey: 'id' });
+  ValuePosteConso.belongsTo(Value, { as: 'id_Value', foreignKey: 'id' });
+  Value.hasMany(ValuePosteConso, { as: 'ValuePosteConsos', foreignKey: 'id' });
+  ValuePosteConso.belongsTo(PosteConso, { as: 'id_PosteConso_PosteConso', foreignKey: 'id_PosteConso' });
+  PosteConso.hasMany(ValuePosteConso, { as: 'ValuePosteConsos', foreignKey: 'id_PosteConso' });
 
   return {
     Asset: Asset,
@@ -271,5 +277,6 @@ export function initModels(sequelize: Sequelize) {
     UserPolice: UserPolice,
     UserRole: UserRole,
     Value: Value,
+    ValuePosteConso: ValuePosteConso,
   };
 }

@@ -7,6 +7,7 @@ import type { OptionConf, OptionConfId } from '../option-conf/option-conf.class'
 export interface ValueAttributes {
   id: number;
   name: string;
+  price: number;
   is_default: number;
   id_OptionConf: number;
   id_Asset: number;
@@ -20,41 +21,39 @@ export type ValueCreationAttributes = Optional<ValueAttributes, ValuePk>;
 export class Value extends Model<ValueAttributes, ValueCreationAttributes> implements ValueAttributes {
   id!: number;
   name!: string;
+  price!: number;
   is_default!: number;
   id_OptionConf!: number;
   id_Asset!: number;
   id_Asset_AssetValue3D!: number;
 
   // Value belongsTo Asset via id_Asset
-  id_Asset_Asset!: Asset;
-  getId_Asset_Asset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
-  setId_Asset_Asset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
-  createId_Asset_Asset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
+  asset!: Asset;
+  getAsset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
+  setAsset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
+  createAsset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
   // Value belongsTo Asset via id_Asset_AssetValue3D
-  id_Asset_AssetValue3D_Asset!: Asset;
-  getId_Asset_AssetValue3D_Asset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
-  setId_Asset_AssetValue3D_Asset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
-  createId_Asset_AssetValue3D_Asset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
+  Asset3D!: Asset;
+  getAsset3D!: Sequelize.BelongsToGetAssociationMixin<Asset>;
+  setAsset3D!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
+  createAsset3D!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
   // Value belongsTo OptionConf via id_OptionConf
-  id_OptionConf_OptionConf!: OptionConf;
-  getId_OptionConf_OptionConf!: Sequelize.BelongsToGetAssociationMixin<OptionConf>;
-  setId_OptionConf_OptionConf!: Sequelize.BelongsToSetAssociationMixin<OptionConf, OptionConfId>;
-  createId_OptionConf_OptionConf!: Sequelize.BelongsToCreateAssociationMixin<OptionConf>;
+  optionConf!: OptionConf;
+  getOptionConf!: Sequelize.BelongsToGetAssociationMixin<OptionConf>;
+  setOptionConf!: Sequelize.BelongsToSetAssociationMixin<OptionConf, OptionConfId>;
+  createOptionConf!: Sequelize.BelongsToCreateAssociationMixin<OptionConf>;
   // Value belongsToMany Configuration via id and id_Configuration
-  id_Configuration_Configurations!: Configuration[];
-  getId_Configuration_Configurations!: Sequelize.BelongsToManyGetAssociationsMixin<Configuration>;
-  setId_Configuration_Configurations!: Sequelize.BelongsToManySetAssociationsMixin<Configuration, ConfigurationId>;
-  addId_Configuration_Configuration!: Sequelize.BelongsToManyAddAssociationMixin<Configuration, ConfigurationId>;
-  addId_Configuration_Configurations!: Sequelize.BelongsToManyAddAssociationsMixin<Configuration, ConfigurationId>;
-  createId_Configuration_Configuration!: Sequelize.BelongsToManyCreateAssociationMixin<Configuration>;
-  removeId_Configuration_Configuration!: Sequelize.BelongsToManyRemoveAssociationMixin<Configuration, ConfigurationId>;
-  removeId_Configuration_Configurations!: Sequelize.BelongsToManyRemoveAssociationsMixin<
-    Configuration,
-    ConfigurationId
-  >;
-  hasId_Configuration_Configuration!: Sequelize.BelongsToManyHasAssociationMixin<Configuration, ConfigurationId>;
-  hasId_Configuration_Configurations!: Sequelize.BelongsToManyHasAssociationsMixin<Configuration, ConfigurationId>;
-  countId_Configuration_Configurations!: Sequelize.BelongsToManyCountAssociationsMixin;
+  configurations!: Configuration[];
+  getConfigurations!: Sequelize.BelongsToManyGetAssociationsMixin<Configuration>;
+  setConfigurations!: Sequelize.BelongsToManySetAssociationsMixin<Configuration, ConfigurationId>;
+  addConfiguration!: Sequelize.BelongsToManyAddAssociationMixin<Configuration, ConfigurationId>;
+  addConfigurations!: Sequelize.BelongsToManyAddAssociationsMixin<Configuration, ConfigurationId>;
+  createConfiguration!: Sequelize.BelongsToManyCreateAssociationMixin<Configuration>;
+  removeConfiguration!: Sequelize.BelongsToManyRemoveAssociationMixin<Configuration, ConfigurationId>;
+  removeConfigurations!: Sequelize.BelongsToManyRemoveAssociationsMixin<Configuration, ConfigurationId>;
+  hasConfiguration!: Sequelize.BelongsToManyHasAssociationMixin<Configuration, ConfigurationId>;
+  hasConfigurations!: Sequelize.BelongsToManyHasAssociationsMixin<Configuration, ConfigurationId>;
+  countConfigurations!: Sequelize.BelongsToManyCountAssociationsMixin;
   // Value hasMany ConfigurationValue via id
   ConfigurationValues!: ConfigurationValue[];
   getConfigurationValues!: Sequelize.HasManyGetAssociationsMixin<ConfigurationValue>;
@@ -79,6 +78,10 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
         },
         name: {
           type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        price: {
+          type: DataTypes.DECIMAL(2),
           allowNull: false,
         },
         is_default: {
