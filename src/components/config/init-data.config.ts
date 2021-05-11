@@ -152,55 +152,87 @@ async function initConfigurations() {
 async function initValues() {
   const asset1 = await Asset.findOne({ where: { value: 'Asset 1' } });
   const asset2 = await Asset.findOne({ where: { value: 'Asset 2' } });
-  const optionConf1 = await OptionConf.findOne({ where: { name: 'Système de chauffage' } });
-  const optionConf2 = await OptionConf.findOne({ where: { name: 'Charpente' } });
-  if (!(await Value.findOne({ where: { name: 'Pompe à chaleur' } })) && asset1 && optionConf1) {
+  const model = await HouseModel.findOne({ where: { name: houseModelT2Name } })
+  const optionConfChauffage = await OptionConf.findOne({ where: { name: 'Système de chauffage', id_HouseModel: model?.id } });
+  const optionConfCharpente = await OptionConf.findOne({ where: { name: 'Charpente', id_HouseModel: model?.id } });
+  if (!(await Value.findOne({ where: { name: 'Pompe à chaleur' } })) && asset1 && optionConfChauffage) {
     await Value.create({
       name: 'Pompe à chaleur',
       price: 1022.0,
       id_Asset: asset1.id,
-      id_OptionConf: optionConf1.id,
+      id_OptionConf: optionConfChauffage.id,
       id_Asset_AssetValue3D: 1,
       is_default: 1,
     });
   }
-  if (!(await Value.findOne({ where: { name: 'Radiateurs électriques' } })) && asset2 && optionConf2) {
+  if (!(await Value.findOne({ where: { name: 'Radiateurs électriques' } })) && asset1 && optionConfChauffage) {
     await Value.create({
       name: 'Radiateurs électriques',
-      price: 135.0,
+      price: 800.0,
+      id_Asset: asset1.id,
+      id_OptionConf: optionConfChauffage.id,
+      id_Asset_AssetValue3D: 1,
+      is_default: 0,
+    });
+  }
+  if (!(await Value.findOne({ where: { name: 'Bois' } })) && asset2 && optionConfCharpente) {
+    await Value.create({
+      name: 'Bois',
+      price: 5000.0,
       id_Asset: asset2.id,
-      id_OptionConf: optionConf2.id,
+      id_OptionConf: optionConfCharpente.id,
       id_Asset_AssetValue3D: 1,
       is_default: 1,
+    });
+  }
+  if (!(await Value.findOne({ where: { name: 'Métal' } })) && asset2 && optionConfCharpente) {
+    await Value.create({
+      name: 'Métal',
+      price: 8000.0,
+      id_Asset: asset2.id,
+      id_OptionConf: optionConfCharpente.id,
+      id_Asset_AssetValue3D: 1,
+      is_default: 0,
     });
   }
 }
 
 async function initValuePosteConsos() {
-  const posteConso1 = await PosteConso.findOne({ where: { name: 'Chauffage' } });
-  const posteConso2 = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
-  const value1 = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
-  const value2 = await Value.findOne({ where: { name: 'Radiateurs électriques' } });
+  const posteConsoChauffage = await PosteConso.findOne({ where: { name: 'Chauffage' } });
+  const posteConsoEau = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
+  const valuePAC = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
+  const valueRadiateurs = await Value.findOne({ where: { name: 'Radiateurs électriques' } });
   if (
-    value1 &&
-    posteConso1 &&
-    !(await ValuePosteConso.findOne({ where: { id: value1.id, id_PosteConso: posteConso1.id } }))
+    valuePAC &&
+    posteConsoChauffage &&
+    !(await ValuePosteConso.findOne({ where: { id: valuePAC.id, id_PosteConso: posteConsoChauffage.id } }))
   ) {
     ValuePosteConso.create({
-      id: value1.id,
-      id_PosteConso: posteConso1.id,
-      modifier: 80,
+      id: valuePAC.id,
+      id_PosteConso: posteConsoChauffage.id,
+      modifier: 80.0,
     });
   }
   if (
-    value2 &&
-    posteConso2 &&
-    !(await ValuePosteConso.findOne({ where: { id: value2.id, id_PosteConso: posteConso2.id } }))
+    valuePAC &&
+    posteConsoEau &&
+    !(await ValuePosteConso.findOne({ where: { id: valuePAC.id, id_PosteConso: posteConsoEau.id } }))
   ) {
     ValuePosteConso.create({
-      id: value2.id,
-      id_PosteConso: posteConso2.id,
-      modifier: 150,
+      id: valuePAC.id,
+      id_PosteConso: posteConsoEau.id,
+      modifier: 90.0,
+    });
+  }
+  if (
+    valueRadiateurs &&
+    posteConsoEau &&
+    !(await ValuePosteConso.findOne({ where: { id: valueRadiateurs.id, id_PosteConso: posteConsoEau.id } }))
+  ) {
+    ValuePosteConso.create({
+      id: valueRadiateurs.id,
+      id_PosteConso: posteConsoEau.id,
+      modifier: 150.0,
     });
   }
 }

@@ -81,7 +81,7 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
           allowNull: false,
         },
         price: {
-          type: DataTypes.DECIMAL(2),
+          type: DataTypes.DECIMAL(7,2),
           allowNull: false,
         },
         is_default: {
