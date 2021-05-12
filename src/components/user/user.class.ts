@@ -54,7 +54,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   active!: number;
 
   // User hasMany Configuration via id_User
-  Configurations!: Configuration[];
+  configurations!: Configuration[];
   getConfigurations!: Sequelize.HasManyGetAssociationsMixin<Configuration>;
   setConfigurations!: Sequelize.HasManySetAssociationsMixin<Configuration, ConfigurationId>;
   addConfiguration!: Sequelize.HasManyAddAssociationMixin<Configuration, ConfigurationId>;
@@ -66,43 +66,43 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   hasConfigurations!: Sequelize.HasManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.HasManyCountAssociationsMixin;
   // User belongsToMany Email via id and id_Email
-  id_Email_Emails!: Email[];
-  getId_Email_Emails!: Sequelize.BelongsToManyGetAssociationsMixin<Email>;
-  setId_Email_Emails!: Sequelize.BelongsToManySetAssociationsMixin<Email, EmailId>;
-  addId_Email_Email!: Sequelize.BelongsToManyAddAssociationMixin<Email, EmailId>;
-  addId_Email_Emails!: Sequelize.BelongsToManyAddAssociationsMixin<Email, EmailId>;
-  createId_Email_Email!: Sequelize.BelongsToManyCreateAssociationMixin<Email>;
-  removeId_Email_Email!: Sequelize.BelongsToManyRemoveAssociationMixin<Email, EmailId>;
-  removeId_Email_Emails!: Sequelize.BelongsToManyRemoveAssociationsMixin<Email, EmailId>;
-  hasId_Email_Email!: Sequelize.BelongsToManyHasAssociationMixin<Email, EmailId>;
-  hasId_Email_Emails!: Sequelize.BelongsToManyHasAssociationsMixin<Email, EmailId>;
-  countId_Email_Emails!: Sequelize.BelongsToManyCountAssociationsMixin;
+  emails!: Email[];
+  getEmails!: Sequelize.BelongsToManyGetAssociationsMixin<Email>;
+  setEmails!: Sequelize.BelongsToManySetAssociationsMixin<Email, EmailId>;
+  addEmail!: Sequelize.BelongsToManyAddAssociationMixin<Email, EmailId>;
+  addEmails!: Sequelize.BelongsToManyAddAssociationsMixin<Email, EmailId>;
+  createEmail!: Sequelize.BelongsToManyCreateAssociationMixin<Email>;
+  removeEmail!: Sequelize.BelongsToManyRemoveAssociationMixin<Email, EmailId>;
+  removeEmails!: Sequelize.BelongsToManyRemoveAssociationsMixin<Email, EmailId>;
+  hasEmail!: Sequelize.BelongsToManyHasAssociationMixin<Email, EmailId>;
+  hasEmails!: Sequelize.BelongsToManyHasAssociationsMixin<Email, EmailId>;
+  countEmails!: Sequelize.BelongsToManyCountAssociationsMixin;
   // User belongsToMany Police via id_User and id
-  id_Police!: Police[];
-  getId_Police!: Sequelize.BelongsToManyGetAssociationsMixin<Police>;
-  setId_Police!: Sequelize.BelongsToManySetAssociationsMixin<Police, PoliceId>;
-  addId_Polouse!: Sequelize.BelongsToManyAddAssociationMixin<Police, PoliceId>;
-  addId_Police!: Sequelize.BelongsToManyAddAssociationsMixin<Police, PoliceId>;
-  createId_Polouse!: Sequelize.BelongsToManyCreateAssociationMixin<Police>;
-  removeId_Polouse!: Sequelize.BelongsToManyRemoveAssociationMixin<Police, PoliceId>;
-  removeId_Police!: Sequelize.BelongsToManyRemoveAssociationsMixin<Police, PoliceId>;
-  hasId_Polouse!: Sequelize.BelongsToManyHasAssociationMixin<Police, PoliceId>;
-  hasId_Police!: Sequelize.BelongsToManyHasAssociationsMixin<Police, PoliceId>;
-  countId_Police!: Sequelize.BelongsToManyCountAssociationsMixin;
+  polices!: Police[];
+  getPolices!: Sequelize.BelongsToManyGetAssociationsMixin<Police>;
+  setPolices!: Sequelize.BelongsToManySetAssociationsMixin<Police, PoliceId>;
+  addPolice!: Sequelize.BelongsToManyAddAssociationMixin<Police, PoliceId>;
+  addPolices!: Sequelize.BelongsToManyAddAssociationsMixin<Police, PoliceId>;
+  createPolice!: Sequelize.BelongsToManyCreateAssociationMixin<Police>;
+  removePolice!: Sequelize.BelongsToManyRemoveAssociationMixin<Police, PoliceId>;
+  removePolices!: Sequelize.BelongsToManyRemoveAssociationsMixin<Police, PoliceId>;
+  hasPolice!: Sequelize.BelongsToManyHasAssociationMixin<Police, PoliceId>;
+  hasPolices!: Sequelize.BelongsToManyHasAssociationsMixin<Police, PoliceId>;
+  countPolices!: Sequelize.BelongsToManyCountAssociationsMixin;
   // User belongsToMany Role via id_User and id
-  id_Roles!: Role[];
-  getId_Roles!: Sequelize.BelongsToManyGetAssociationsMixin<Role>;
-  setId_Roles!: Sequelize.BelongsToManySetAssociationsMixin<Role, RoleId>;
-  addId_Role!: Sequelize.BelongsToManyAddAssociationMixin<Role, RoleId>;
-  addId_Roles!: Sequelize.BelongsToManyAddAssociationsMixin<Role, RoleId>;
-  createId_Role!: Sequelize.BelongsToManyCreateAssociationMixin<Role>;
-  removeId_Role!: Sequelize.BelongsToManyRemoveAssociationMixin<Role, RoleId>;
-  removeId_Roles!: Sequelize.BelongsToManyRemoveAssociationsMixin<Role, RoleId>;
-  hasId_Role!: Sequelize.BelongsToManyHasAssociationMixin<Role, RoleId>;
-  hasId_Roles!: Sequelize.BelongsToManyHasAssociationsMixin<Role, RoleId>;
-  countId_Roles!: Sequelize.BelongsToManyCountAssociationsMixin;
+  roles!: Role[];
+  getRoles!: Sequelize.BelongsToManyGetAssociationsMixin<Role>;
+  setRoles!: Sequelize.BelongsToManySetAssociationsMixin<Role, RoleId>;
+  addRole!: Sequelize.BelongsToManyAddAssociationMixin<Role, RoleId>;
+  addRoles!: Sequelize.BelongsToManyAddAssociationsMixin<Role, RoleId>;
+  createRole!: Sequelize.BelongsToManyCreateAssociationMixin<Role>;
+  removeRole!: Sequelize.BelongsToManyRemoveAssociationMixin<Role, RoleId>;
+  removeRoles!: Sequelize.BelongsToManyRemoveAssociationsMixin<Role, RoleId>;
+  hasRole!: Sequelize.BelongsToManyHasAssociationMixin<Role, RoleId>;
+  hasRoles!: Sequelize.BelongsToManyHasAssociationsMixin<Role, RoleId>;
+  countRoles!: Sequelize.BelongsToManyCountAssociationsMixin;
   // User hasMany Token via id_User
-  Tokens!: Token[];
+  tokens!: Token[];
   getTokens!: Sequelize.HasManyGetAssociationsMixin<Token>;
   setTokens!: Sequelize.HasManySetAssociationsMixin<Token, TokenId>;
   addToken!: Sequelize.HasManyAddAssociationMixin<Token, TokenId>;
@@ -114,7 +114,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   hasTokens!: Sequelize.HasManyHasAssociationsMixin<Token, TokenId>;
   countTokens!: Sequelize.HasManyCountAssociationsMixin;
   // User hasMany UserEmail via id
-  UserEmails!: UserEmail[];
+  userEmails!: UserEmail[];
   getUserEmails!: Sequelize.HasManyGetAssociationsMixin<UserEmail>;
   setUserEmails!: Sequelize.HasManySetAssociationsMixin<UserEmail, UserEmailId>;
   addUserEmail!: Sequelize.HasManyAddAssociationMixin<UserEmail, UserEmailId>;
@@ -126,19 +126,19 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   hasUserEmails!: Sequelize.HasManyHasAssociationsMixin<UserEmail, UserEmailId>;
   countUserEmails!: Sequelize.HasManyCountAssociationsMixin;
   // User hasMany UserPolice via id_User
-  UserPolice!: UserPolice[];
-  getUserPolice!: Sequelize.HasManyGetAssociationsMixin<UserPolice>;
-  setUserPolice!: Sequelize.HasManySetAssociationsMixin<UserPolice, UserPoliceId>;
-  addUserPolouse!: Sequelize.HasManyAddAssociationMixin<UserPolice, UserPoliceId>;
-  addUserPolice!: Sequelize.HasManyAddAssociationsMixin<UserPolice, UserPoliceId>;
-  createUserPolouse!: Sequelize.HasManyCreateAssociationMixin<UserPolice>;
-  removeUserPolouse!: Sequelize.HasManyRemoveAssociationMixin<UserPolice, UserPoliceId>;
-  removeUserPolice!: Sequelize.HasManyRemoveAssociationsMixin<UserPolice, UserPoliceId>;
-  hasUserPolouse!: Sequelize.HasManyHasAssociationMixin<UserPolice, UserPoliceId>;
-  hasUserPolice!: Sequelize.HasManyHasAssociationsMixin<UserPolice, UserPoliceId>;
-  countUserPolice!: Sequelize.HasManyCountAssociationsMixin;
+  userPolices!: UserPolice[];
+  getUserPolices!: Sequelize.HasManyGetAssociationsMixin<UserPolice>;
+  setUserPolices!: Sequelize.HasManySetAssociationsMixin<UserPolice, UserPoliceId>;
+  addUserPolice!: Sequelize.HasManyAddAssociationMixin<UserPolice, UserPoliceId>;
+  addUserPolices!: Sequelize.HasManyAddAssociationsMixin<UserPolice, UserPoliceId>;
+  createUserPolice!: Sequelize.HasManyCreateAssociationMixin<UserPolice>;
+  removeUserPolice!: Sequelize.HasManyRemoveAssociationMixin<UserPolice, UserPoliceId>;
+  removeUserPolices!: Sequelize.HasManyRemoveAssociationsMixin<UserPolice, UserPoliceId>;
+  hasUserPolice!: Sequelize.HasManyHasAssociationMixin<UserPolice, UserPoliceId>;
+  hasUserPolices!: Sequelize.HasManyHasAssociationsMixin<UserPolice, UserPoliceId>;
+  countUserPolices!: Sequelize.HasManyCountAssociationsMixin;
   // User hasMany UserRole via id_User
-  UserRoles!: UserRole[];
+  userRoles!: UserRole[];
   getUserRoles!: Sequelize.HasManyGetAssociationsMixin<UserRole>;
   setUserRoles!: Sequelize.HasManySetAssociationsMixin<UserRole, UserRoleId>;
   addUserRole!: Sequelize.HasManyAddAssociationMixin<UserRole, UserRoleId>;

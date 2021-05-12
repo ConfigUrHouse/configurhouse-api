@@ -25,15 +25,15 @@ export class ConsommationPosteConso
   Conso_reference!: number;
 
   // ConsommationPosteConso belongsTo Consommation via id
-  id_Consommation!: Consommation;
-  getId_Consommation!: Sequelize.BelongsToGetAssociationMixin<Consommation>;
-  setId_Consommation!: Sequelize.BelongsToSetAssociationMixin<Consommation, ConsommationId>;
-  createId_Consommation!: Sequelize.BelongsToCreateAssociationMixin<Consommation>;
+  consommation!: Consommation;
+  getConsommation!: Sequelize.BelongsToGetAssociationMixin<Consommation>;
+  setConsommation!: Sequelize.BelongsToSetAssociationMixin<Consommation, ConsommationId>;
+  createConsommation!: Sequelize.BelongsToCreateAssociationMixin<Consommation>;
   // ConsommationPosteConso belongsTo PosteConso via id_PosteConso
-  id_PosteConso_PosteConso!: PosteConso;
-  getId_PosteConso_PosteConso!: Sequelize.BelongsToGetAssociationMixin<PosteConso>;
-  setId_PosteConso_PosteConso!: Sequelize.BelongsToSetAssociationMixin<PosteConso, PosteConsoId>;
-  createId_PosteConso_PosteConso!: Sequelize.BelongsToCreateAssociationMixin<PosteConso>;
+  idPosteConso!: PosteConso;
+  getPosteConso!: Sequelize.BelongsToGetAssociationMixin<PosteConso>;
+  setPosteConso!: Sequelize.BelongsToSetAssociationMixin<PosteConso, PosteConsoId>;
+  createPosteConso!: Sequelize.BelongsToCreateAssociationMixin<PosteConso>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof ConsommationPosteConso {
     ConsommationPosteConso.init(

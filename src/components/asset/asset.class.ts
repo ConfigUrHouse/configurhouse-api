@@ -20,7 +20,7 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   id_AssetType!: number;
 
   // Asset hasMany HouseModel via id_Asset
-  HouseModels!: HouseModel[];
+  houseModels!: HouseModel[];
   getHouseModels!: Sequelize.HasManyGetAssociationsMixin<HouseModel>;
   setHouseModels!: Sequelize.HasManySetAssociationsMixin<HouseModel, HouseModelId>;
   addHouseModel!: Sequelize.HasManyAddAssociationMixin<HouseModel, HouseModelId>;
@@ -32,7 +32,7 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   hasHouseModels!: Sequelize.HasManyHasAssociationsMixin<HouseModel, HouseModelId>;
   countHouseModels!: Sequelize.HasManyCountAssociationsMixin;
   // Asset hasMany Mesh via id_Asset
-  Meshes!: Mesh[];
+  meshes!: Mesh[];
   getMeshes!: Sequelize.HasManyGetAssociationsMixin<Mesh>;
   setMeshes!: Sequelize.HasManySetAssociationsMixin<Mesh, MeshId>;
   addMesh!: Sequelize.HasManyAddAssociationMixin<Mesh, MeshId>;
@@ -44,7 +44,7 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   hasMeshes!: Sequelize.HasManyHasAssociationsMixin<Mesh, MeshId>;
   countMeshes!: Sequelize.HasManyCountAssociationsMixin;
   // Asset hasMany Value via id_Asset
-  Values!: Value[];
+  values!: Value[];
   getValues!: Sequelize.HasManyGetAssociationsMixin<Value>;
   setValues!: Sequelize.HasManySetAssociationsMixin<Value, ValueId>;
   addValue!: Sequelize.HasManyAddAssociationMixin<Value, ValueId>;
@@ -56,22 +56,22 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   hasValues!: Sequelize.HasManyHasAssociationsMixin<Value, ValueId>;
   countValues!: Sequelize.HasManyCountAssociationsMixin;
   // Asset hasMany Value via id_Asset_AssetValue3D
-  id_Asset_AssetValue3D_Values!: Value[];
-  getId_Asset_AssetValue3D_Values!: Sequelize.HasManyGetAssociationsMixin<Value>;
-  setId_Asset_AssetValue3D_Values!: Sequelize.HasManySetAssociationsMixin<Value, ValueId>;
-  addId_Asset_AssetValue3D_Value!: Sequelize.HasManyAddAssociationMixin<Value, ValueId>;
-  addId_Asset_AssetValue3D_Values!: Sequelize.HasManyAddAssociationsMixin<Value, ValueId>;
-  createId_Asset_AssetValue3D_Value!: Sequelize.HasManyCreateAssociationMixin<Value>;
-  removeId_Asset_AssetValue3D_Value!: Sequelize.HasManyRemoveAssociationMixin<Value, ValueId>;
-  removeId_Asset_AssetValue3D_Values!: Sequelize.HasManyRemoveAssociationsMixin<Value, ValueId>;
-  hasId_Asset_AssetValue3D_Value!: Sequelize.HasManyHasAssociationMixin<Value, ValueId>;
-  hasId_Asset_AssetValue3D_Values!: Sequelize.HasManyHasAssociationsMixin<Value, ValueId>;
-  countId_Asset_AssetValue3D_Values!: Sequelize.HasManyCountAssociationsMixin;
+  values3D!: Value[];
+  getValues3D!: Sequelize.HasManyGetAssociationsMixin<Value>;
+  setValues3D!: Sequelize.HasManySetAssociationsMixin<Value, ValueId>;
+  addValue3D!: Sequelize.HasManyAddAssociationMixin<Value, ValueId>;
+  addValues3D!: Sequelize.HasManyAddAssociationsMixin<Value, ValueId>;
+  createValue3D!: Sequelize.HasManyCreateAssociationMixin<Value>;
+  removeValue3D!: Sequelize.HasManyRemoveAssociationMixin<Value, ValueId>;
+  removeValues3D!: Sequelize.HasManyRemoveAssociationsMixin<Value, ValueId>;
+  hasValue3D!: Sequelize.HasManyHasAssociationMixin<Value, ValueId>;
+  hasValues3D!: Sequelize.HasManyHasAssociationsMixin<Value, ValueId>;
+  countValues3D!: Sequelize.HasManyCountAssociationsMixin;
   // Asset belongsTo AssetType via id_AssetType
-  id_AssetType_AssetType!: AssetType;
-  getId_AssetType_AssetType!: Sequelize.BelongsToGetAssociationMixin<AssetType>;
-  setId_AssetType_AssetType!: Sequelize.BelongsToSetAssociationMixin<AssetType, AssetTypeId>;
-  createId_AssetType_AssetType!: Sequelize.BelongsToCreateAssociationMixin<AssetType>;
+  assetType!: AssetType;
+  getAssetType!: Sequelize.BelongsToGetAssociationMixin<AssetType>;
+  setAssetType!: Sequelize.BelongsToSetAssociationMixin<AssetType, AssetTypeId>;
+  createAssetType!: Sequelize.BelongsToCreateAssociationMixin<AssetType>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Asset {
     Asset.init(

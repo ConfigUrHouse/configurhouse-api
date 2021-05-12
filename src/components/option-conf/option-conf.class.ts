@@ -33,7 +33,7 @@ export class OptionConf
   setMesh!: Sequelize.BelongsToSetAssociationMixin<Mesh, MeshId>;
   createMesh!: Sequelize.BelongsToCreateAssociationMixin<Mesh>;
   // OptionConf hasMany Value via id_OptionConf
-  Values!: Value[];
+  values!: Value[];
   getValues!: Sequelize.HasManyGetAssociationsMixin<Value>;
   setValues!: Sequelize.HasManySetAssociationsMixin<Value, ValueId>;
   addValue!: Sequelize.HasManyAddAssociationMixin<Value, ValueId>;

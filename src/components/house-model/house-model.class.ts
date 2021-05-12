@@ -30,7 +30,7 @@ export class HouseModel
   setAsset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
   createAsset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
   // HouseModel hasMany Configuration via id_HouseModel
-  Configurations!: Configuration[];
+  configurations!: Configuration[];
   getConfigurations!: Sequelize.HasManyGetAssociationsMixin<Configuration>;
   setConfigurations!: Sequelize.HasManySetAssociationsMixin<Configuration, ConfigurationId>;
   addConfiguration!: Sequelize.HasManyAddAssociationMixin<Configuration, ConfigurationId>;
@@ -42,7 +42,7 @@ export class HouseModel
   hasConfigurations!: Sequelize.HasManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.HasManyCountAssociationsMixin;
   // HouseModel hasMany Consommation via id_HouseModel
-  Consommations!: Consommation[];
+  consommations!: Consommation[];
   getConsommations!: Sequelize.HasManyGetAssociationsMixin<Consommation>;
   setConsommations!: Sequelize.HasManySetAssociationsMixin<Consommation, ConsommationId>;
   addConsommation!: Sequelize.HasManyAddAssociationMixin<Consommation, ConsommationId>;
@@ -54,7 +54,7 @@ export class HouseModel
   hasConsommations!: Sequelize.HasManyHasAssociationsMixin<Consommation, ConsommationId>;
   countConsommations!: Sequelize.HasManyCountAssociationsMixin;
   // HouseModel hasMany OptionConf via id_HouseModel
-  OptionConfs!: OptionConf[];
+  optionConfs!: OptionConf[];
   getOptionConfs!: Sequelize.HasManyGetAssociationsMixin<OptionConf>;
   setOptionConfs!: Sequelize.HasManySetAssociationsMixin<OptionConf, OptionConfId>;
   addOptionConf!: Sequelize.HasManyAddAssociationMixin<OptionConf, OptionConfId>;

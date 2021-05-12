@@ -18,19 +18,19 @@ export class Email extends Model<EmailAttributes, EmailCreationAttributes> imple
   description!: string;
 
   // Email belongsToMany User via id_Email and id
-  id_Users!: User[];
-  getId_Users!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
-  setId_Users!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
-  addId_User!: Sequelize.BelongsToManyAddAssociationMixin<User, UserId>;
-  addId_Users!: Sequelize.BelongsToManyAddAssociationsMixin<User, UserId>;
-  createId_User!: Sequelize.BelongsToManyCreateAssociationMixin<User>;
-  removeId_User!: Sequelize.BelongsToManyRemoveAssociationMixin<User, UserId>;
-  removeId_Users!: Sequelize.BelongsToManyRemoveAssociationsMixin<User, UserId>;
-  hasId_User!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
-  hasId_Users!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
-  countId_Users!: Sequelize.BelongsToManyCountAssociationsMixin;
+  users!: User[];
+  getUsers!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
+  setUsers!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
+  addUser!: Sequelize.BelongsToManyAddAssociationMixin<User, UserId>;
+  addUsers!: Sequelize.BelongsToManyAddAssociationsMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToManyCreateAssociationMixin<User>;
+  removeUser!: Sequelize.BelongsToManyRemoveAssociationMixin<User, UserId>;
+  removeUsers!: Sequelize.BelongsToManyRemoveAssociationsMixin<User, UserId>;
+  hasUser!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
+  hasUsers!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
+  countUsers!: Sequelize.BelongsToManyCountAssociationsMixin;
   // Email hasMany UserEmail via id_Email
-  UserEmails!: UserEmail[];
+  userEmails!: UserEmail[];
   getUserEmails!: Sequelize.HasManyGetAssociationsMixin<UserEmail>;
   setUserEmails!: Sequelize.HasManySetAssociationsMixin<UserEmail, UserEmailId>;
   addUserEmail!: Sequelize.HasManyAddAssociationMixin<UserEmail, UserEmailId>;

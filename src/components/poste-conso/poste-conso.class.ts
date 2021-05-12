@@ -23,19 +23,19 @@ export class PosteConso
   description!: string;
 
   // PosteConso belongsToMany Consommation via id_PosteConso and id
-  id_Consommations!: Consommation[];
-  getId_Consommations!: Sequelize.BelongsToManyGetAssociationsMixin<Consommation>;
-  setId_Consommations!: Sequelize.BelongsToManySetAssociationsMixin<Consommation, ConsommationId>;
-  addId_Consommation!: Sequelize.BelongsToManyAddAssociationMixin<Consommation, ConsommationId>;
-  addId_Consommations!: Sequelize.BelongsToManyAddAssociationsMixin<Consommation, ConsommationId>;
-  createId_Consommation!: Sequelize.BelongsToManyCreateAssociationMixin<Consommation>;
-  removeId_Consommation!: Sequelize.BelongsToManyRemoveAssociationMixin<Consommation, ConsommationId>;
-  removeId_Consommations!: Sequelize.BelongsToManyRemoveAssociationsMixin<Consommation, ConsommationId>;
-  hasId_Consommation!: Sequelize.BelongsToManyHasAssociationMixin<Consommation, ConsommationId>;
-  hasId_Consommations!: Sequelize.BelongsToManyHasAssociationsMixin<Consommation, ConsommationId>;
-  countId_Consommations!: Sequelize.BelongsToManyCountAssociationsMixin;
+  consommations!: Consommation[];
+  getConsommations!: Sequelize.BelongsToManyGetAssociationsMixin<Consommation>;
+  setConsommations!: Sequelize.BelongsToManySetAssociationsMixin<Consommation, ConsommationId>;
+  addConsommation!: Sequelize.BelongsToManyAddAssociationMixin<Consommation, ConsommationId>;
+  addConsommations!: Sequelize.BelongsToManyAddAssociationsMixin<Consommation, ConsommationId>;
+  createConsommation!: Sequelize.BelongsToManyCreateAssociationMixin<Consommation>;
+  removeConsommation!: Sequelize.BelongsToManyRemoveAssociationMixin<Consommation, ConsommationId>;
+  removeConsommations!: Sequelize.BelongsToManyRemoveAssociationsMixin<Consommation, ConsommationId>;
+  hasConsommation!: Sequelize.BelongsToManyHasAssociationMixin<Consommation, ConsommationId>;
+  hasConsommations!: Sequelize.BelongsToManyHasAssociationsMixin<Consommation, ConsommationId>;
+  countConsommations!: Sequelize.BelongsToManyCountAssociationsMixin;
   // PosteConso hasMany ConsommationPosteConso via id_PosteConso
-  ConsommationPosteConsos!: ConsommationPosteConso[];
+  consommationPosteConsos!: ConsommationPosteConso[];
   getConsommationPosteConsos!: Sequelize.HasManyGetAssociationsMixin<ConsommationPosteConso>;
   setConsommationPosteConsos!: Sequelize.HasManySetAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   addConsommationPosteConso!: Sequelize.HasManyAddAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;

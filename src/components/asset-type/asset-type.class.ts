@@ -17,7 +17,7 @@ export class AssetType extends Model<AssetTypeAttributes, AssetTypeCreationAttri
   description!: string;
 
   // AssetType hasMany Asset via id_AssetType
-  Assets!: Asset[];
+  assets!: Asset[];
   getAssets!: Sequelize.HasManyGetAssociationsMixin<Asset>;
   setAssets!: Sequelize.HasManySetAssociationsMixin<Asset, AssetId>;
   addAsset!: Sequelize.HasManyAddAssociationMixin<Asset, AssetId>;

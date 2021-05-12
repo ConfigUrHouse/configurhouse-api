@@ -18,15 +18,15 @@ export class UserPolice
   id_User!: number;
 
   // UserPolice belongsTo Police via id
-  id_Polouse!: Police;
-  getId_Polouse!: Sequelize.BelongsToGetAssociationMixin<Police>;
-  setId_Polouse!: Sequelize.BelongsToSetAssociationMixin<Police, PoliceId>;
-  createId_Polouse!: Sequelize.BelongsToCreateAssociationMixin<Police>;
+  police!: Police;
+  getPolice!: Sequelize.BelongsToGetAssociationMixin<Police>;
+  setPolice!: Sequelize.BelongsToSetAssociationMixin<Police, PoliceId>;
+  createPolice!: Sequelize.BelongsToCreateAssociationMixin<Police>;
   // UserPolice belongsTo User via id_User
-  id_User_User!: User;
-  getId_User_User!: Sequelize.BelongsToGetAssociationMixin<User>;
-  setId_User_User!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  user!: User;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserPolice {
     UserPolice.init(

@@ -18,15 +18,15 @@ export class ConfigurationValue
   id_Configuration!: number;
 
   // ConfigurationValue belongsTo Configuration via id_Configuration
-  id_Configuration_Configuration!: Configuration;
-  getId_Configuration_Configuration!: Sequelize.BelongsToGetAssociationMixin<Configuration>;
-  setId_Configuration_Configuration!: Sequelize.BelongsToSetAssociationMixin<Configuration, ConfigurationId>;
-  createId_Configuration_Configuration!: Sequelize.BelongsToCreateAssociationMixin<Configuration>;
+  configuration!: Configuration;
+  getConfiguration!: Sequelize.BelongsToGetAssociationMixin<Configuration>;
+  setConfiguration!: Sequelize.BelongsToSetAssociationMixin<Configuration, ConfigurationId>;
+  createConfiguration!: Sequelize.BelongsToCreateAssociationMixin<Configuration>;
   // ConfigurationValue belongsTo Value via id
-  id_Value!: Value;
-  getId_Value!: Sequelize.BelongsToGetAssociationMixin<Value>;
-  setId_Value!: Sequelize.BelongsToSetAssociationMixin<Value, ValueId>;
-  createId_Value!: Sequelize.BelongsToCreateAssociationMixin<Value>;
+  value!: Value;
+  getValue!: Sequelize.BelongsToGetAssociationMixin<Value>;
+  setValue!: Sequelize.BelongsToSetAssociationMixin<Value, ValueId>;
+  createValue!: Sequelize.BelongsToCreateAssociationMixin<Value>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof ConfigurationValue {
     ConfigurationValue.init(

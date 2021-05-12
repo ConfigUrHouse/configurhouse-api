@@ -22,15 +22,15 @@ export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttribut
   id_User!: number;
 
   // UserRole belongsTo Role via id
-  id_Role!: Role;
-  getId_Role!: Sequelize.BelongsToGetAssociationMixin<Role>;
-  setId_Role!: Sequelize.BelongsToSetAssociationMixin<Role, RoleId>;
-  createId_Role!: Sequelize.BelongsToCreateAssociationMixin<Role>;
+  role!: Role;
+  getRole!: Sequelize.BelongsToGetAssociationMixin<Role>;
+  setRole!: Sequelize.BelongsToSetAssociationMixin<Role, RoleId>;
+  createRole!: Sequelize.BelongsToCreateAssociationMixin<Role>;
   // UserRole belongsTo User via id_User
-  id_User_User!: User;
-  getId_User_User!: Sequelize.BelongsToGetAssociationMixin<User>;
-  setId_User_User!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  user!: User;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserRole {
     UserRole.init(

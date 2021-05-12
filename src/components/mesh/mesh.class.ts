@@ -18,12 +18,12 @@ export class Mesh extends Model<MeshAttributes, MeshCreationAttributes> implemen
   id_Asset!: number;
 
   // Mesh belongsTo Asset via id_Asset
-  id_Asset_Asset!: Asset;
-  getId_Asset_Asset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
-  setId_Asset_Asset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
-  createId_Asset_Asset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
+  asset!: Asset;
+  getAsset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
+  setAsset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
+  createAsset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
   // Mesh hasMany OptionConf via id_Mesh
-  OptionConfs!: OptionConf[];
+  optionConfs!: OptionConf[];
   getOptionConfs!: Sequelize.HasManyGetAssociationsMixin<OptionConf>;
   setOptionConfs!: Sequelize.HasManySetAssociationsMixin<OptionConf, OptionConfId>;
   addOptionConf!: Sequelize.HasManyAddAssociationMixin<OptionConf, OptionConfId>;

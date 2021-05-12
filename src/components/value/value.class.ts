@@ -18,7 +18,7 @@ export type ValuePk = 'id';
 export type ValueId = Value[ValuePk];
 export type ValueCreationAttributes = Optional<ValueAttributes, ValuePk>;
 
-export class Value extends Model<ValueAttributes, ValueCreationAttributes> implements ValueAttributes {
+export class Value extends Model implements ValueAttributes {
   id!: number;
   name!: string;
   price!: number;
@@ -55,7 +55,7 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
   hasConfigurations!: Sequelize.BelongsToManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.BelongsToManyCountAssociationsMixin;
   // Value hasMany ConfigurationValue via id
-  ConfigurationValues!: ConfigurationValue[];
+  configurationValues!: ConfigurationValue[];
   getConfigurationValues!: Sequelize.HasManyGetAssociationsMixin<ConfigurationValue>;
   setConfigurationValues!: Sequelize.HasManySetAssociationsMixin<ConfigurationValue, ConfigurationValueId>;
   addConfigurationValue!: Sequelize.HasManyAddAssociationMixin<ConfigurationValue, ConfigurationValueId>;

@@ -16,15 +16,15 @@ export class UserEmail extends Model<UserEmailAttributes, UserEmailCreationAttri
   id_Email!: number;
 
   // UserEmail belongsTo Email via id_Email
-  id_Email_Email!: Email;
-  getId_Email_Email!: Sequelize.BelongsToGetAssociationMixin<Email>;
-  setId_Email_Email!: Sequelize.BelongsToSetAssociationMixin<Email, EmailId>;
-  createId_Email_Email!: Sequelize.BelongsToCreateAssociationMixin<Email>;
+  email!: Email;
+  getEmail!: Sequelize.BelongsToGetAssociationMixin<Email>;
+  setEmail!: Sequelize.BelongsToSetAssociationMixin<Email, EmailId>;
+  createEmail!: Sequelize.BelongsToCreateAssociationMixin<Email>;
   // UserEmail belongsTo User via id
-  id_User!: User;
-  getId_User!: Sequelize.BelongsToGetAssociationMixin<User>;
-  setId_User!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
-  createId_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  user!: User;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserEmail {
     UserEmail.init(

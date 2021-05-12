@@ -17,7 +17,7 @@ export class ModelType extends Model<ModelTypeAttributes, ModelTypeCreationAttri
   description!: string;
 
   // ModelType hasMany HouseModel via id_ModelType
-  HouseModels!: HouseModel[];
+  houseModels!: HouseModel[];
   getHouseModels!: Sequelize.HasManyGetAssociationsMixin<HouseModel>;
   setHouseModels!: Sequelize.HasManySetAssociationsMixin<HouseModel, HouseModelId>;
   addHouseModel!: Sequelize.HasManyAddAssociationMixin<HouseModel, HouseModelId>;
