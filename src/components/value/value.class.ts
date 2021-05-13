@@ -12,7 +12,6 @@ export interface ValueAttributes {
   is_default: number;
   id_OptionConf: number;
   id_Asset: number;
-  id_Asset_AssetValue3D: number;
 }
 
 export type ValuePk = 'id';
@@ -26,7 +25,6 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
   is_default!: number;
   id_OptionConf!: number;
   id_Asset!: number;
-  id_Asset_AssetValue3D!: number;
 
   // Value belongsTo Asset via id_Asset
   asset!: Asset;
@@ -112,14 +110,6 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
             key: 'id',
           },
         },
-        id_Asset_AssetValue3D: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Asset',
-            key: 'id',
-          },
-        },
       },
       {
         sequelize,
@@ -141,11 +131,6 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
             name: 'Value_Asset0_FK',
             using: 'BTREE',
             fields: [{ name: 'id_Asset' }],
-          },
-          {
-            name: 'Value_Asset1_FK',
-            using: 'BTREE',
-            fields: [{ name: 'id_Asset_AssetValue3D' }],
           },
         ],
       }

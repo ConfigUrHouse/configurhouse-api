@@ -163,7 +163,6 @@ async function initValues() {
       price: 1022.0,
       id_Asset: asset1.id,
       id_OptionConf: optionConfChauffage.id,
-      id_Asset_AssetValue3D: 1,
       is_default: 1,
     });
   }
@@ -173,7 +172,6 @@ async function initValues() {
       price: 800.0,
       id_Asset: asset1.id,
       id_OptionConf: optionConfChauffage.id,
-      id_Asset_AssetValue3D: 1,
       is_default: 0,
     });
   }
@@ -183,7 +181,6 @@ async function initValues() {
       price: 5000.0,
       id_Asset: asset2.id,
       id_OptionConf: optionConfCharpente.id,
-      id_Asset_AssetValue3D: 1,
       is_default: 1,
     });
   }
@@ -193,7 +190,6 @@ async function initValues() {
       price: 8000.0,
       id_Asset: asset2.id,
       id_OptionConf: optionConfCharpente.id,
-      id_Asset_AssetValue3D: 1,
       is_default: 0,
     });
   }
