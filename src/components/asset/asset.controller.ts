@@ -1,7 +1,6 @@
-import { Asset } from './asset.class';
+import { Asset,AssetAttributes } from './asset.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
-import { AssetAttributes} from './asset.class';
 import multer from 'multer';
 import * as fs from 'fs/promises';
 
@@ -65,7 +64,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
       .then((data) => {
         fs.unlink('./'+data?.value);
       })
-      .catch((err: any) => {
+      .catch(() => {
         next(new ErrorHandler(500, 'An error has occured'));
       });
 

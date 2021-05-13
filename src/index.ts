@@ -60,7 +60,6 @@ declare const module: WebpackHotModule;
     next();
   }, cors());
   app.use(express.json());
-  var assetsPath = path.join(__dirname, '../public');
   app.use('/public', express.static('public'));
 
   app.use('/asset', assetRouter);
