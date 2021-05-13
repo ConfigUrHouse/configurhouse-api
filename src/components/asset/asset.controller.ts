@@ -5,6 +5,30 @@ import { AssetAttributes} from './asset.class';
 import multer from 'multer';
 import * as fs from 'fs/promises';
 
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, './public/assets')
+  },
+  
+  filename: function (req: any, file: any, cb: any) {
+      cb(null, Date.now()+"_"+file.originalname)
+  }
+});
+const fileFilter = (req: any,file: any,cb: any) => {
+  if(file.mimetype === "text/plain"  || //for .obj file mimetype is text/plain
+      file.mimetype ==="application/sla"  || 
+      file.mimetype ===  "image/png"  || 
+      file.mimetype ==="image/jpg"){
+    
+    cb(null, true);
+  }else{
+      cb(new Error("File uploaded is not of types accepted."),false);
+  }
+}
+const upload = multer({storage: storage, fileFilter : fileFilter}).single('images'); 
+
+
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   Asset.findAll()
     .then((data) => {
@@ -23,28 +47,52 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
       res.send(data);
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, 'An error has occured'));
     });
 };
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Asset.update(req.body, {
-    where: { id: id },
-  })
-    .then((num: any) => {
-      if (num == 1) {
-        res.status(201).send({
-          message: 'Message to define',
-        });
-      } else {
-        next(new ErrorHandler(500, 'Message to define'));
+  
+  upload(req, res, (err :any) => {
+    if (err instanceof multer.MulterError) {
+      res.send('file not uploaded');
+    }
+    else {
+
+      Asset.findByPk(id)
+      .then((data) => {
+        fs.unlink('./'+data?.value);
+      })
+      .catch((err: any) => {
+        next(new ErrorHandler(500, 'An error has occured'));
+      });
+
+      let updateInfos = {
+        "value": req.file.path
       }
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
-    });
+      Asset.update(updateInfos, {
+        where: { id: id },
+      })
+        .then((num: any) => {
+          if (num == 1) {
+            res.status(201).send({
+              message: 'Asset updated successfully',
+            });
+          } else {
+            next(new ErrorHandler(500, 'An error has occured'));
+          }
+        })
+        .catch((err: any) => {
+          console.log(err)
+          next(new ErrorHandler(500, 'No existing asset with this id'));
+        });
+    }
+  })
+
+
+  
 };
 
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
@@ -63,14 +111,14 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
               fs.unlink('./'+data.value);
 
               res.send({
-                message: 'Message to define',
+                message: 'Asset deleted',
               });
             } else {
-              next(new ErrorHandler(500, 'Message to define'));
+              next(new ErrorHandler(500, 'An error has occured'));
             }
           })
           .catch((err: any) => {
-            next(new ErrorHandler(500, 'Message to define'));
+            next(new ErrorHandler(500, 'An error has occured'));
           });
       }else{
         next(new ErrorHandler(500, 'No existing asset with this id'));
@@ -78,7 +126,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
       }
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, 'An error has occured'));
     });
 
  
@@ -99,27 +147,6 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
 
 
 export const addOne = (req: Request, res: Response, next: NextFunction) => {
-
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './public/assets')
-    },
-    
-    filename: function (req: any, file: any, cb: any) {
-        cb(null, Date.now()+"_"+file.originalname)
-    }
-  });
-  const fileFilter = (req: any,file: any,cb: any) => {
-    if(file.mimetype === "image/jpg"  || 
-        file.mimetype ==="image/jpeg"  || 
-        file.mimetype ===  "image/png"){
-      
-      cb(null, true);
-    }else{
-        cb(new Error("Image uploaded is not of type jpg/jpeg or png"),false);
-    }
-  }
-  const upload = multer({storage: storage, fileFilter : fileFilter}).single('images'); 
 
 
   upload(req, res, (err :any) => {
