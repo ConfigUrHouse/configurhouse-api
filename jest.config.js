@@ -1,5 +1,6 @@
 module.exports = {
   roots: ['<rootDir>/src'],
+  setupFiles: ['<rootDir>/src/tests/__mocks__/setEnvVars.ts'],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },

@@ -17,29 +17,29 @@ export class Police extends Model<PoliceAttributes, PoliceCreationAttributes> im
   name!: string;
   description!: string;
 
-  // Police belongsToMany User via id and id_User
-  id_User_Users!: User[];
-  getId_User_Users!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
-  setId_User_Users!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
-  addId_User_User!: Sequelize.BelongsToManyAddAssociationMixin<User, UserId>;
-  addId_User_Users!: Sequelize.BelongsToManyAddAssociationsMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToManyCreateAssociationMixin<User>;
-  removeId_User_User!: Sequelize.BelongsToManyRemoveAssociationMixin<User, UserId>;
-  removeId_User_Users!: Sequelize.BelongsToManyRemoveAssociationsMixin<User, UserId>;
-  hasId_User_User!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
-  hasId_User_Users!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
-  countId_User_Users!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // Police hasMany UserPolice via id
-  UserPolice!: UserPolice[];
-  getUserPolice!: Sequelize.HasManyGetAssociationsMixin<UserPolice>;
-  setUserPolice!: Sequelize.HasManySetAssociationsMixin<UserPolice, UserPoliceId>;
-  addUserPolouse!: Sequelize.HasManyAddAssociationMixin<UserPolice, UserPoliceId>;
-  addUserPolice!: Sequelize.HasManyAddAssociationsMixin<UserPolice, UserPoliceId>;
-  createUserPolouse!: Sequelize.HasManyCreateAssociationMixin<UserPolice>;
-  removeUserPolouse!: Sequelize.HasManyRemoveAssociationMixin<UserPolice, UserPoliceId>;
-  removeUserPolice!: Sequelize.HasManyRemoveAssociationsMixin<UserPolice, UserPoliceId>;
-  hasUserPolouse!: Sequelize.HasManyHasAssociationMixin<UserPolice, UserPoliceId>;
-  hasUserPolice!: Sequelize.HasManyHasAssociationsMixin<UserPolice, UserPoliceId>;
+  // Police belongsToMany User via id_Police and id_User
+  users!: User[];
+  getUsers!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
+  setUsers!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
+  addUser!: Sequelize.BelongsToManyAddAssociationMixin<User, UserId>;
+  addUsers!: Sequelize.BelongsToManyAddAssociationsMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToManyCreateAssociationMixin<User>;
+  removeUser!: Sequelize.BelongsToManyRemoveAssociationMixin<User, UserId>;
+  removeUsers!: Sequelize.BelongsToManyRemoveAssociationsMixin<User, UserId>;
+  hasUser!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
+  hasUsers!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
+  countUsers!: Sequelize.BelongsToManyCountAssociationsMixin;
+  // Police hasMany UserPolice via id_Police
+  userPolices!: UserPolice[];
+  getUserPolices!: Sequelize.HasManyGetAssociationsMixin<UserPolice>;
+  setUserPolices!: Sequelize.HasManySetAssociationsMixin<UserPolice, UserPoliceId>;
+  addUserPolice!: Sequelize.HasManyAddAssociationMixin<UserPolice, UserPoliceId>;
+  addUserPolices!: Sequelize.HasManyAddAssociationsMixin<UserPolice, UserPoliceId>;
+  createUserPolices!: Sequelize.HasManyCreateAssociationMixin<UserPolice>;
+  removeUserPolice!: Sequelize.HasManyRemoveAssociationMixin<UserPolice, UserPoliceId>;
+  removeUserPolices!: Sequelize.HasManyRemoveAssociationsMixin<UserPolice, UserPoliceId>;
+  hasUserPolice!: Sequelize.HasManyHasAssociationMixin<UserPolice, UserPoliceId>;
+  hasUserPolices!: Sequelize.HasManyHasAssociationsMixin<UserPolice, UserPoliceId>;
   countUserPolice!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Police {

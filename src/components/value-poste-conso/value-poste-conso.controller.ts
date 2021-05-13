@@ -1,9 +1,9 @@
-import { UserRole } from './user-role.class';
+import { ValuePosteConso } from './value-poste-conso.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  UserRole.findAll()
+  ValuePosteConso.findAll()
     .then((data) => {
       res.send(data);
     })
@@ -12,10 +12,16 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-export const findByUserId = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+export const findOne = (req: Request, res: Response, next: NextFunction) => {
+  const idValue = req.params.idValue;
+  const idPosteConso = req.params.idConfiguration;
 
-  UserRole.findAll({ where: { id_User: id } })
+  ValuePosteConso.findOne({
+    where: {
+      id_Value: idValue,
+      id_PosteConso: idPosteConso
+    },
+  })
     .then((data) => {
       res.send(data);
     })
@@ -25,10 +31,14 @@ export const findByUserId = (req: Request, res: Response, next: NextFunction) =>
 };
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idValue = req.params.idValue;
+  const idPosteConso = req.params.idConfiguration;
 
-  UserRole.update(req.body, {
-    where: { id_Role: id },
+  ValuePosteConso.update(req.body, {
+    where: {
+      id_Value: idValue,
+      id_PosteConso: idPosteConso
+    },
   })
     .then((num: any) => {
       if (num == 1) {
@@ -45,10 +55,14 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idValue = req.params.idValue;
+  const idPosteConso = req.params.idConfiguration;
 
-  UserRole.destroy({
-    where: { id_Role: id },
+  ValuePosteConso.destroy({
+    where: {
+      id_Value: idValue,
+      id_PosteConso: idPosteConso
+    },
   })
     .then((num) => {
       if (num == 1) {
@@ -65,7 +79,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
-  UserRole.destroy({
+  ValuePosteConso.destroy({
     where: {},
     truncate: false,
   })

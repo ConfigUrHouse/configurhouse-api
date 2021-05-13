@@ -24,7 +24,7 @@ export class Configuration
   id_HouseModel!: number;
 
   // Configuration hasMany ConfigurationValue via id_Configuration
-  ConfigurationValues!: ConfigurationValue[];
+  configurationValues!: ConfigurationValue[];
   getConfigurationValues!: Sequelize.HasManyGetAssociationsMixin<ConfigurationValue>;
   setConfigurationValues!: Sequelize.HasManySetAssociationsMixin<ConfigurationValue, ConfigurationValueId>;
   addConfigurationValue!: Sequelize.HasManyAddAssociationMixin<ConfigurationValue, ConfigurationValueId>;
@@ -35,18 +35,18 @@ export class Configuration
   hasConfigurationValue!: Sequelize.HasManyHasAssociationMixin<ConfigurationValue, ConfigurationValueId>;
   hasConfigurationValues!: Sequelize.HasManyHasAssociationsMixin<ConfigurationValue, ConfigurationValueId>;
   countConfigurationValues!: Sequelize.HasManyCountAssociationsMixin;
-  // Configuration belongsToMany Value via id_Configuration and id
-  id_Values!: Value[];
-  getId_Values!: Sequelize.BelongsToManyGetAssociationsMixin<Value>;
-  setId_Values!: Sequelize.BelongsToManySetAssociationsMixin<Value, ValueId>;
-  addId_Value!: Sequelize.BelongsToManyAddAssociationMixin<Value, ValueId>;
-  addId_Values!: Sequelize.BelongsToManyAddAssociationsMixin<Value, ValueId>;
-  createId_Value!: Sequelize.BelongsToManyCreateAssociationMixin<Value>;
-  removeId_Value!: Sequelize.BelongsToManyRemoveAssociationMixin<Value, ValueId>;
-  removeId_Values!: Sequelize.BelongsToManyRemoveAssociationsMixin<Value, ValueId>;
-  hasId_Value!: Sequelize.BelongsToManyHasAssociationMixin<Value, ValueId>;
-  hasId_Values!: Sequelize.BelongsToManyHasAssociationsMixin<Value, ValueId>;
-  countId_Values!: Sequelize.BelongsToManyCountAssociationsMixin;
+  // Configuration belongsToMany Value via id_Configuration and id_Value
+  values!: Value[];
+  getValues!: Sequelize.BelongsToManyGetAssociationsMixin<Value>;
+  setValues!: Sequelize.BelongsToManySetAssociationsMixin<Value, ValueId>;
+  addValue!: Sequelize.BelongsToManyAddAssociationMixin<Value, ValueId>;
+  addValues!: Sequelize.BelongsToManyAddAssociationsMixin<Value, ValueId>;
+  createValue!: Sequelize.BelongsToManyCreateAssociationMixin<Value>;
+  removeValue!: Sequelize.BelongsToManyRemoveAssociationMixin<Value, ValueId>;
+  removeValues!: Sequelize.BelongsToManyRemoveAssociationsMixin<Value, ValueId>;
+  hasValue!: Sequelize.BelongsToManyHasAssociationMixin<Value, ValueId>;
+  hasValues!: Sequelize.BelongsToManyHasAssociationsMixin<Value, ValueId>;
+  countValues!: Sequelize.BelongsToManyCountAssociationsMixin;
   // Configuration belongsTo HouseModel via id_HouseModel
   houseModel!: HouseModel;
   getHouseModel!: Sequelize.BelongsToGetAssociationMixin<HouseModel>;

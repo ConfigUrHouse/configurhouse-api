@@ -9,33 +9,33 @@ export enum UserRoles {
 }
 
 export interface UserRoleAttributes {
-  id: number;
+  id_Role: number;
   id_User: number;
 }
 
-export type UserRolePk = 'id' | 'id_User';
+export type UserRolePk = 'id_Role' | 'id_User';
 export type UserRoleId = UserRole[UserRolePk];
 export type UserRoleCreationAttributes = Optional<UserRoleAttributes, UserRolePk>;
 
 export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttributes> implements UserRoleAttributes {
-  id!: number;
+  id_Role!: number;
   id_User!: number;
 
-  // UserRole belongsTo Role via id
-  id_Role!: Role;
-  getId_Role!: Sequelize.BelongsToGetAssociationMixin<Role>;
-  setId_Role!: Sequelize.BelongsToSetAssociationMixin<Role, RoleId>;
-  createId_Role!: Sequelize.BelongsToCreateAssociationMixin<Role>;
+  // UserRole belongsTo Role via id_Role
+  role!: Role;
+  getRole!: Sequelize.BelongsToGetAssociationMixin<Role>;
+  setRole!: Sequelize.BelongsToSetAssociationMixin<Role, RoleId>;
+  createRole!: Sequelize.BelongsToCreateAssociationMixin<Role>;
   // UserRole belongsTo User via id_User
-  id_User_User!: User;
-  getId_User_User!: Sequelize.BelongsToGetAssociationMixin<User>;
-  setId_User_User!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  user!: User;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof UserRole {
     UserRole.init(
       {
-        id: {
+        id_Role: {
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
@@ -63,12 +63,17 @@ export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttribut
             name: 'PRIMARY',
             unique: true,
             using: 'BTREE',
-            fields: [{ name: 'id' }, { name: 'id_User' }],
+            fields: [{ name: 'id_Role' }, { name: 'id_User' }],
           },
           {
             name: 'UserRole_User0_FK',
             using: 'BTREE',
             fields: [{ name: 'id_User' }],
+          },
+          {
+            name: 'UserRole_Role0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Role' }],
           },
         ],
       }

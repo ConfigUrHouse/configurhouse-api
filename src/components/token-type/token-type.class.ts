@@ -20,7 +20,7 @@ export class TokenType extends Model<TokenTypeAttributes, TokenTypeCreationAttri
   name!: string;
 
   // TokenType hasMany Token via id_TokenType
-  Tokens!: Token[];
+  tokens!: Token[];
   getTokens!: Sequelize.HasManyGetAssociationsMixin<Token>;
   setTokens!: Sequelize.HasManySetAssociationsMixin<Token, TokenId>;
   addToken!: Sequelize.HasManyAddAssociationMixin<Token, TokenId>;

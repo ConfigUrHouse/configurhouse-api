@@ -17,20 +17,20 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> implemen
   name!: string;
   description!: string;
 
-  // Role belongsToMany User via id and id_User
-  id_User_Users!: User[];
-  getId_User_Users!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
-  setId_User_Users!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
-  addId_User_User!: Sequelize.BelongsToManyAddAssociationMixin<User, UserId>;
-  addId_User_Users!: Sequelize.BelongsToManyAddAssociationsMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToManyCreateAssociationMixin<User>;
-  removeId_User_User!: Sequelize.BelongsToManyRemoveAssociationMixin<User, UserId>;
-  removeId_User_Users!: Sequelize.BelongsToManyRemoveAssociationsMixin<User, UserId>;
-  hasId_User_User!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
-  hasId_User_Users!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
-  countId_User_Users!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // Role hasMany UserRole via id
-  UserRoles!: UserRole[];
+  // Role belongsToMany User via id_Role and id_User
+  users!: User[];
+  getUsers!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
+  setUsers!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
+  addUser!: Sequelize.BelongsToManyAddAssociationMixin<User, UserId>;
+  addUsers!: Sequelize.BelongsToManyAddAssociationsMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToManyCreateAssociationMixin<User>;
+  removeUser!: Sequelize.BelongsToManyRemoveAssociationMixin<User, UserId>;
+  removeUsers!: Sequelize.BelongsToManyRemoveAssociationsMixin<User, UserId>;
+  hasUser!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
+  hasUsers!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
+  countUsers!: Sequelize.BelongsToManyCountAssociationsMixin;
+  // Role hasMany UserRole via id_Role
+  userRoles!: UserRole[];
   getUserRoles!: Sequelize.HasManyGetAssociationsMixin<UserRole>;
   setUserRoles!: Sequelize.HasManySetAssociationsMixin<UserRole, UserRoleId>;
   addUserRole!: Sequelize.HasManyAddAssociationMixin<UserRole, UserRoleId>;

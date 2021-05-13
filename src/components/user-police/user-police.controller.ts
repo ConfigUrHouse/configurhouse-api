@@ -28,7 +28,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
   UserPolice.update(req.body, {
-    where: { id: id },
+    where: { id_Police: id },
   })
     .then((num: any) => {
       if (num == 1) {
@@ -48,7 +48,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
   UserPolice.destroy({
-    where: { id: id },
+    where: { id_Police: id },
   })
     .then((num) => {
       if (num == 1) {

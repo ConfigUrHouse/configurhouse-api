@@ -47,6 +47,7 @@ import { UserRole } from '../user-role/user-role.class';
 import type { UserRoleAttributes, UserRoleCreationAttributes } from '../user-role/user-role.class';
 import { Value } from '../value/value.class';
 import type { ValueAttributes, ValueCreationAttributes } from '../value/value.class';
+import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 
 export {
   Asset,
@@ -139,115 +140,130 @@ export function initModels(sequelize: Sequelize) {
   UserPolice.initModel(sequelize);
   UserRole.initModel(sequelize);
   Value.initModel(sequelize);
+  ValuePosteConso.initModel(sequelize);
 
   Configuration.belongsToMany(Value, {
-    as: 'id_Values',
+    as: 'values',
     through: ConfigurationValue as typeof Model,
     foreignKey: 'id_Configuration',
-    otherKey: 'id',
+    otherKey: 'id_Value',
   });
   Consommation.belongsToMany(PosteConso, {
-    as: 'id_PosteConso_PosteConsos',
+    as: 'posteConsos',
     through: ConsommationPosteConso as typeof Model,
-    foreignKey: 'id',
+    foreignKey: 'id_Consommation',
     otherKey: 'id_PosteConso',
   });
   Email.belongsToMany(User, {
-    as: 'id_Users',
+    as: 'users',
     through: UserEmail as typeof Model,
     foreignKey: 'id_Email',
-    otherKey: 'id',
+    otherKey: 'id_User',
   });
   Police.belongsToMany(User, {
-    as: 'id_User_Users',
+    as: 'users',
     through: UserPolice as typeof Model,
-    foreignKey: 'id',
+    foreignKey: 'id_Police',
     otherKey: 'id_User',
   });
   PosteConso.belongsToMany(Consommation, {
-    as: 'id_Consommations',
+    as: 'consommations',
     through: ConsommationPosteConso as typeof Model,
     foreignKey: 'id_PosteConso',
-    otherKey: 'id',
+    otherKey: 'id_Consommation',
   });
   Role.belongsToMany(User, {
-    as: 'id_User_Users',
+    as: 'users',
     through: UserRole as typeof Model,
-    foreignKey: 'id',
+    foreignKey: 'id_Role',
     otherKey: 'id_User',
   });
   User.belongsToMany(Email, {
-    as: 'id_Email_Emails',
+    as: 'emails',
     through: UserEmail as typeof Model,
-    foreignKey: 'id',
+    foreignKey: 'id_User',
     otherKey: 'id_Email',
   });
   User.belongsToMany(Police, {
-    as: 'id_Police',
+    as: 'polices',
     through: UserPolice as typeof Model,
     foreignKey: 'id_User',
-    otherKey: 'id',
+    otherKey: 'id_Police',
   });
   User.belongsToMany(Role, {
-    as: 'id_Roles',
+    as: 'roles',
     through: UserRole as typeof Model,
     foreignKey: 'id_User',
-    otherKey: 'id',
+    otherKey: 'id_Role',
   });
   Value.belongsToMany(Configuration, {
-    as: 'id_Configuration_Configurations',
+    as: 'configurations',
     through: ConfigurationValue as typeof Model,
-    foreignKey: 'id',
+    foreignKey: 'id_Value',
     otherKey: 'id_Configuration',
   });
+  Value.belongsToMany(PosteConso, {
+    as: 'posteConsos',
+    through: ValuePosteConso as typeof Model,
+    foreignKey: 'id_Value',
+    otherKey: 'id_PosteConso',
+  });
+  PosteConso.belongsToMany(Value, {
+    as: 'values',
+    through: ValuePosteConso as typeof Model,
+    foreignKey: 'id_PosteConso',
+    otherKey: 'id_Value',
+  });
   HouseModel.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
-  Asset.hasMany(HouseModel, { as: 'HouseModels', foreignKey: 'id_Asset' });
-  Mesh.belongsTo(Asset, { as: 'id_Asset_Asset', foreignKey: 'id_Asset' });
-  Asset.hasMany(Mesh, { as: 'Meshes', foreignKey: 'id_Asset' });
-  Value.belongsTo(Asset, { as: 'id_Asset_Asset', foreignKey: 'id_Asset' });
-  Asset.hasMany(Value, { as: 'Values', foreignKey: 'id_Asset' });
-  Value.belongsTo(Asset, { as: 'id_Asset_AssetValue3D_Asset', foreignKey: 'id_Asset_AssetValue3D' });
-  Asset.hasMany(Value, { as: 'id_Asset_AssetValue3D_Values', foreignKey: 'id_Asset_AssetValue3D' });
-  Asset.belongsTo(AssetType, { as: 'id_AssetType_AssetType', foreignKey: 'id_AssetType' });
-  AssetType.hasMany(Asset, { as: 'Assets', foreignKey: 'id_AssetType' });
-  ConfigurationValue.belongsTo(Configuration, { as: 'id_Configuration_Configuration', foreignKey: 'id_Configuration' });
-  Configuration.hasMany(ConfigurationValue, { as: 'ConfigurationValues', foreignKey: 'id_Configuration' });
-  ConsommationPosteConso.belongsTo(Consommation, { as: 'id_Consommation', foreignKey: 'id' });
-  Consommation.hasMany(ConsommationPosteConso, { as: 'ConsommationPosteConsos', foreignKey: 'id' });
-  UserEmail.belongsTo(Email, { as: 'id_Email_Email', foreignKey: 'id_Email' });
-  Email.hasMany(UserEmail, { as: 'UserEmails', foreignKey: 'id_Email' });
+  Asset.hasMany(HouseModel, { as: 'houseModels', foreignKey: 'id_Asset' });
+  Mesh.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
+  Asset.hasMany(Mesh, { as: 'meshes', foreignKey: 'id_Asset' });
+  Value.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
+  Asset.hasMany(Value, { as: 'values', foreignKey: 'id_Asset' });
+  Asset.belongsTo(AssetType, { as: 'assetType', foreignKey: 'id_AssetType' });
+  AssetType.hasMany(Asset, { as: 'assets', foreignKey: 'id_AssetType' });
+  ConfigurationValue.belongsTo(Configuration, { as: 'configuration', foreignKey: 'id_Configuration' });
+  Configuration.hasMany(ConfigurationValue, { as: 'configurationValues', foreignKey: 'id_Configuration' });
+  ConsommationPosteConso.belongsTo(Consommation, { as: 'consommation', foreignKey: 'id_Consommation' });
+  Consommation.hasMany(ConsommationPosteConso, { as: 'consommationPosteConsos', foreignKey: 'id_Consommation' });
+  UserEmail.belongsTo(Email, { as: 'email', foreignKey: 'id_Email' });
+  Email.hasMany(UserEmail, { as: 'userEmails', foreignKey: 'id_Email' });
   Configuration.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
-  HouseModel.hasMany(Configuration, { as: 'Configurations', foreignKey: 'id_HouseModel' });
-  Consommation.belongsTo(HouseModel, { as: 'id_HouseModel_HouseModel', foreignKey: 'id_HouseModel' });
-  HouseModel.hasMany(Consommation, { as: 'Consommations', foreignKey: 'id_HouseModel' });
-  OptionConf.belongsTo(HouseModel, { as: 'id_HouseModel_HouseModel', foreignKey: 'id_HouseModel' });
-  HouseModel.hasMany(OptionConf, { as: 'OptionConfs', foreignKey: 'id_HouseModel' });
-  OptionConf.belongsTo(Mesh, { as: 'id_Mesh_Mesh', foreignKey: 'id_Mesh' });
-  Mesh.hasMany(OptionConf, { as: 'OptionConfs', foreignKey: 'id_Mesh' });
+  HouseModel.hasMany(Configuration, { as: 'configurations', foreignKey: 'id_HouseModel' });
+  Consommation.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
+  HouseModel.hasMany(Consommation, { as: 'consommations', foreignKey: 'id_HouseModel' });
+  OptionConf.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
+  HouseModel.hasMany(OptionConf, { as: 'optionConfs', foreignKey: 'id_HouseModel' });
+  OptionConf.belongsTo(Mesh, { as: 'mesh', foreignKey: 'id_Mesh' });
+  Mesh.hasMany(OptionConf, { as: 'optionConfs', foreignKey: 'id_Mesh' });
   HouseModel.belongsTo(ModelType, { as: 'modelType', foreignKey: 'id_ModelType' });
-  ModelType.hasMany(HouseModel, { as: 'HouseModels', foreignKey: 'id_ModelType' });
-  Value.belongsTo(OptionConf, { as: 'id_OptionConf_OptionConf', foreignKey: 'id_OptionConf' });
-  OptionConf.hasMany(Value, { as: 'Values', foreignKey: 'id_OptionConf' });
-  UserPolice.belongsTo(Police, { as: 'id_Polouse', foreignKey: 'id' });
-  Police.hasMany(UserPolice, { as: 'UserPolice', foreignKey: 'id' });
-  ConsommationPosteConso.belongsTo(PosteConso, { as: 'id_PosteConso_PosteConso', foreignKey: 'id_PosteConso' });
-  PosteConso.hasMany(ConsommationPosteConso, { as: 'ConsommationPosteConsos', foreignKey: 'id_PosteConso' });
-  UserRole.belongsTo(Role, { as: 'id_Role', foreignKey: 'id' });
-  Role.hasMany(UserRole, { as: 'UserRoles', foreignKey: 'id' });
-  Token.belongsTo(TokenType, { as: 'id_TokenType_TokenType', foreignKey: 'id_TokenType' });
-  TokenType.hasMany(Token, { as: 'Tokens', foreignKey: 'id_TokenType' });
+  ModelType.hasMany(HouseModel, { as: 'houseModels', foreignKey: 'id_ModelType' });
+  Value.belongsTo(OptionConf, { as: 'optionConf', foreignKey: 'id_OptionConf' });
+  OptionConf.hasMany(Value, { as: 'values', foreignKey: 'id_OptionConf' });
+  UserPolice.belongsTo(Police, { as: 'police', foreignKey: 'id_Police' });
+  Police.hasMany(UserPolice, { as: 'userPolice', foreignKey: 'id_Police' });
+  ConsommationPosteConso.belongsTo(PosteConso, { as: 'posteConso', foreignKey: 'id_PosteConso' });
+  PosteConso.hasMany(ConsommationPosteConso, { as: 'consommationPosteConsos', foreignKey: 'id_PosteConso' });
+  UserRole.belongsTo(Role, { as: 'role', foreignKey: 'id_Role' });
+  Role.hasMany(UserRole, { as: 'userRoles', foreignKey: 'id_Role' });
+  Token.belongsTo(TokenType, { as: 'tokenType', foreignKey: 'id_TokenType' });
+  TokenType.hasMany(Token, { as: 'tokens', foreignKey: 'id_TokenType' });
   Configuration.belongsTo(User, { as: 'user', foreignKey: 'id_User', onDelete: 'cascade' });
-  User.hasMany(Configuration, { as: 'Configurations', foreignKey: 'id_User' });
-  Token.belongsTo(User, { as: 'id_User_User', foreignKey: 'id_User', onDelete: 'cascade' });
-  User.hasMany(Token, { as: 'Tokens', foreignKey: 'id_User' });
-  UserEmail.belongsTo(User, { as: 'id_User', foreignKey: 'id', onDelete: 'cascade' });
-  User.hasMany(UserEmail, { as: 'UserEmails', foreignKey: 'id' });
-  UserPolice.belongsTo(User, { as: 'id_User_User', foreignKey: 'id_User', onDelete: 'cascade' });
-  User.hasMany(UserPolice, { as: 'UserPolice', foreignKey: 'id_User' });
-  UserRole.belongsTo(User, { as: 'id_User_User', foreignKey: 'id_User', onDelete: 'cascade' });
-  User.hasMany(UserRole, { as: 'UserRoles', foreignKey: 'id_User' });
-  ConfigurationValue.belongsTo(Value, { as: 'id_Value', foreignKey: 'id' });
-  Value.hasMany(ConfigurationValue, { as: 'ConfigurationValues', foreignKey: 'id' });
+  User.hasMany(Configuration, { as: 'configurations', foreignKey: 'id_User' });
+  Token.belongsTo(User, { as: 'user', foreignKey: 'id_User', onDelete: 'cascade' });
+  User.hasMany(Token, { as: 'tokens', foreignKey: 'id_User' });
+  UserEmail.belongsTo(User, { as: 'user', foreignKey: 'id_User', onDelete: 'cascade' });
+  User.hasMany(UserEmail, { as: 'userEmails', foreignKey: 'id_User' });
+  UserPolice.belongsTo(User, { as: 'user', foreignKey: 'id_User', onDelete: 'cascade' });
+  User.hasMany(UserPolice, { as: 'userPolice', foreignKey: 'id_User' });
+  UserRole.belongsTo(User, { as: 'user', foreignKey: 'id_User', onDelete: 'cascade' });
+  User.hasMany(UserRole, { as: 'userRoles', foreignKey: 'id_User' });
+  ConfigurationValue.belongsTo(Value, { as: 'value', foreignKey: 'id_Value' });
+  Value.hasMany(ConfigurationValue, { as: 'configurationValues', foreignKey: 'id_Value' });
+  ValuePosteConso.belongsTo(Value, { as: 'value', foreignKey: 'id_Value' });
+  Value.hasMany(ValuePosteConso, { as: 'valuePosteConsos', foreignKey: 'id_Value' });
+  ValuePosteConso.belongsTo(PosteConso, { as: 'posteConso', foreignKey: 'id_PosteConso' });
+  PosteConso.hasMany(ValuePosteConso, { as: 'valuePosteConsos', foreignKey: 'id_PosteConso' });
 
   return {
     Asset: Asset,
@@ -271,5 +287,6 @@ export function initModels(sequelize: Sequelize) {
     UserPolice: UserPolice,
     UserRole: UserRole,
     Value: Value,
+    ValuePosteConso: ValuePosteConso,
   };
 }

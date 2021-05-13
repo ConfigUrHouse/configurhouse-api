@@ -13,9 +13,15 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idConsommation = req.params.idConsommation;
+  const idPosteConso = req.params.idPosteConso;
 
-  ConsommationPosteConso.findByPk(id)
+  ConsommationPosteConso.findOne({
+    where: {
+      id_Consommation: idConsommation,
+      id_PosteConso: idPosteConso
+    },
+  })
     .then((data) => {
       res.send(data);
     })
@@ -25,10 +31,14 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idConsommation = req.params.idConsommation;
+  const idPosteConso = req.params.idPosteConso;
 
   ConsommationPosteConso.update(req.body, {
-    where: { id: id },
+    where: {
+      id_Consommation: idConsommation,
+      id_PosteConso: idPosteConso
+    },
   })
     .then((num: any) => {
       if (num == 1) {
@@ -45,10 +55,14 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idConsommation = req.params.idConsommation;
+  const idPosteConso = req.params.idPosteConso;
 
   ConsommationPosteConso.destroy({
-    where: { id: id },
+    where: {
+      id_Consommation: idConsommation,
+      id_PosteConso: idPosteConso
+    },
   })
     .then((num) => {
       if (num == 1) {

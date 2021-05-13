@@ -3,13 +3,13 @@ import type { Consommation, ConsommationId } from '../consommation/consommation.
 import type { PosteConso, PosteConsoId } from '../poste-conso/poste-conso.class';
 
 export interface ConsommationPosteConsoAttributes {
-  id: number;
+  id_Consommation: number;
   id_PosteConso: number;
   Conso: number;
   Conso_reference: number;
 }
 
-export type ConsommationPosteConsoPk = 'id' | 'id_PosteConso';
+export type ConsommationPosteConsoPk = 'id_Consommation' | 'id_PosteConso';
 export type ConsommationPosteConsoId = ConsommationPosteConso[ConsommationPosteConsoPk];
 export type ConsommationPosteConsoCreationAttributes = Optional<
   ConsommationPosteConsoAttributes,
@@ -19,26 +19,26 @@ export type ConsommationPosteConsoCreationAttributes = Optional<
 export class ConsommationPosteConso
   extends Model<ConsommationPosteConsoAttributes, ConsommationPosteConsoCreationAttributes>
   implements ConsommationPosteConsoAttributes {
-  id!: number;
+  id_Consommation!: number;
   id_PosteConso!: number;
   Conso!: number;
   Conso_reference!: number;
 
-  // ConsommationPosteConso belongsTo Consommation via id
-  id_Consommation!: Consommation;
-  getId_Consommation!: Sequelize.BelongsToGetAssociationMixin<Consommation>;
-  setId_Consommation!: Sequelize.BelongsToSetAssociationMixin<Consommation, ConsommationId>;
-  createId_Consommation!: Sequelize.BelongsToCreateAssociationMixin<Consommation>;
+  // ConsommationPosteConso belongsTo Consommation via id_Consommation
+  consommation!: Consommation;
+  getConsommation!: Sequelize.BelongsToGetAssociationMixin<Consommation>;
+  setConsommation!: Sequelize.BelongsToSetAssociationMixin<Consommation, ConsommationId>;
+  createConsommation!: Sequelize.BelongsToCreateAssociationMixin<Consommation>;
   // ConsommationPosteConso belongsTo PosteConso via id_PosteConso
-  id_PosteConso_PosteConso!: PosteConso;
-  getId_PosteConso_PosteConso!: Sequelize.BelongsToGetAssociationMixin<PosteConso>;
-  setId_PosteConso_PosteConso!: Sequelize.BelongsToSetAssociationMixin<PosteConso, PosteConsoId>;
-  createId_PosteConso_PosteConso!: Sequelize.BelongsToCreateAssociationMixin<PosteConso>;
+  idPosteConso!: PosteConso;
+  getPosteConso!: Sequelize.BelongsToGetAssociationMixin<PosteConso>;
+  setPosteConso!: Sequelize.BelongsToSetAssociationMixin<PosteConso, PosteConsoId>;
+  createPosteConso!: Sequelize.BelongsToCreateAssociationMixin<PosteConso>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof ConsommationPosteConso {
     ConsommationPosteConso.init(
       {
-        id: {
+        id_Consommation: {
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
@@ -74,12 +74,17 @@ export class ConsommationPosteConso
             name: 'PRIMARY',
             unique: true,
             using: 'BTREE',
-            fields: [{ name: 'id' }, { name: 'id_PosteConso' }],
+            fields: [{ name: 'id_Consommation' }, { name: 'id_PosteConso' }],
           },
           {
             name: 'ConsommationPosteConso_PosteConso0_FK',
             using: 'BTREE',
             fields: [{ name: 'id_PosteConso' }],
+          },
+          {
+            name: 'ConsommationPosteConso_Consommation0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Consommation' }],
           },
         ],
       }

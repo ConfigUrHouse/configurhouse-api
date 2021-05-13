@@ -30,15 +30,15 @@ export class Token extends Model<TokenAttributes, TokenCreationAttributes> imple
   id_TokenType!: number;
 
   // Token belongsTo TokenType via id_TokenType
-  id_TokenType_TokenType!: TokenType;
-  getId_TokenType_TokenType!: Sequelize.BelongsToGetAssociationMixin<TokenType>;
-  setId_TokenType_TokenType!: Sequelize.BelongsToSetAssociationMixin<TokenType, TokenTypeId>;
-  createId_TokenType_TokenType!: Sequelize.BelongsToCreateAssociationMixin<TokenType>;
+  tokenType!: TokenType;
+  getTokenType!: Sequelize.BelongsToGetAssociationMixin<TokenType>;
+  setTokenType!: Sequelize.BelongsToSetAssociationMixin<TokenType, TokenTypeId>;
+  createTokenType!: Sequelize.BelongsToCreateAssociationMixin<TokenType>;
   // Token belongsTo User via id_User
-  id_User_User!: User;
-  getId_User_User!: Sequelize.BelongsToGetAssociationMixin<User>;
-  setId_User_User!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
-  createId_User_User!: Sequelize.BelongsToCreateAssociationMixin<User>;
+  user!: User;
+  getUser!: Sequelize.BelongsToGetAssociationMixin<User>;
+  setUser!: Sequelize.BelongsToSetAssociationMixin<User, UserId>;
+  createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Token {
     Token.init(
