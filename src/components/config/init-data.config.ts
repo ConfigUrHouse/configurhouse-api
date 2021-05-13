@@ -123,7 +123,7 @@ async function initConfigurations() {
   }
   const user2 = await User.findOne({ where: { email: userTestEmail } });
   if (user2 && model1) {
-    const config = await Configuration.findOne({ where: { name: configurationT3Name, id_User: user2.id } });
+    const config = await Configuration.findOne({ where: { name: configurationT2Name, id_User: user2.id } });
     const valuePAC = await Value.findOne({ where: { name: 'Pompe à chaleur' } });
     if (
       valuePAC &&

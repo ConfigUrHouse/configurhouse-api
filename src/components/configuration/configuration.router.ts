@@ -1,7 +1,14 @@
 import { Router } from 'express';
 import auth from '../../middleware/auth';
 import { validateAdminRole } from '../../middleware/validate-role';
-import { findAll, findOne, update, deleteAll, deleteOne } from './configuration.controller';
+import {
+  findAll,
+  findOne,
+  update,
+  deleteAll,
+  deleteOne,
+  getConfigurationConsommation,
+} from './configuration.controller';
 
 /**
  * @swagger
@@ -79,3 +86,32 @@ configurationRouter.put('/:id', [auth, validateAdminRole], update);
 configurationRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
+
+//#region GET /configuration/:id/conso
+/**
+ * @swagger
+ *
+ * paths:
+ *   /configuration/:id/conso:
+ *     get:
+ *       summary: Get estimated energy consumption for a configuration
+ *       tags:
+ *         - Configuration
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: integer
+ *           description: Id of the configuration
+ *       responses:
+ *         200:
+ *           description: A paginated list of configurations
+ *           schema:
+ *             $ref: '#/definitions/PaginatedArrayOfConfigurations'
+ *         400:
+ *           description: Invalid request parameters
+ *         404:
+ *           description: Configuration not found
+ */
+configurationRouter.get('/:id/conso', getConfigurationConsommation); //TODO swagger
+//#endregion

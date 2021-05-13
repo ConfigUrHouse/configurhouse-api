@@ -2,6 +2,16 @@ import { Configuration } from './configuration.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 import { getPagination, getPagingData } from '../../shared/pagination';
+import {
+  ConfigurationValue,
+  Consommation,
+  ConsommationPosteConso,
+  OptionConf,
+  PosteConso,
+  Value,
+} from '../config/init-models.config';
+import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
+import sequelize, { Model, Op } from 'sequelize';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -97,4 +107,54 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
     .catch((err: any) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
+};
+
+export const getConfigurationConsommation = async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  const config = await Configuration.findByPk(id, {
+    include: [
+      {
+        model: ConfigurationValue as typeof Model,
+        as: 'configurationValues',
+        include: [
+          {
+            model: Value as typeof Model,
+            as: 'value',
+            attributes: ['name'],
+            include: [
+              {
+                model: OptionConf as typeof Model,
+                as: 'optionConf',
+                attributes: ['name'],
+              },
+              {
+                model: ValuePosteConso as typeof Model,
+                as: 'valuePosteConsos',
+                include: [
+                  {
+                    model: PosteConso as typeof Model,
+                    as: 'posteConso',
+                    attributes: ['name', 'description'],
+                    include: [
+                      {
+                        model: ConsommationPosteConso as typeof Model,
+                        as: 'consommationPosteConsos',
+                        attributes: ['Conso', 'Conso_reference']
+                      }
+                    ]
+                  },
+                ],
+                attributes: ['modifier']
+              },
+            ],
+          },
+        ],
+        attributes: ['id_Value']
+      },
+    ],
+    attributes: ['name']
+  });
+  if (!config) return next(new ErrorHandler(404, `Configuration with id '${req.params.id}' not found`));
+
+  res.send(config);
 };
