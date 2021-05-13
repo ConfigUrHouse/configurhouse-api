@@ -12,11 +12,10 @@ import {
   ConfigurationValue,
   Value,
   OptionConf,
-  Consommation,
   PosteConso,
   Mesh,
   UserRole,
-  ConsommationPosteConso,
+  HouseModelPosteConso,
 } from './init-models.config';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 
@@ -34,9 +33,8 @@ export async function initData() {
     await initOptionConfs();
     await initValues();
     await initConfigurations();
-    await initConsommations();
     await initPostesConso();
-    await initConsommationsPostesConso();
+    await initHouseModelPosteConsos();
     await initValuePosteConsos();
   } catch (error) {
     console.error(error);
@@ -95,6 +93,7 @@ async function initHouseModels() {
   if (!(await HouseModel.findOne({ where: { name: houseModelT2Name } })) && type1 && asset1) {
     await HouseModel.create({
       name: houseModelT2Name,
+      occupants: 2,
       id_ModelType: type1.id,
       id_Asset: asset1.id,
     });
@@ -105,6 +104,7 @@ async function initHouseModels() {
   if (!(await HouseModel.findOne({ where: { name: houseModelT3Name } })) && type2 && asset2) {
     await HouseModel.create({
       name: houseModelT3Name,
+      occupants: 3,
       id_ModelType: type2.id,
       id_Asset: asset2.id,
     });
@@ -208,7 +208,7 @@ async function initValuePosteConsos() {
     ValuePosteConso.create({
       id_Value: valuePAC.id,
       id_PosteConso: posteConsoChauffage.id,
-      modifier: 80.0,
+      conso: 80,
     });
   }
   if (
@@ -219,7 +219,7 @@ async function initValuePosteConsos() {
     ValuePosteConso.create({
       id_Value: valuePAC.id,
       id_PosteConso: posteConsoEau.id,
-      modifier: 90.0,
+      conso: 90,
     });
   }
   if (
@@ -230,24 +230,7 @@ async function initValuePosteConsos() {
     ValuePosteConso.create({
       id_Value: valueBois.id,
       id_PosteConso: posteConsoChauffage.id,
-      modifier: 150.0,
-    });
-  }
-}
-
-async function initConsommations() {
-  const houseModel1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
-  if (houseModel1 && !(await Consommation.findOne({ where: { id_HouseModel: houseModel1.id } }))) {
-    await Consommation.create({
-      id_HouseModel: houseModel1.id,
-      nb_personnes: 1,
-    });
-  }
-  const houseModel2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
-  if (houseModel2 && !(await Consommation.findOne({ where: { id_HouseModel: houseModel2.id } }))) {
-    await Consommation.create({
-      id_HouseModel: houseModel2.id,
-      nb_personnes: 2,
+      conso: 150,
     });
   }
 }
@@ -267,38 +250,33 @@ async function initPostesConso() {
   }
 }
 
-async function initConsommationsPostesConso() {
+async function initHouseModelPosteConsos() {
   const houseModel1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
   if (houseModel1) {
-    const consommation = await Consommation.findOne({ where: { id_HouseModel: houseModel1.id } });
     const posteConso1 = await PosteConso.findOne({ where: { name: 'Chauffage' } });
     if (
-      consommation &&
       posteConso1 &&
-      !(await ConsommationPosteConso.findOne({
-        where: { id_Consommation: consommation.id, id_PosteConso: posteConso1.id },
+      !(await HouseModelPosteConso.findOne({
+        where: { id_HouseModel: houseModel1.id, id_PosteConso: posteConso1.id },
       }))
     ) {
-      ConsommationPosteConso.create({
-        id_Consommation: consommation.id,
+      HouseModelPosteConso.create({
+        id_HouseModel: houseModel1.id,
         id_PosteConso: posteConso1.id,
-        Conso_reference: 4092,
-        Conso: 3000,
+        conso_reference: 4092,
       });
     }
     const posteConso2 = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
     if (
-      consommation &&
       posteConso2 &&
-      !(await ConsommationPosteConso.findOne({
-        where: { id_Consommation: consommation.id, id_PosteConso: posteConso2.id },
+      !(await HouseModelPosteConso.findOne({
+        where: { id_HouseModel: houseModel1.id, id_PosteConso: posteConso2.id },
       }))
     ) {
-      ConsommationPosteConso.create({
-        id_Consommation: consommation.id,
+      HouseModelPosteConso.create({
+        id_HouseModel: houseModel1.id,
         id_PosteConso: posteConso2.id,
-        Conso_reference: 462,
-        Conso: 300,
+        conso_reference: 462,
       });
     }
   }

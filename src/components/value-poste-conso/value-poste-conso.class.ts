@@ -5,7 +5,7 @@ import { Value, ValueId } from '../value/value.class';
 export interface ValuePosteConsoAttributes {
   id_Value: number;
   id_PosteConso: number;
-  modifier: number;
+  conso: number;
 }
 
 export type ValuePosteConsoPk = 'id_Value' | 'id_PosteConso';
@@ -17,7 +17,7 @@ export class ValuePosteConso
   implements ValuePosteConsoAttributes {
   id_Value!: number;
   id_PosteConso!: number;
-  modifier!: number;
+  conso!: number;
 
   // ValuePosteConso belongsTo Value via id_Value
   value!: Value;
@@ -51,8 +51,8 @@ export class ValuePosteConso
             key: 'id',
           },
         },
-        modifier: {
-          type: DataTypes.DECIMAL(7, 2),
+        conso: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
       },

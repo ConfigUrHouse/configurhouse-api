@@ -1,13 +1,14 @@
 import Sequelize, { DataTypes, Model, Optional } from 'sequelize';
 import type { Asset, AssetId } from '../asset/asset.class';
 import type { Configuration, ConfigurationId } from '../configuration/configuration.class';
-import type { Consommation, ConsommationId } from '../consommation/consommation.class';
+import { HouseModelPosteConso, HouseModelPosteConsoId } from '../house-model-poste-conso/house-model-poste-conso.class';
 import type { ModelType, ModelTypeId } from '../model-type/model-type.class';
 import type { OptionConf, OptionConfId } from '../option-conf/option-conf.class';
 
 export interface HouseModelAttributes {
   id: number;
   name: string;
+  occupants: number;
   id_ModelType: number;
   id_Asset: number;
 }
@@ -21,6 +22,7 @@ export class HouseModel
   implements HouseModelAttributes {
   id!: number;
   name!: string;
+  occupants!: number;
   id_ModelType!: number;
   id_Asset!: number;
 
@@ -41,18 +43,18 @@ export class HouseModel
   hasConfiguration!: Sequelize.HasManyHasAssociationMixin<Configuration, ConfigurationId>;
   hasConfigurations!: Sequelize.HasManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.HasManyCountAssociationsMixin;
-  // HouseModel hasMany Consommation via id_HouseModel
-  consommations!: Consommation[];
-  getConsommations!: Sequelize.HasManyGetAssociationsMixin<Consommation>;
-  setConsommations!: Sequelize.HasManySetAssociationsMixin<Consommation, ConsommationId>;
-  addConsommation!: Sequelize.HasManyAddAssociationMixin<Consommation, ConsommationId>;
-  addConsommations!: Sequelize.HasManyAddAssociationsMixin<Consommation, ConsommationId>;
-  createConsommation!: Sequelize.HasManyCreateAssociationMixin<Consommation>;
-  removeConsommation!: Sequelize.HasManyRemoveAssociationMixin<Consommation, ConsommationId>;
-  removeConsommations!: Sequelize.HasManyRemoveAssociationsMixin<Consommation, ConsommationId>;
-  hasConsommation!: Sequelize.HasManyHasAssociationMixin<Consommation, ConsommationId>;
-  hasConsommations!: Sequelize.HasManyHasAssociationsMixin<Consommation, ConsommationId>;
-  countConsommations!: Sequelize.HasManyCountAssociationsMixin;
+  // HouseModel hasMany HouseModelPosteConso via id_HouseModel
+  houseModelPosteConsos!: HouseModelPosteConso[];
+  getHouseModelPosteConsos!: Sequelize.HasManyGetAssociationsMixin<HouseModelPosteConso>;
+  setHouseModelPosteConsos!: Sequelize.HasManySetAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  addHouseModelPosteConso!: Sequelize.HasManyAddAssociationMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  addHouseModelPosteConsos!: Sequelize.HasManyAddAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  createHouseModelPosteConso!: Sequelize.HasManyCreateAssociationMixin<HouseModelPosteConso>;
+  removeHouseModelPosteConso!: Sequelize.HasManyRemoveAssociationMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  removeHouseModelPosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  hasHouseModelPosteConso!: Sequelize.HasManyHasAssociationMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  hasHouseModelPosteConsos!: Sequelize.HasManyHasAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
+  countHouseModelPosteConsos!: Sequelize.HasManyCountAssociationsMixin;
   // HouseModel hasMany OptionConf via id_HouseModel
   optionConfs!: OptionConf[];
   getOptionConfs!: Sequelize.HasManyGetAssociationsMixin<OptionConf>;
@@ -82,6 +84,10 @@ export class HouseModel
         },
         name: {
           type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        occupants: {
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
         id_ModelType: {

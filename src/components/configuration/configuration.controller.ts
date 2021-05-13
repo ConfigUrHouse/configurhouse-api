@@ -4,14 +4,13 @@ import { ErrorHandler } from '../../middleware/error-handler';
 import { getPagination, getPagingData } from '../../shared/pagination';
 import {
   ConfigurationValue,
-  Consommation,
-  ConsommationPosteConso,
+  HouseModelPosteConso,
   OptionConf,
   PosteConso,
   Value,
 } from '../config/init-models.config';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
-import sequelize, { Model, Op } from 'sequelize';
+import { Model } from 'sequelize';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -137,14 +136,14 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
                     attributes: ['name', 'description'],
                     include: [
                       {
-                        model: ConsommationPosteConso as typeof Model,
-                        as: 'consommationPosteConsos',
-                        attributes: ['Conso', 'Conso_reference']
+                        model: HouseModelPosteConso as typeof Model,
+                        as: 'houseModelPosteConsos',
+                        attributes: ['conso_reference']
                       }
                     ]
                   },
                 ],
-                attributes: ['modifier']
+                attributes: ['conso']
               },
             ],
           },

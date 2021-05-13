@@ -1,9 +1,9 @@
-import { Consommation } from './consommation.class';
+import { HouseModelPosteConso } from './house-model-poste-conso.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  Consommation.findAll()
+  HouseModelPosteConso.findAll()
     .then((data) => {
       res.send(data);
     })
@@ -13,9 +13,15 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idHouseModel = req.params.idHouseModel;
+  const idPosteConso = req.params.idPosteConso;
 
-  Consommation.findByPk(id)
+  HouseModelPosteConso.findOne({
+    where: {
+      id_HouseModel: idHouseModel,
+      id_PosteConso: idPosteConso
+    },
+  })
     .then((data) => {
       res.send(data);
     })
@@ -25,10 +31,14 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idHouseModel = req.params.idHouseModel;
+  const idPosteConso = req.params.idPosteConso;
 
-  Consommation.update(req.body, {
-    where: { id: id },
+  HouseModelPosteConso.update(req.body, {
+    where: {
+      id_HouseModel: idHouseModel,
+      id_PosteConso: idPosteConso
+    },
   })
     .then((num: any) => {
       if (num == 1) {
@@ -45,10 +55,14 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+  const idHouseModel = req.params.idHouseModel;
+  const idPosteConso = req.params.idPosteConso;
 
-  Consommation.destroy({
-    where: { id: id },
+  HouseModelPosteConso.destroy({
+    where: {
+      id_HouseModel: idHouseModel,
+      id_PosteConso: idPosteConso
+    },
   })
     .then((num) => {
       if (num == 1) {
@@ -65,7 +79,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
-  Consommation.destroy({
+  HouseModelPosteConso.destroy({
     where: {},
     truncate: false,
   })
