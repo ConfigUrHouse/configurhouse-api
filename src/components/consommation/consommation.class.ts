@@ -23,7 +23,7 @@ export class Consommation
   nb_personnes!: number;
   id_HouseModel!: number;
 
-  // Consommation hasMany ConsommationPosteConso via id
+  // Consommation hasMany ConsommationPosteConso via id_Consommation
   consommationPosteConsos!: ConsommationPosteConso[];
   getConsommationPosteConsos!: Sequelize.HasManyGetAssociationsMixin<ConsommationPosteConso>;
   setConsommationPosteConsos!: Sequelize.HasManySetAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
@@ -41,7 +41,7 @@ export class Consommation
   hasConsommationPosteConso!: Sequelize.HasManyHasAssociationMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   hasConsommationPosteConsos!: Sequelize.HasManyHasAssociationsMixin<ConsommationPosteConso, ConsommationPosteConsoId>;
   countConsommationPosteConsos!: Sequelize.HasManyCountAssociationsMixin;
-  // Consommation belongsToMany PosteConso via id and id_PosteConso
+  // Consommation belongsToMany PosteConso via id_Consommation and id_PosteConso
   posteConsos!: PosteConso[];
   getPosteConsos!: Sequelize.BelongsToManyGetAssociationsMixin<PosteConso>;
   setPosteConsos!: Sequelize.BelongsToManySetAssociationsMixin<PosteConso, PosteConsoId>;

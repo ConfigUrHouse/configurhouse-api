@@ -55,7 +55,7 @@ describe('User Controller', () => {
       lastname: 'RAGOT',
       email: 'benjamin.ragot@example.com',
       active: 1,
-      getUserRoles: jest.fn().mockResolvedValue([{ id: 1 }, { id: 2 }]),
+      getUserRoles: jest.fn().mockResolvedValue([{ id_Role: 1 }, { id_Role: 2 }]),
     };
     (user2 as any) = {
       id: 2,
@@ -63,7 +63,7 @@ describe('User Controller', () => {
       lastname: 'BAUDRY',
       email: 'peter.baudry@example.com',
       active: 1,
-      getUserRoles: jest.fn().mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }]),
+      getUserRoles: jest.fn().mockResolvedValue([{ id_Role: 1 }, { id_Role: 2 }, { id_Role: 3 }]),
     };
     (user3 as any) = {
       id: 3,
@@ -71,7 +71,7 @@ describe('User Controller', () => {
       lastname: 'BULTEL',
       email: 'simon.bultel@example.com',
       active: 1,
-      getUserRoles: jest.fn().mockResolvedValue([{ id: 1 }]),
+      getUserRoles: jest.fn().mockResolvedValue([{ id_Role: 1 }]),
     };
     (token as any) = {
       id: 1,

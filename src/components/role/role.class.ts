@@ -17,7 +17,7 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> implemen
   name!: string;
   description!: string;
 
-  // Role belongsToMany User via id and id_User
+  // Role belongsToMany User via id_Role and id_User
   users!: User[];
   getUsers!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
   setUsers!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
@@ -29,7 +29,7 @@ export class Role extends Model<RoleAttributes, RoleCreationAttributes> implemen
   hasUser!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
   hasUsers!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
   countUsers!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // Role hasMany UserRole via id
+  // Role hasMany UserRole via id_Role
   userRoles!: UserRole[];
   getUserRoles!: Sequelize.HasManyGetAssociationsMixin<UserRole>;
   setUserRoles!: Sequelize.HasManySetAssociationsMixin<UserRole, UserRoleId>;

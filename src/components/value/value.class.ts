@@ -3,6 +3,7 @@ import type { Asset, AssetId } from '../asset/asset.class';
 import type { Configuration, ConfigurationId } from '../configuration/configuration.class';
 import type { ConfigurationValue, ConfigurationValueId } from '../configuration-value/configuration-value.class';
 import type { OptionConf, OptionConfId } from '../option-conf/option-conf.class';
+import { PosteConso, PosteConsoId } from '../poste-conso/poste-conso.class';
 
 export interface ValueAttributes {
   id: number;
@@ -18,7 +19,7 @@ export type ValuePk = 'id';
 export type ValueId = Value[ValuePk];
 export type ValueCreationAttributes = Optional<ValueAttributes, ValuePk>;
 
-export class Value extends Model implements ValueAttributes {
+export class Value extends Model<ValueAttributes, ValueCreationAttributes> implements ValueAttributes {
   id!: number;
   name!: string;
   price!: number;
@@ -32,17 +33,12 @@ export class Value extends Model implements ValueAttributes {
   getAsset!: Sequelize.BelongsToGetAssociationMixin<Asset>;
   setAsset!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
   createAsset!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
-  // Value belongsTo Asset via id_Asset_AssetValue3D
-  Asset3D!: Asset;
-  getAsset3D!: Sequelize.BelongsToGetAssociationMixin<Asset>;
-  setAsset3D!: Sequelize.BelongsToSetAssociationMixin<Asset, AssetId>;
-  createAsset3D!: Sequelize.BelongsToCreateAssociationMixin<Asset>;
   // Value belongsTo OptionConf via id_OptionConf
   optionConf!: OptionConf;
   getOptionConf!: Sequelize.BelongsToGetAssociationMixin<OptionConf>;
   setOptionConf!: Sequelize.BelongsToSetAssociationMixin<OptionConf, OptionConfId>;
   createOptionConf!: Sequelize.BelongsToCreateAssociationMixin<OptionConf>;
-  // Value belongsToMany Configuration via id and id_Configuration
+  // Value belongsToMany Configuration via id_Value and id_Configuration
   configurations!: Configuration[];
   getConfigurations!: Sequelize.BelongsToManyGetAssociationsMixin<Configuration>;
   setConfigurations!: Sequelize.BelongsToManySetAssociationsMixin<Configuration, ConfigurationId>;
@@ -54,7 +50,19 @@ export class Value extends Model implements ValueAttributes {
   hasConfiguration!: Sequelize.BelongsToManyHasAssociationMixin<Configuration, ConfigurationId>;
   hasConfigurations!: Sequelize.BelongsToManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // Value hasMany ConfigurationValue via id
+  // Value belongsToMany PosteConso via id_Value and id_PosteConso
+  posteConsos!: PosteConso[];
+  getPosteConsos!: Sequelize.BelongsToManyGetAssociationsMixin<PosteConso>;
+  setPosteConsos!: Sequelize.BelongsToManySetAssociationsMixin<PosteConso, PosteConsoId>;
+  addPosteConso!: Sequelize.BelongsToManyAddAssociationMixin<PosteConso, PosteConsoId>;
+  addPosteConsos!: Sequelize.BelongsToManyAddAssociationsMixin<PosteConso, PosteConsoId>;
+  createPosteConsos!: Sequelize.BelongsToManyCreateAssociationMixin<PosteConso>;
+  removePosteConso!: Sequelize.BelongsToManyRemoveAssociationMixin<PosteConso, PosteConsoId>;
+  removePosteConsos!: Sequelize.BelongsToManyRemoveAssociationsMixin<PosteConso, PosteConsoId>;
+  hasPosteConso!: Sequelize.BelongsToManyHasAssociationMixin<PosteConso, PosteConsoId>;
+  hasPosteConsos!: Sequelize.BelongsToManyHasAssociationsMixin<PosteConso, PosteConsoId>;
+  countPosteConsos!: Sequelize.BelongsToManyCountAssociationsMixin;
+  // Value hasMany ConfigurationValue via id_Value
   configurationValues!: ConfigurationValue[];
   getConfigurationValues!: Sequelize.HasManyGetAssociationsMixin<ConfigurationValue>;
   setConfigurationValues!: Sequelize.HasManySetAssociationsMixin<ConfigurationValue, ConfigurationValueId>;

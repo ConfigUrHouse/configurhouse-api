@@ -17,7 +17,7 @@ export class Email extends Model<EmailAttributes, EmailCreationAttributes> imple
   send_at!: string;
   description!: string;
 
-  // Email belongsToMany User via id_Email and id
+  // Email belongsToMany User via id_Email and id_User
   users!: User[];
   getUsers!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
   setUsers!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;

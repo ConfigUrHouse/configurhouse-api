@@ -65,7 +65,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   hasConfiguration!: Sequelize.HasManyHasAssociationMixin<Configuration, ConfigurationId>;
   hasConfigurations!: Sequelize.HasManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.HasManyCountAssociationsMixin;
-  // User belongsToMany Email via id and id_Email
+  // User belongsToMany Email via id_User and id_Email
   emails!: Email[];
   getEmails!: Sequelize.BelongsToManyGetAssociationsMixin<Email>;
   setEmails!: Sequelize.BelongsToManySetAssociationsMixin<Email, EmailId>;
@@ -77,7 +77,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   hasEmail!: Sequelize.BelongsToManyHasAssociationMixin<Email, EmailId>;
   hasEmails!: Sequelize.BelongsToManyHasAssociationsMixin<Email, EmailId>;
   countEmails!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // User belongsToMany Police via id_User and id
+  // User belongsToMany Police via id_User and id_Police
   polices!: Police[];
   getPolices!: Sequelize.BelongsToManyGetAssociationsMixin<Police>;
   setPolices!: Sequelize.BelongsToManySetAssociationsMixin<Police, PoliceId>;
@@ -89,7 +89,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   hasPolice!: Sequelize.BelongsToManyHasAssociationMixin<Police, PoliceId>;
   hasPolices!: Sequelize.BelongsToManyHasAssociationsMixin<Police, PoliceId>;
   countPolices!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // User belongsToMany Role via id_User and id
+  // User belongsToMany Role via id_User and id_Role
   roles!: Role[];
   getRoles!: Sequelize.BelongsToManyGetAssociationsMixin<Role>;
   setRoles!: Sequelize.BelongsToManySetAssociationsMixin<Role, RoleId>;

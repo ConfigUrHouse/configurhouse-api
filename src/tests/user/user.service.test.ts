@@ -19,16 +19,16 @@ describe('User Service', () => {
 
   beforeEach(() => {
     (adminUser as any) = {
-      getUserRoles: jest.fn().mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }]),
+      getUserRoles: jest.fn().mockResolvedValue([{ id_Role: 1 }, { id_Role: 2 }, { id_Role: 3 }]),
     };
     (collabUser as any) = {
-      getUserRoles: jest.fn().mockResolvedValue([{ id: 1 }, { id: 2 }]),
+      getUserRoles: jest.fn().mockResolvedValue([{ id_Role: 1 }, { id_Role: 2 }]),
     };
     (user as any) = {
       id: 123,
       email: 'john.doe@example.com',
       active: 0,
-      getUserRoles: jest.fn().mockResolvedValue([{ id: 1 }]),
+      getUserRoles: jest.fn().mockResolvedValue([{ id_Role: 1 }]),
     };
     (adminRole as any) = { id: 3 };
     (collabRole as any) = { id: 2 };
@@ -108,7 +108,7 @@ describe('User Service', () => {
         active: 0,
       });
       expect(createRoleSpy).toHaveBeenCalledWith({
-        id: 1,
+        id_Role: 1,
         id_User: 123,
       });
       expect(sendEmailSpy).toHaveBeenCalledWith('john.doe@example.com', user);

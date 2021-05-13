@@ -3,18 +3,18 @@ import type { Configuration, ConfigurationId } from '../configuration/configurat
 import type { Value, ValueId } from '../value/value.class';
 
 export interface ConfigurationValueAttributes {
-  id: number;
+  id_Value: number;
   id_Configuration: number;
 }
 
-export type ConfigurationValuePk = 'id' | 'id_Configuration';
+export type ConfigurationValuePk = 'id_Value' | 'id_Configuration';
 export type ConfigurationValueId = ConfigurationValue[ConfigurationValuePk];
 export type ConfigurationValueCreationAttributes = Optional<ConfigurationValueAttributes, ConfigurationValuePk>;
 
 export class ConfigurationValue
   extends Model<ConfigurationValueAttributes, ConfigurationValueCreationAttributes>
   implements ConfigurationValueAttributes {
-  id!: number;
+  id_Value!: number;
   id_Configuration!: number;
 
   // ConfigurationValue belongsTo Configuration via id_Configuration
@@ -22,7 +22,7 @@ export class ConfigurationValue
   getConfiguration!: Sequelize.BelongsToGetAssociationMixin<Configuration>;
   setConfiguration!: Sequelize.BelongsToSetAssociationMixin<Configuration, ConfigurationId>;
   createConfiguration!: Sequelize.BelongsToCreateAssociationMixin<Configuration>;
-  // ConfigurationValue belongsTo Value via id
+  // ConfigurationValue belongsTo Value via id_Value
   value!: Value;
   getValue!: Sequelize.BelongsToGetAssociationMixin<Value>;
   setValue!: Sequelize.BelongsToSetAssociationMixin<Value, ValueId>;
@@ -31,7 +31,7 @@ export class ConfigurationValue
   static initModel(sequelize: Sequelize.Sequelize): typeof ConfigurationValue {
     ConfigurationValue.init(
       {
-        id: {
+        id_Value: {
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
@@ -59,7 +59,7 @@ export class ConfigurationValue
             name: 'PRIMARY',
             unique: true,
             using: 'BTREE',
-            fields: [{ name: 'id' }, { name: 'id_Configuration' }],
+            fields: [{ name: 'id_Value' }, { name: 'id_Configuration' }],
           },
           {
             name: 'ConfigurationValue_Configuration0_FK',

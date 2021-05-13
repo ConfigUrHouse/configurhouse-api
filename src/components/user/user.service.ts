@@ -13,13 +13,13 @@ export default class UserService {
   public static async isAdmin(user: User) {
     const userRoles = await user.getUserRoles();
     const adminRole = await RoleService.findRoleByName(UserRoles.Administrator);
-    return userRoles.some((userRole) => userRole.id === adminRole.id);
+    return userRoles.some((userRole) => userRole.id_Role === adminRole.id);
   }
 
   public static async isCollaborator(user: User) {
     const userRoles = await user.getUserRoles();
     const collaboratorRole = await RoleService.findRoleByName(UserRoles.Collaborator);
-    return userRoles.some((userRole) => userRole.id === collaboratorRole.id);
+    return userRoles.some((userRole) => userRole.id_Role === collaboratorRole.id);
   }
 
   public static async create(params: UserAttributes) {
@@ -39,7 +39,7 @@ export default class UserService {
     }
     const role = await RoleService.findRoleByName(UserRoles.User);
     const userRole = await UserRole.create({
-      id: role.id,
+      id_Role: role.id,
       id_User: user.id,
     });
     if (!userRole) {

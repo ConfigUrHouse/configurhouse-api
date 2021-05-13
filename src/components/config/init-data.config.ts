@@ -128,10 +128,10 @@ async function initConfigurations() {
     if (
       valuePAC &&
       config &&
-      !(await ConfigurationValue.findOne({ where: { id: valuePAC.id, id_Configuration: config.id } }))
+      !(await ConfigurationValue.findOne({ where: { id_Value: valuePAC.id, id_Configuration: config.id } }))
     ) {
       await ConfigurationValue.create({
-        id: valuePAC.id,
+        id_Value: valuePAC.id,
         id_Configuration: config.id,
       });
     }
@@ -139,10 +139,10 @@ async function initConfigurations() {
     if (
       valueBois &&
       config &&
-      !(await ConfigurationValue.findOne({ where: { id: valueBois.id, id_Configuration: config.id } }))
+      !(await ConfigurationValue.findOne({ where: { id_Value: valueBois.id, id_Configuration: config.id } }))
     ) {
       await ConfigurationValue.create({
-        id: valueBois.id,
+        id_Value: valueBois.id,
         id_Configuration: config.id,
       });
     }
@@ -207,10 +207,10 @@ async function initValuePosteConsos() {
   if (
     valuePAC &&
     posteConsoChauffage &&
-    !(await ValuePosteConso.findOne({ where: { id: valuePAC.id, id_PosteConso: posteConsoChauffage.id } }))
+    !(await ValuePosteConso.findOne({ where: { id_Value: valuePAC.id, id_PosteConso: posteConsoChauffage.id } }))
   ) {
     ValuePosteConso.create({
-      id: valuePAC.id,
+      id_Value: valuePAC.id,
       id_PosteConso: posteConsoChauffage.id,
       modifier: 80.0,
     });
@@ -218,10 +218,10 @@ async function initValuePosteConsos() {
   if (
     valuePAC &&
     posteConsoEau &&
-    !(await ValuePosteConso.findOne({ where: { id: valuePAC.id, id_PosteConso: posteConsoEau.id } }))
+    !(await ValuePosteConso.findOne({ where: { id_Value: valuePAC.id, id_PosteConso: posteConsoEau.id } }))
   ) {
     ValuePosteConso.create({
-      id: valuePAC.id,
+      id_Value: valuePAC.id,
       id_PosteConso: posteConsoEau.id,
       modifier: 90.0,
     });
@@ -229,10 +229,10 @@ async function initValuePosteConsos() {
   if (
     valueBois &&
     posteConsoChauffage &&
-    !(await ValuePosteConso.findOne({ where: { id: valueBois.id, id_PosteConso: posteConsoChauffage.id } }))
+    !(await ValuePosteConso.findOne({ where: { id_Value: valueBois.id, id_PosteConso: posteConsoChauffage.id } }))
   ) {
     ValuePosteConso.create({
-      id: valueBois.id,
+      id_Value: valueBois.id,
       id_PosteConso: posteConsoChauffage.id,
       modifier: 150.0,
     });
@@ -279,10 +279,12 @@ async function initConsommationsPostesConso() {
     if (
       consommation &&
       posteConso1 &&
-      !(await ConsommationPosteConso.findOne({ where: { id: consommation.id, id_PosteConso: posteConso1.id } }))
+      !(await ConsommationPosteConso.findOne({
+        where: { id_Consommation: consommation.id, id_PosteConso: posteConso1.id },
+      }))
     ) {
       ConsommationPosteConso.create({
-        id: consommation.id,
+        id_Consommation: consommation.id,
         id_PosteConso: posteConso1.id,
         Conso_reference: 4092,
         Conso: 3000,
@@ -292,10 +294,12 @@ async function initConsommationsPostesConso() {
     if (
       consommation &&
       posteConso2 &&
-      !(await ConsommationPosteConso.findOne({ where: { id: consommation.id, id_PosteConso: posteConso2.id } }))
+      !(await ConsommationPosteConso.findOne({
+        where: { id_Consommation: consommation.id, id_PosteConso: posteConso2.id },
+      }))
     ) {
       ConsommationPosteConso.create({
-        id: consommation.id,
+        id_Consommation: consommation.id,
         id_PosteConso: posteConso2.id,
         Conso_reference: 462,
         Conso: 300,
@@ -462,37 +466,37 @@ async function initUserRoles() {
   if (
     !(await UserRole.findOne({
       where: {
-        id: adminRole?.id,
+        id_Role: adminRole?.id,
         id_User: 123,
       },
     }))
   )
     UserRole.create({
-      id: adminRole?.id,
+      id_Role: adminRole?.id,
       id_User: 123,
     });
   if (
     !(await UserRole.findOne({
       where: {
-        id: collabRole?.id,
+        id_Role: collabRole?.id,
         id_User: 123,
       },
     }))
   )
     UserRole.create({
-      id: collabRole?.id,
+      id_Role: collabRole?.id,
       id_User: 123,
     });
   if (
     !(await UserRole.findOne({
       where: {
-        id: userRole?.id,
+        id_Role: userRole?.id,
         id_User: 123,
       },
     }))
   )
     UserRole.create({
-      id: userRole?.id,
+      id_Role: userRole?.id,
       id_User: 123,
     });
 }

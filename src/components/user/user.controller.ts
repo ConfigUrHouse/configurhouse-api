@@ -36,7 +36,7 @@ export const findAll = async (req: Request, res: Response, next: NextFunction) =
       const role = await RoleService.findRoleByName(UserRoles[roleName as keyof typeof UserRoles]);
       const filteredRows = await asyncFilter(data.rows, async (user: User) => {
         const userRoles = await user.getUserRoles();
-        return userRoles.some((userRole) => userRole.id === role.id);
+        return userRoles.some((userRole) => userRole.id_Role === role.id);
       });
       res.send(getPagingData({ count: filteredRows.length, rows: filteredRows }, page, limit));
     } else {
@@ -229,16 +229,16 @@ export const updateRoles = async (req: Request, res: Response, next: NextFunctio
     return next(new ErrorHandler(400, `Invalid role id '${roleIds[roles.indexOf(null)]}'`));
   const currentRoles: UserRole[] = await user.getUserRoles();
   availableRoles.forEach(async (availableRole) => {
-    const hasRole = currentRoles.some((role) => role.id === availableRole.id);
+    const hasRole = currentRoles.some((role) => role.id_Role === availableRole.id);
     if (hasRole && !roleIds.includes(availableRole.id)) {
       try {
-        await UserRole.destroy({ where: { id: availableRole.id, id_User: user.id } });
+        await UserRole.destroy({ where: { id_Role: availableRole.id, id_User: user.id } });
       } catch (err) {
         return next(new ErrorHandler(500, 'Unable to delete UserRole'));
       }
     } else if (!hasRole && roleIds.includes(availableRole.id)) {
       try {
-        await UserRole.create({ id: availableRole.id, id_User: user.id });
+        await UserRole.create({ id_Role: availableRole.id, id_User: user.id });
       } catch (err) {
         return next(new ErrorHandler(500, 'Unable to create UserRole'));
       }

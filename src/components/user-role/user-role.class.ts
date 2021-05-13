@@ -9,19 +9,19 @@ export enum UserRoles {
 }
 
 export interface UserRoleAttributes {
-  id: number;
+  id_Role: number;
   id_User: number;
 }
 
-export type UserRolePk = 'id' | 'id_User';
+export type UserRolePk = 'id_Role' | 'id_User';
 export type UserRoleId = UserRole[UserRolePk];
 export type UserRoleCreationAttributes = Optional<UserRoleAttributes, UserRolePk>;
 
 export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttributes> implements UserRoleAttributes {
-  id!: number;
+  id_Role!: number;
   id_User!: number;
 
-  // UserRole belongsTo Role via id
+  // UserRole belongsTo Role via id_Role
   role!: Role;
   getRole!: Sequelize.BelongsToGetAssociationMixin<Role>;
   setRole!: Sequelize.BelongsToSetAssociationMixin<Role, RoleId>;
@@ -35,7 +35,7 @@ export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttribut
   static initModel(sequelize: Sequelize.Sequelize): typeof UserRole {
     UserRole.init(
       {
-        id: {
+        id_Role: {
           type: DataTypes.INTEGER,
           allowNull: false,
           primaryKey: true,
@@ -63,12 +63,17 @@ export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttribut
             name: 'PRIMARY',
             unique: true,
             using: 'BTREE',
-            fields: [{ name: 'id' }, { name: 'id_User' }],
+            fields: [{ name: 'id_Role' }, { name: 'id_User' }],
           },
           {
             name: 'UserRole_User0_FK',
             using: 'BTREE',
             fields: [{ name: 'id_User' }],
+          },
+          {
+            name: 'UserRole_Role0_FK',
+            using: 'BTREE',
+            fields: [{ name: 'id_Role' }],
           },
         ],
       }

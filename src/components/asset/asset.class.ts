@@ -55,18 +55,6 @@ export class Asset extends Model<AssetAttributes, AssetCreationAttributes> imple
   hasValue!: Sequelize.HasManyHasAssociationMixin<Value, ValueId>;
   hasValues!: Sequelize.HasManyHasAssociationsMixin<Value, ValueId>;
   countValues!: Sequelize.HasManyCountAssociationsMixin;
-  // Asset hasMany Value via id_Asset_AssetValue3D
-  values3D!: Value[];
-  getValues3D!: Sequelize.HasManyGetAssociationsMixin<Value>;
-  setValues3D!: Sequelize.HasManySetAssociationsMixin<Value, ValueId>;
-  addValue3D!: Sequelize.HasManyAddAssociationMixin<Value, ValueId>;
-  addValues3D!: Sequelize.HasManyAddAssociationsMixin<Value, ValueId>;
-  createValue3D!: Sequelize.HasManyCreateAssociationMixin<Value>;
-  removeValue3D!: Sequelize.HasManyRemoveAssociationMixin<Value, ValueId>;
-  removeValues3D!: Sequelize.HasManyRemoveAssociationsMixin<Value, ValueId>;
-  hasValue3D!: Sequelize.HasManyHasAssociationMixin<Value, ValueId>;
-  hasValues3D!: Sequelize.HasManyHasAssociationsMixin<Value, ValueId>;
-  countValues3D!: Sequelize.HasManyCountAssociationsMixin;
   // Asset belongsTo AssetType via id_AssetType
   assetType!: AssetType;
   getAssetType!: Sequelize.BelongsToGetAssociationMixin<AssetType>;

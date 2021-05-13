@@ -4,6 +4,7 @@ import type {
   ConsommationPosteConso,
   ConsommationPosteConsoId,
 } from '../consommation-poste-conso/consommation-poste-conso.class';
+import { Value, ValueId } from '../value/value.class';
 
 export interface PosteConsoAttributes {
   id: number;
@@ -22,7 +23,7 @@ export class PosteConso
   name!: string;
   description!: string;
 
-  // PosteConso belongsToMany Consommation via id_PosteConso and id
+  // PosteConso belongsToMany Consommation via id_PosteConso and id_Consommation
   consommations!: Consommation[];
   getConsommations!: Sequelize.BelongsToManyGetAssociationsMixin<Consommation>;
   setConsommations!: Sequelize.BelongsToManySetAssociationsMixin<Consommation, ConsommationId>;
@@ -34,6 +35,18 @@ export class PosteConso
   hasConsommation!: Sequelize.BelongsToManyHasAssociationMixin<Consommation, ConsommationId>;
   hasConsommations!: Sequelize.BelongsToManyHasAssociationsMixin<Consommation, ConsommationId>;
   countConsommations!: Sequelize.BelongsToManyCountAssociationsMixin;
+  // PosteConso belongsToMany Value via id_Value and id_PosteConso
+  values!: Value[];
+  getValues!: Sequelize.BelongsToManyGetAssociationsMixin<Value>;
+  setValues!: Sequelize.BelongsToManySetAssociationsMixin<Value, ValueId>;
+  addValue!: Sequelize.BelongsToManyAddAssociationMixin<Value, ValueId>;
+  addValues!: Sequelize.BelongsToManyAddAssociationsMixin<Value, ValueId>;
+  createValues!: Sequelize.BelongsToManyCreateAssociationMixin<Value>;
+  removeValue!: Sequelize.BelongsToManyRemoveAssociationMixin<Value, ValueId>;
+  removeValues!: Sequelize.BelongsToManyRemoveAssociationsMixin<Value, ValueId>;
+  hasValue!: Sequelize.BelongsToManyHasAssociationMixin<Value, ValueId>;
+  hasValues!: Sequelize.BelongsToManyHasAssociationsMixin<Value, ValueId>;
+  countValues!: Sequelize.BelongsToManyCountAssociationsMixin;
   // PosteConso hasMany ConsommationPosteConso via id_PosteConso
   consommationPosteConsos!: ConsommationPosteConso[];
   getConsommationPosteConsos!: Sequelize.HasManyGetAssociationsMixin<ConsommationPosteConso>;

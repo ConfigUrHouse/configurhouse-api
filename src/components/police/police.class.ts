@@ -17,7 +17,7 @@ export class Police extends Model<PoliceAttributes, PoliceCreationAttributes> im
   name!: string;
   description!: string;
 
-  // Police belongsToMany User via id and id_User
+  // Police belongsToMany User via id_Police and id_User
   users!: User[];
   getUsers!: Sequelize.BelongsToManyGetAssociationsMixin<User>;
   setUsers!: Sequelize.BelongsToManySetAssociationsMixin<User, UserId>;
@@ -29,7 +29,7 @@ export class Police extends Model<PoliceAttributes, PoliceCreationAttributes> im
   hasUser!: Sequelize.BelongsToManyHasAssociationMixin<User, UserId>;
   hasUsers!: Sequelize.BelongsToManyHasAssociationsMixin<User, UserId>;
   countUsers!: Sequelize.BelongsToManyCountAssociationsMixin;
-  // Police hasMany UserPolice via id
+  // Police hasMany UserPolice via id_Police
   userPolices!: UserPolice[];
   getUserPolices!: Sequelize.HasManyGetAssociationsMixin<UserPolice>;
   setUserPolices!: Sequelize.HasManySetAssociationsMixin<UserPolice, UserPoliceId>;

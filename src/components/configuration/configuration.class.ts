@@ -35,7 +35,7 @@ export class Configuration
   hasConfigurationValue!: Sequelize.HasManyHasAssociationMixin<ConfigurationValue, ConfigurationValueId>;
   hasConfigurationValues!: Sequelize.HasManyHasAssociationsMixin<ConfigurationValue, ConfigurationValueId>;
   countConfigurationValues!: Sequelize.HasManyCountAssociationsMixin;
-  // Configuration belongsToMany Value via id_Configuration and id
+  // Configuration belongsToMany Value via id_Configuration and id_Value
   values!: Value[];
   getValues!: Sequelize.BelongsToManyGetAssociationsMixin<Value>;
   setValues!: Sequelize.BelongsToManySetAssociationsMixin<Value, ValueId>;
