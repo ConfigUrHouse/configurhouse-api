@@ -7,10 +7,10 @@ export const valuePosteConsoRouter = Router();
 
 valuePosteConsoRouter.get('/', findAll);
 
-valuePosteConsoRouter.get('/:id', findOne);
+valuePosteConsoRouter.get('/:idValue-idPosteConso', findOne);
 
-valuePosteConsoRouter.put('/:id', [auth, validateAdminRole], update);
+valuePosteConsoRouter.put('/:idValue-idPosteConso', [auth, validateAdminRole], update);
 
-valuePosteConsoRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
+valuePosteConsoRouter.delete('/:idValue-idPosteConso', [auth, validateAdminRole], deleteOne);
 
 valuePosteConsoRouter.delete('/', [auth, validateAdminRole], deleteAll);

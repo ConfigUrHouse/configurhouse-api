@@ -7,10 +7,10 @@ export const configurationValueRouter = Router();
 
 configurationValueRouter.get('/', findAll);
 
-configurationValueRouter.get('/:id', findOne);
+configurationValueRouter.get('/:idValue-:idConfiguration', findOne);
 
-configurationValueRouter.put('/:id', [auth, validateAdminRole], update);
+configurationValueRouter.put('/:idValue-:idConfiguration', [auth, validateAdminRole], update);
 
-configurationValueRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
+configurationValueRouter.delete('/:idValue-:idConfiguration', [auth, validateAdminRole], deleteOne);
 
 configurationValueRouter.delete('/', [auth, validateAdminRole], deleteAll);
