@@ -19,7 +19,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
   ConfigurationValue.findOne({
     where: {
       id_Value: idValue,
-      id_Configuration: idConfiguration
+      id_Configuration: idConfiguration,
     },
   })
     .then((data) => {
@@ -37,7 +37,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
   ConfigurationValue.update(req.body, {
     where: {
       id_Value: idValue,
-      id_Configuration: idConfiguration
+      id_Configuration: idConfiguration,
     },
   })
     .then((num: any) => {

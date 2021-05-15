@@ -13,7 +13,7 @@ import {
 } from '../config/init-models.config';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 import { Model } from 'sequelize';
-import sequelize from 'sequelize';
+import { groupBy } from 'lodash';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -137,20 +137,14 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
                     model: PosteConso as typeof Model,
                     as: 'posteConso',
                     attributes: ['name', 'description'],
-                    include: [
-                      {
-                        model: ConsommationHouseModelPosteConso as typeof Model,
-                        as: 'consommationHouseModelPosteConsos'
-                      },
-                    ],
                   },
                 ],
-                attributes: ['conso']
+                attributes: ['conso'],
               },
             ],
           },
         ],
-        attributes: ['id_Value']
+        attributes: ['id_Value'],
       },
       {
         model: HouseModel as typeof Model,
@@ -162,19 +156,68 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
             include: [
               {
                 model: Consommation as typeof Model,
-                as: 'consommation'
+                as: 'consommation',
               },
               {
                 model: PosteConso as typeof Model,
-                as: 'posteConso'
-              }
+                as: 'posteConso',
+              },
             ],
           },
         ],
       },
     ],
-    attributes: ['name']
+    attributes: ['name'],
   });
   if (!config) return next(new ErrorHandler(404, `Configuration with id '${req.params.id}' not found`));
-  res.send(config);
+  const consoReference = config.houseModel.consommationHouseModelPosteConsos
+    .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 1)
+    .map((consommationHouseModelPosteConso) => ({
+      conso: consommationHouseModelPosteConso.consommation.conso,
+      posteConso: {
+        name: consommationHouseModelPosteConso.posteConso.name,
+        description: consommationHouseModelPosteConso.posteConso.description,
+      },
+    }));
+  const consoBase = config.houseModel.consommationHouseModelPosteConsos
+    .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 0)
+    .reduce((a, b) => a + b.consommation.conso, 0);
+  const globalReference = consoReference.reduce((a, b) => a + b.conso, 0);
+  const valuePosteConsos = config.configurationValues.flatMap(
+    (configurationValue) => configurationValue.value.valuePosteConsos
+  );
+  const posteConsos = groupBy(valuePosteConsos, (valuePosteConso) => valuePosteConso.posteConso.name);
+  const consoByPoste = Object.keys(posteConsos).map((posteConso) => ({
+    posteConso: { name: posteConso },
+    conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0),
+  }));
+  const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBase;
+  const consommations = {
+    context: {
+      occupants: config.houseModel.occupants,
+    },
+    global: {
+      reference: globalReference,
+      config: globalConfig,
+      diffPercentage: Math.round((globalConfig / globalReference) * 100) - 100,
+    },
+    byPosteConso: {
+      reference: consoReference.map((conso) => ({
+        ...conso,
+        percentageOfGlobal: Math.round((conso.conso / globalReference) * 100),
+      })),
+      config: consoByPoste.map((conso) => ({
+        ...conso,
+        percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
+        diffPercentageOfPosteConsoReference:
+          Math.round(
+            (conso.conso /
+              (consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso.name) as typeof conso)
+                .conso) *
+              100
+          ) - 100,
+      })),
+    },
+  };
+  res.send(consommations);
 };

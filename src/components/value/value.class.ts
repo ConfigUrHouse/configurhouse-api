@@ -4,6 +4,7 @@ import type { Configuration, ConfigurationId } from '../configuration/configurat
 import type { ConfigurationValue, ConfigurationValueId } from '../configuration-value/configuration-value.class';
 import type { OptionConf, OptionConfId } from '../option-conf/option-conf.class';
 import { PosteConso, PosteConsoId } from '../poste-conso/poste-conso.class';
+import { ValuePosteConso, ValuePosteConsoId } from '../value-poste-conso/value-poste-conso.class';
 
 export interface ValueAttributes {
   id: number;
@@ -72,6 +73,18 @@ export class Value extends Model<ValueAttributes, ValueCreationAttributes> imple
   hasConfigurationValue!: Sequelize.HasManyHasAssociationMixin<ConfigurationValue, ConfigurationValueId>;
   hasConfigurationValues!: Sequelize.HasManyHasAssociationsMixin<ConfigurationValue, ConfigurationValueId>;
   countConfigurationValues!: Sequelize.HasManyCountAssociationsMixin;
+  // Value hasMany ValuePosteConso via id_Value
+  valuePosteConsos!: ValuePosteConso[];
+  getValuePosteConsos!: Sequelize.HasManyGetAssociationsMixin<ValuePosteConso>;
+  setValuePosteConsos!: Sequelize.HasManySetAssociationsMixin<ValuePosteConso, ValuePosteConsoId>;
+  addValuePosteConso!: Sequelize.HasManyAddAssociationMixin<ValuePosteConso, ValuePosteConsoId>;
+  addValuePosteConsos!: Sequelize.HasManyAddAssociationsMixin<ValuePosteConso, ValuePosteConsoId>;
+  createValuePosteConso!: Sequelize.HasManyCreateAssociationMixin<ValuePosteConso>;
+  removeValuePosteConso!: Sequelize.HasManyRemoveAssociationMixin<ValuePosteConso, ValuePosteConsoId>;
+  removeValuePosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<ValuePosteConso, ValuePosteConsoId>;
+  hasValuePosteConso!: Sequelize.HasManyHasAssociationMixin<ValuePosteConso, ValuePosteConsoId>;
+  hasValuePosteConsos!: Sequelize.HasManyHasAssociationsMixin<ValuePosteConso, ValuePosteConsoId>;
+  countValuePosteConsos!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Value {
     Value.init(

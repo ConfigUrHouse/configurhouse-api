@@ -62,14 +62,14 @@ export class ConsommationHouseModelPosteConso
           },
         },
         id_Consommation: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            references: {
-              model: 'Consommation',
-              key: 'id',
-            },
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          references: {
+            model: 'Consommation',
+            key: 'id',
           },
+        },
       },
       {
         sequelize,
