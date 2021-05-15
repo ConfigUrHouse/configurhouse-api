@@ -16,6 +16,8 @@ import {
   Mesh,
   UserRole,
   HouseModelPosteConso,
+  Consommation,
+  ConsommationHouseModelPosteConso,
 } from './init-models.config';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 
@@ -36,6 +38,8 @@ export async function initData() {
     await initPostesConso();
     await initHouseModelPosteConsos();
     await initValuePosteConsos();
+    await initConsommations();
+    await initConsommationHouseModelPosteConsos();
   } catch (error) {
     console.error(error);
   }
@@ -246,6 +250,12 @@ async function initPostesConso() {
     await PosteConso.create({
       name: 'Eau chaude',
       description: "Energie consommée pour la production d'eau chaude",
+    });
+  }
+  if (!(await PosteConso.findOne({ where: { name: 'Eclairage' } }))) {
+    await PosteConso.create({
+      name: 'Eclairage',
+      description: "Energie consommée pour l'éclairage",
     });
   }
 }
@@ -513,4 +523,25 @@ async function initOptionConfs() {
   if (model2 && mesh2 && !(await OptionConf.findOne({ where: { name: 'Charpente', id_HouseModel: model2.id } }))) {
     await OptionConf.create({ name: 'Charpente', id_HouseModel: model2.id, id_Mesh: mesh2.id });
   }
+}
+
+async function initConsommations() {
+  if (!await Consommation.findOne({ where: { name: 'Ampoules' } }))
+    Consommation.create({
+      name: 'Ampoules',
+      conso: 200
+    })
+}
+
+async function initConsommationHouseModelPosteConsos() {
+  const model1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
+  const model2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
+  const conso = await Consommation.findOne({ where: { name: 'Ampoules' } })
+  const posteConso = await PosteConso.findOne({ where: { name: 'Eclairage' } })
+  if (model1 && conso && posteConso && !await ConsommationHouseModelPosteConso.findOne({ where: { id_Consommation: conso.id, id_HouseModel: model1.id, id_PosteConso: posteConso.id } }))
+    ConsommationHouseModelPosteConso.create({
+      id_Consommation: conso.id,
+      id_HouseModel: model1.id,
+      id_PosteConso: posteConso.id
+    })
 }
