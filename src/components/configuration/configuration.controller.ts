@@ -4,13 +4,16 @@ import { ErrorHandler } from '../../middleware/error-handler';
 import { getPagination, getPagingData } from '../../shared/pagination';
 import {
   ConfigurationValue,
-  HouseModelPosteConso,
+  Consommation,
+  ConsommationHouseModelPosteConso,
+  HouseModel,
   OptionConf,
   PosteConso,
   Value,
 } from '../config/init-models.config';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 import { Model } from 'sequelize';
+import sequelize from 'sequelize';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -136,11 +139,10 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
                     attributes: ['name', 'description'],
                     include: [
                       {
-                        model: HouseModelPosteConso as typeof Model,
-                        as: 'houseModelPosteConsos',
-                        attributes: ['conso_reference']
-                      }
-                    ]
+                        model: ConsommationHouseModelPosteConso as typeof Model,
+                        as: 'consommationHouseModelPosteConsos'
+                      },
+                    ],
                   },
                 ],
                 attributes: ['conso']
@@ -150,10 +152,29 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
         ],
         attributes: ['id_Value']
       },
+      {
+        model: HouseModel as typeof Model,
+        as: 'houseModel',
+        include: [
+          {
+            model: ConsommationHouseModelPosteConso as typeof Model,
+            as: 'consommationHouseModelPosteConsos',
+            include: [
+              {
+                model: Consommation as typeof Model,
+                as: 'consommation'
+              },
+              {
+                model: PosteConso as typeof Model,
+                as: 'posteConso'
+              }
+            ],
+          },
+        ],
+      },
     ],
     attributes: ['name']
   });
   if (!config) return next(new ErrorHandler(404, `Configuration with id '${req.params.id}' not found`));
-
   res.send(config);
 };

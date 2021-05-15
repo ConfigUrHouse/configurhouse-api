@@ -15,7 +15,6 @@ import {
   PosteConso,
   Mesh,
   UserRole,
-  HouseModelPosteConso,
   Consommation,
   ConsommationHouseModelPosteConso,
 } from './init-models.config';
@@ -36,7 +35,6 @@ export async function initData() {
     await initValues();
     await initConfigurations();
     await initPostesConso();
-    await initHouseModelPosteConsos();
     await initValuePosteConsos();
     await initConsommations();
     await initConsommationHouseModelPosteConsos();
@@ -257,38 +255,6 @@ async function initPostesConso() {
       name: 'Eclairage',
       description: "Energie consommée pour l'éclairage",
     });
-  }
-}
-
-async function initHouseModelPosteConsos() {
-  const houseModel1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
-  if (houseModel1) {
-    const posteConso1 = await PosteConso.findOne({ where: { name: 'Chauffage' } });
-    if (
-      posteConso1 &&
-      !(await HouseModelPosteConso.findOne({
-        where: { id_HouseModel: houseModel1.id, id_PosteConso: posteConso1.id },
-      }))
-    ) {
-      HouseModelPosteConso.create({
-        id_HouseModel: houseModel1.id,
-        id_PosteConso: posteConso1.id,
-        conso_reference: 4092,
-      });
-    }
-    const posteConso2 = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
-    if (
-      posteConso2 &&
-      !(await HouseModelPosteConso.findOne({
-        where: { id_HouseModel: houseModel1.id, id_PosteConso: posteConso2.id },
-      }))
-    ) {
-      HouseModelPosteConso.create({
-        id_HouseModel: houseModel1.id,
-        id_PosteConso: posteConso2.id,
-        conso_reference: 462,
-      });
-    }
   }
 }
 
@@ -529,19 +495,59 @@ async function initConsommations() {
   if (!await Consommation.findOne({ where: { name: 'Ampoules' } }))
     Consommation.create({
       name: 'Ampoules',
-      conso: 200
+      conso: 200,
+      is_reference: 0
     })
+  if (!await Consommation.findOne({ where: { name: 'Chauffage référence 2 personnes 30m²' } })) {
+    Consommation.create({
+      name: 'Chauffage référence 2 personnes 30m²',
+      conso: 4092,
+      is_reference: 1
+    })
+  }
+  if (!await Consommation.findOne({ where: { name: 'Eau chaude référence 2 personnes 30m²' } })) {
+    Consommation.create({
+      name: 'Eau chaude référence 2 personnes 30m²',
+      conso: 462,
+      is_reference: 1
+    })
+  }
 }
 
 async function initConsommationHouseModelPosteConsos() {
   const model1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
   const model2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
-  const conso = await Consommation.findOne({ where: { name: 'Ampoules' } })
-  const posteConso = await PosteConso.findOne({ where: { name: 'Eclairage' } })
-  if (model1 && conso && posteConso && !await ConsommationHouseModelPosteConso.findOne({ where: { id_Consommation: conso.id, id_HouseModel: model1.id, id_PosteConso: posteConso.id } }))
+  const consoBaseAmpoules = await Consommation.findOne({ where: { name: 'Ampoules' } })
+  const consoRefChauffage = await Consommation.findOne({ where: { name: 'Chauffage référence 2 personnes 30m²' } })
+  const consoRefEauChaude = await Consommation.findOne({ where: { name: 'Eau chaude référence 2 personnes 30m²' } })
+  const posteConsoEclairage = await PosteConso.findOne({ where: { name: 'Eclairage' } })
+  const posteConsoChauffage = await PosteConso.findOne({ where: { name: 'Chauffage' } });
+  const posteConsoEauChaude = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
+  if (model1 && consoBaseAmpoules && posteConsoEclairage && !await ConsommationHouseModelPosteConso.findOne({ where: { id_Consommation: consoBaseAmpoules.id, id_HouseModel: model1.id, id_PosteConso: posteConsoEclairage.id } }))
     ConsommationHouseModelPosteConso.create({
-      id_Consommation: conso.id,
+      id_Consommation: consoBaseAmpoules.id,
       id_HouseModel: model1.id,
-      id_PosteConso: posteConso.id
+      id_PosteConso: posteConsoEclairage.id
     })
+  if (model1 && posteConsoChauffage && consoRefChauffage && !(await ConsommationHouseModelPosteConso.findOne({
+    where: { id_HouseModel: model1.id, id_PosteConso: posteConsoChauffage.id, id_Consommation: consoRefChauffage.id },
+  }))
+  ) {
+    ConsommationHouseModelPosteConso.create({
+      id_HouseModel: model1.id,
+      id_PosteConso: posteConsoChauffage.id,
+      id_Consommation: consoRefChauffage.id
+    });
+  }
+  
+  if (model1 && posteConsoEauChaude && consoRefEauChaude && !(await ConsommationHouseModelPosteConso.findOne({
+      where: { id_HouseModel: model1.id, id_PosteConso: posteConsoEauChaude.id, id_Consommation: consoRefEauChaude.id },
+    }))
+  ) {
+    ConsommationHouseModelPosteConso.create({
+      id_HouseModel: model1.id,
+      id_PosteConso: posteConsoEauChaude.id,
+      id_Consommation: consoRefEauChaude.id
+    });
+  }
 }

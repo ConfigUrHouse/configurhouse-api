@@ -3,7 +3,6 @@ import type { Asset, AssetId } from '../asset/asset.class';
 import type { Configuration, ConfigurationId } from '../configuration/configuration.class';
 import { ConsommationHouseModelPosteConso, ConsommationHouseModelPosteConsoId } from '../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class';
 import { Consommation, ConsommationId } from '../consommation/consommation.class';
-import { HouseModelPosteConso, HouseModelPosteConsoId } from '../house-model-poste-conso/house-model-poste-conso.class';
 import type { ModelType, ModelTypeId } from '../model-type/model-type.class';
 import type { OptionConf, OptionConfId } from '../option-conf/option-conf.class';
 import { PosteConso, PosteConsoId } from '../poste-conso/poste-conso.class';
@@ -46,17 +45,6 @@ export class HouseModel
   hasConfiguration!: Sequelize.HasManyHasAssociationMixin<Configuration, ConfigurationId>;
   hasConfigurations!: Sequelize.HasManyHasAssociationsMixin<Configuration, ConfigurationId>;
   countConfigurations!: Sequelize.HasManyCountAssociationsMixin;
-  // HouseModel hasMany HouseModelPosteConso via id_HouseModel
-  houseModelPosteConsos!: HouseModelPosteConso[];
-  getHouseModelPosteConsos!: Sequelize.HasManyGetAssociationsMixin<HouseModelPosteConso>;
-  setHouseModelPosteConsos!: Sequelize.HasManySetAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
-  addHouseModelPosteConso!: Sequelize.HasManyAddAssociationMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
-  addHouseModelPosteConsos!: Sequelize.HasManyAddAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
-  createHouseModelPosteConso!: Sequelize.HasManyCreateAssociationMixin<HouseModelPosteConso>;
-  removeHouseModelPosteConso!: Sequelize.HasManyRemoveAssociationMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
-  removeHouseModelPosteConsos!: Sequelize.HasManyRemoveAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
-  hasHouseModelPosteConso!: Sequelize.HasManyHasAssociationMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
-  hasHouseModelPosteConsos!: Sequelize.HasManyHasAssociationsMixin<HouseModelPosteConso, HouseModelPosteConsoId>;
   // HouseModel hasMany ConsommationHouseModelPosteConso via id_HouseModel
   consommationHouseModelPosteConsos!: ConsommationHouseModelPosteConso[];
   getConsommationHouseModelPosteConsos!: Sequelize.HasManyGetAssociationsMixin<ConsommationHouseModelPosteConso>;

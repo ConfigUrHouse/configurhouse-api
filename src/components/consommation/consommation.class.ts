@@ -7,6 +7,7 @@ export interface ConsommationAttributes {
   id: number;
   name: string;
   conso: number;
+  is_reference: number;
 }
 
 export type ConsommationPk = 'id';
@@ -19,6 +20,7 @@ export class Consommation
   id!: number;
   name!: string;
   conso!: number;
+  is_reference!: number;
 
   // Consommation hasMany ConsommationHouseModelPosteConso via id_Consommation
   consommationHouseModelPosteConsos!: ConsommationHouseModelPosteConso[];
@@ -74,6 +76,10 @@ export class Consommation
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        is_reference: {
+          type: DataTypes.TINYINT,
+          allowNull: false
+        }
       },
       {
         sequelize,
