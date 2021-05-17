@@ -83,6 +83,11 @@ declare const module: WebpackHotModule;
   app.use(handleError);
 
   /**
+   * View engine
+   */
+  app.set('view engine', 'pug');
+
+  /**
    * Database initialization
    */
   initModels(mysql.instance);

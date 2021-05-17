@@ -8,6 +8,7 @@ import {
   deleteAll,
   deleteOne,
   getConfigurationConsommation,
+  downloadConfigurationConsommation,
 } from './configuration.controller';
 
 /**
@@ -30,6 +31,55 @@ import {
  *       id_User:
  *         type: integer
  *         required: false
+ *   Consommations:
+ *     type: object
+ *     properties:
+ *       context:
+ *         type: object
+ *         properties:
+ *           occupants:
+ *             type: integer
+ *       global:
+ *         type: object
+ *         properties:
+ *           reference:
+ *             type: integer
+ *           config:
+ *             type: integer
+ *           diffPercentage:
+ *             type: integer
+ *       byPosteConso:
+ *         type: object
+ *         properties:
+ *           reference:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 conso:
+ *                   type: integer
+ *                 posteConso:
+ *                   type: object
+ *                   properties:
+ *                     name: string
+ *                     description: string
+ *                 percentageOfGlobal:
+ *                   type: integer
+ *           config:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 conso:
+ *                   type: integer
+ *                 posteConso:
+ *                   type: object
+ *                   properties:
+ *                     name: string
+ *                 percentageOfGlobalConfig:
+ *                   type: integer
+ *                 diffPercentageOfPosteConsoReference:
+ *                   type: integer
  */
 
 export const configurationRouter = Router();
@@ -105,13 +155,42 @@ configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
  *           description: Id of the configuration
  *       responses:
  *         200:
- *           description: A paginated list of configurations
+ *           description: A comparison of energetic consumptions
  *           schema:
- *             $ref: '#/definitions/PaginatedArrayOfConfigurations'
+ *             $ref: '#/definitions/Consommations'
  *         400:
  *           description: Invalid request parameters
  *         404:
  *           description: Configuration not found
  */
-configurationRouter.get('/:id/conso', getConfigurationConsommation); //TODO swagger
+configurationRouter.get('/:id/conso', getConfigurationConsommation);
 //#endregion
+
+//#region GET /configuration/:id/conso
+/**
+ * @swagger
+ *
+ * paths:
+ *   /configuration/:id/conso/download:
+ *     get:
+ *       summary: Get estimated energy consumption for a configuration
+ *       tags:
+ *         - Configuration
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: integer
+ *           description: Id of the configuration
+ *       responses:
+ *         200:
+ *           description: A pdf file with a comparison of energetic consumptions
+ *           schema:
+ *             type: application/pdf
+ *         400:
+ *           description: Invalid request parameters
+ *         404:
+ *           description: Configuration not found
+ */
+ configurationRouter.get('/:id/conso/download', downloadConfigurationConsommation);
+ //#endregion

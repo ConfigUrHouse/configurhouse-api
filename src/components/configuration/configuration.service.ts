@@ -1,0 +1,154 @@
+import { groupBy } from "lodash";
+import { Model } from "sequelize/types";
+import { ErrorHandler } from "../../middleware/error-handler";
+import { ConfigurationValue } from "../configuration-value/configuration-value.class";
+import { ConsommationHouseModelPosteConso } from "../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class";
+import { Consommation } from "../consommation/consommation.class";
+import { HouseModel } from "../house-model/house-model.class";
+import { OptionConf } from "../option-conf/option-conf.class";
+import { PosteConso } from "../poste-conso/poste-conso.class";
+import { ValuePosteConso } from "../value-poste-conso/value-poste-conso.class";
+import { Value } from "../value/value.class";
+import { Configuration } from "./configuration.class";
+
+export interface Consommations {
+  context: {
+    occupants: number;
+  };
+  global: {
+    reference: number;
+    config: number;
+    diffPercentage: number;
+  };
+  byPosteConso: {
+    reference: {
+      conso: number;
+      posteConso: {
+        name: string;
+        description: string;
+      };
+      percentageOfGlobal: number;
+    }[];
+    config: {
+      conso: number;
+      posteConso: {
+        name: string;
+      };
+      percentageOfGlobalConfig: number;
+      diffPercentageOfPosteConsoReference: number;
+    }[];
+  };
+}
+
+export default class ConfigurationService {
+  public static async getConsommations(id: number): Promise<Consommations> {
+    const config = await Configuration.findByPk(id, {
+      include: [
+        {
+          model: ConfigurationValue as typeof Model,
+          as: 'configurationValues',
+          include: [
+            {
+              model: Value as typeof Model,
+              as: 'value',
+              attributes: ['name'],
+              include: [
+                {
+                  model: OptionConf as typeof Model,
+                  as: 'optionConf',
+                  attributes: ['name'],
+                },
+                {
+                  model: ValuePosteConso as typeof Model,
+                  as: 'valuePosteConsos',
+                  include: [
+                    {
+                      model: PosteConso as typeof Model,
+                      as: 'posteConso',
+                      attributes: ['name', 'description'],
+                    },
+                  ],
+                  attributes: ['conso'],
+                },
+              ],
+            },
+          ],
+          attributes: ['id_Value'],
+        },
+        {
+          model: HouseModel as typeof Model,
+          as: 'houseModel',
+          include: [
+            {
+              model: ConsommationHouseModelPosteConso as typeof Model,
+              as: 'consommationHouseModelPosteConsos',
+              include: [
+                {
+                  model: Consommation as typeof Model,
+                  as: 'consommation',
+                },
+                {
+                  model: PosteConso as typeof Model,
+                  as: 'posteConso',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      attributes: ['name'],
+    });
+    if (!config) throw new ErrorHandler(404, `Configuration with id '${id}' not found`);
+    const consoReference = config.houseModel.consommationHouseModelPosteConsos
+      .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 1)
+      .map((consommationHouseModelPosteConso) => ({
+        conso: consommationHouseModelPosteConso.consommation.conso,
+        posteConso: {
+          name: consommationHouseModelPosteConso.posteConso.name,
+          description: consommationHouseModelPosteConso.posteConso.description,
+        },
+      }));
+    const consoBase = config.houseModel.consommationHouseModelPosteConsos
+      .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 0)
+      .reduce((a, b) => a + b.consommation.conso, 0);
+    const globalReference = consoReference.reduce((a, b) => a + b.conso, 0);
+    const valuePosteConsos = config.configurationValues.flatMap(
+      (configurationValue) => configurationValue.value.valuePosteConsos
+    );
+    const posteConsos = groupBy(valuePosteConsos, (valuePosteConso) => valuePosteConso.posteConso.name);
+    const consoByPoste = Object.keys(posteConsos).map((posteConso) => ({
+      posteConso: { name: posteConso },
+      conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0),
+    }));
+    const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBase;
+    const consommations = {
+      context: {
+        occupants: config.houseModel.occupants,
+        options: config.configurationValues.map(configurationValue => ({ option: configurationValue.value.optionConf.name, value: configurationValue.value.name }))
+      },
+      global: {
+        reference: globalReference,
+        config: globalConfig,
+        diffPercentage: Math.round((globalConfig / globalReference) * 100) - 100,
+      },
+      byPosteConso: {
+        reference: consoReference.map((conso) => ({
+          ...conso,
+          percentageOfGlobal: Math.round((conso.conso / globalReference) * 100),
+        })),
+        config: consoByPoste.map((conso) => ({
+          ...conso,
+          percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
+          diffPercentageOfPosteConsoReference:
+            Math.round(
+              (conso.conso /
+                (consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso.name) as typeof conso)
+                  .conso) *
+              100
+            ) - 100,
+        })),
+      },
+    };
+    return consommations
+  }
+}
