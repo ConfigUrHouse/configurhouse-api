@@ -11,7 +11,21 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
+export const findByConfigurationId = (req: Request, res: Response, next: NextFunction) => {
+  const idConfiguration = req.params.idConfiguration;
 
+  ConfigurationValue.findAll({
+    where: {
+      id_Configuration: idConfiguration
+    },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err: any) => {
+      next(new ErrorHandler(500, 'Message to define'));
+    });
+};
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
   const idValue = req.params.idValue;
   const idConfiguration = req.params.idConfiguration;
