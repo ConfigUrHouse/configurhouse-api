@@ -12,17 +12,18 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-export const findOne = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
 
-  UserPolice.findByPk(id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
-    });
-};
+export const findByUserId = (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+  
+    UserPolice.findAll({ where: { id_User: id } })
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err: any) => {
+        next(new ErrorHandler(500, 'Message to define'));
+      });
+  };
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
@@ -43,7 +44,16 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
-
+export const create = (req: Request, res: Response, next: NextFunction) => {
+    UserPolice.create(req.body)
+      .then((userpolice) => {
+        res.status(201).send({ success: true, userpolice, message: 'UserPolice created successfully' });
+      })
+      .catch((err: Error) => {
+        next(new ErrorHandler(400, err.message));
+      });
+  };
+  
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
