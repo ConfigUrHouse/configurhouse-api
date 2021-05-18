@@ -1,15 +1,15 @@
-import { groupBy } from "lodash";
-import { Model } from "sequelize/types";
-import { ErrorHandler } from "../../middleware/error-handler";
-import { ConfigurationValue } from "../configuration-value/configuration-value.class";
-import { ConsommationHouseModelPosteConso } from "../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class";
-import { Consommation } from "../consommation/consommation.class";
-import { HouseModel } from "../house-model/house-model.class";
-import { OptionConf } from "../option-conf/option-conf.class";
-import { PosteConso } from "../poste-conso/poste-conso.class";
-import { ValuePosteConso } from "../value-poste-conso/value-poste-conso.class";
-import { Value } from "../value/value.class";
-import { Configuration } from "./configuration.class";
+import { groupBy } from 'lodash';
+import { Model } from 'sequelize/types';
+import { ErrorHandler } from '../../middleware/error-handler';
+import { ConfigurationValue } from '../configuration-value/configuration-value.class';
+import { ConsommationHouseModelPosteConso } from '../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class';
+import { Consommation } from '../consommation/consommation.class';
+import { HouseModel } from '../house-model/house-model.class';
+import { OptionConf } from '../option-conf/option-conf.class';
+import { PosteConso } from '../poste-conso/poste-conso.class';
+import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
+import { Value } from '../value/value.class';
+import { Configuration } from './configuration.class';
 
 export interface Consommations {
   context: {
@@ -106,35 +106,46 @@ export default class ConfigurationService {
           description: consommationHouseModelPosteConso.posteConso.description,
         },
       }));
-    const consoBase = config.houseModel.consommationHouseModelPosteConsos
-      .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 0)
+    const consoBase = config.houseModel.consommationHouseModelPosteConsos.filter(
+      (consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 0
+    );
     const consoBaseTotal = consoBase.reduce((a, b) => a + b.consommation.conso, 0);
     const globalReference = consoReference.reduce((a, b) => a + b.conso, 0);
-    const valuePosteConsos = config.configurationValues.flatMap(configurationValue => configurationValue.value.valuePosteConsos);
+    const valuePosteConsos = config.configurationValues.flatMap(
+      (configurationValue) => configurationValue.value.valuePosteConsos
+    );
     const posteConsos = groupBy(valuePosteConsos, (valuePosteConso) => valuePosteConso.posteConso.name);
-    const consoBasePosteConsos = groupBy(consoBase, consommationHouseModelPosteConso => consommationHouseModelPosteConso.posteConso.name);
-    const consoBaseByPoste = Object.keys(consoBasePosteConsos).map(posteConso => ({
+    const consoBasePosteConsos = groupBy(
+      consoBase,
+      (consommationHouseModelPosteConso) => consommationHouseModelPosteConso.posteConso.name
+    );
+    const consoBaseByPoste = Object.keys(consoBasePosteConsos).map((posteConso) => ({
       posteConso,
-      conso: consoBasePosteConsos[posteConso].reduce((a, b) => a + b.consommation.conso, 0)
+      conso: consoBasePosteConsos[posteConso].reduce((a, b) => a + b.consommation.conso, 0),
     }));
-    const consoOptionsByPoste = Object.keys(posteConsos).map(posteConso => ({
+    const consoOptionsByPoste = Object.keys(posteConsos).map((posteConso) => ({
       posteConso,
-      conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0)
+      conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0),
     }));
-    const consoConfigByPoste = consoBaseByPoste.concat(consoOptionsByPoste).reduce((a: Array<{posteConso: string, conso: number}>, b) => {
-      const index = a.findIndex(item => item.posteConso === b.posteConso)
-      if (index === -1) {
-        return a.concat(b)
-      } else {
-        a[index].conso += b.conso
-        return a
-      }
-    }, []);
+    const consoConfigByPoste = consoBaseByPoste
+      .concat(consoOptionsByPoste)
+      .reduce((a: Array<{ posteConso: string; conso: number }>, b) => {
+        const index = a.findIndex((item) => item.posteConso === b.posteConso);
+        if (index === -1) {
+          return a.concat(b);
+        } else {
+          a[index].conso += b.conso;
+          return a;
+        }
+      }, []);
     const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
     const consommations = {
       context: {
         occupants: config.houseModel.occupants,
-        options: config.configurationValues.map(configurationValue => ({ option: configurationValue.value.optionConf.name, value: configurationValue.value.name }))
+        options: config.configurationValues.map((configurationValue) => ({
+          option: configurationValue.value.optionConf.name,
+          value: configurationValue.value.name,
+        })),
       },
       global: {
         reference: globalReference,
@@ -152,13 +163,12 @@ export default class ConfigurationService {
           diffPercentageOfPosteConsoReference:
             Math.round(
               (conso.conso /
-                (consoReference.find(someConso => someConso.posteConso.name === conso.posteConso) as any)
-                  .conso) *
-              100
+                (consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso) as any).conso) *
+                100
             ) - 100,
         })),
       },
     };
-    return consommations
+    return consommations;
   }
 }

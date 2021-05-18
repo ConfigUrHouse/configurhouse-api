@@ -131,23 +131,58 @@ export const configurationRouter = Router();
 configurationRouter.get('/', findAll);
 //#endregion
 
-configurationRouter.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-  validateRequest(req, next, joi.object(), joi.object({
-    id: joi.number().required()
-  }));
-}, findOne);
+configurationRouter.get(
+  '/:id',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(
+      req,
+      next,
+      joi.object(),
+      joi.object({
+        id: joi.number().required(),
+      })
+    );
+  },
+  findOne
+);
 
-configurationRouter.put('/:id', [(req: Request, res: Response, next: NextFunction) => {
-  validateRequest(req, next, joi.object(), joi.object({
-    id: joi.number().required()
-  }));
-}, auth, validateAdminRole], update);
+configurationRouter.put(
+  '/:id',
+  [
+    (req: Request, res: Response, next: NextFunction) => {
+      validateRequest(
+        req,
+        next,
+        joi.object(),
+        joi.object({
+          id: joi.number().required(),
+        })
+      );
+    },
+    auth,
+    validateAdminRole,
+  ],
+  update
+);
 
-configurationRouter.delete('/:id', [(req: Request, res: Response, next: NextFunction) => {
-  validateRequest(req, next, joi.object(), joi.object({
-    id: joi.number().required()
-  }));
-}, auth, validateAdminRole], deleteOne);
+configurationRouter.delete(
+  '/:id',
+  [
+    (req: Request, res: Response, next: NextFunction) => {
+      validateRequest(
+        req,
+        next,
+        joi.object(),
+        joi.object({
+          id: joi.number().required(),
+        })
+      );
+    },
+    auth,
+    validateAdminRole,
+  ],
+  deleteOne
+);
 
 configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
@@ -177,11 +212,20 @@ configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
  *         404:
  *           description: Configuration not found
  */
-configurationRouter.get('/:id/conso', (req: Request, res: Response, next: NextFunction) => {
-  validateRequest(req, next, joi.object(), joi.object({
-    id: joi.number().required()
-  }));
-}, getConfigurationConsommation);
+configurationRouter.get(
+  '/:id/conso',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(
+      req,
+      next,
+      joi.object(),
+      joi.object({
+        id: joi.number().required(),
+      })
+    );
+  },
+  getConfigurationConsommation
+);
 //#endregion
 
 //#region GET /configuration/:id/conso
@@ -210,9 +254,18 @@ configurationRouter.get('/:id/conso', (req: Request, res: Response, next: NextFu
  *         404:
  *           description: Configuration not found
  */
-configurationRouter.get('/:id/conso/download', (req: Request, res: Response, next: NextFunction) => {
-  validateRequest(req, next, joi.object({}), joi.object({
-    id: joi.number()
-  }));
-}, downloadConfigurationConsommation);
- //#endregion
+configurationRouter.get(
+  '/:id/conso/download',
+  (req: Request, res: Response, next: NextFunction) => {
+    validateRequest(
+      req,
+      next,
+      joi.object({}),
+      joi.object({
+        id: joi.number(),
+      })
+    );
+  },
+  downloadConfigurationConsommation
+);
+//#endregion

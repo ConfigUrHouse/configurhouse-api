@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import auth from '../../middleware/auth';
 import { validateAdminRole } from '../../middleware/validate-role';
-import { findAll, findByUserId, update, deleteAll, deleteOne,create } from './user-police.controller';
+import { findAll, findByUserId, update, deleteAll, deleteOne, create } from './user-police.controller';
 
 export const userPoliceRouter = Router();
 

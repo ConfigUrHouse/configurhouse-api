@@ -1,9 +1,8 @@
-import { Configuration } from "../../components/configuration/configuration.class";
-import ConfigurationService from "../../components/configuration/configuration.service";
-import { testHelpers } from "../__mocks__/test-helpers";
+import { Configuration } from '../../components/configuration/configuration.class';
+import ConfigurationService from '../../components/configuration/configuration.service';
+import { testHelpers } from '../__mocks__/test-helpers';
 
 describe('Configuration Service', () => {
-
   const configuration = {
     name: 'Configuration T2',
     configurationValues: [
@@ -26,7 +25,7 @@ describe('Configuration Service', () => {
               conso: 90,
               posteConso: {
                 name: 'Eau chaude',
-                description: 'Energie consommée pour la production d\'eau chaude',
+                description: "Energie consommée pour la production d'eau chaude",
               },
             },
           ],
@@ -87,7 +86,7 @@ describe('Configuration Service', () => {
           posteConso: {
             id: 2,
             name: 'Eau chaude',
-            description: 'Energie consommée pour la production d\'eau chaude',
+            description: "Energie consommée pour la production d'eau chaude",
           },
         },
         {
@@ -103,7 +102,7 @@ describe('Configuration Service', () => {
           posteConso: {
             id: 3,
             name: 'Eclairage',
-            description: 'Energie consommée pour l\'éclairage',
+            description: "Energie consommée pour l'éclairage",
           },
         },
         {
@@ -119,12 +118,12 @@ describe('Configuration Service', () => {
           posteConso: {
             id: 3,
             name: 'Eclairage',
-            description: 'Energie consommée pour l\'éclairage',
+            description: "Energie consommée pour l'éclairage",
           },
         },
       ],
     },
-  }
+  };
 
   afterEach(() => {
     testHelpers.resetAll();
@@ -132,9 +131,9 @@ describe('Configuration Service', () => {
 
   describe('getConsommations', () => {
     it('should return estimated consommation for a configuration', async () => {
-      jest.spyOn(Configuration, 'findByPk').mockResolvedValue(configuration as any)
+      jest.spyOn(Configuration, 'findByPk').mockResolvedValue(configuration as any);
 
-      const result = await ConfigurationService.getConsommations(1)
+      const result = await ConfigurationService.getConsommations(1);
 
       expect(result).toEqual({
         context: {
@@ -169,7 +168,7 @@ describe('Configuration Service', () => {
               conso: 462,
               posteConso: {
                 name: 'Eau chaude',
-                description: 'Energie consommée pour la production d\'eau chaude',
+                description: "Energie consommée pour la production d'eau chaude",
               },
               percentageOfGlobal: 10,
             },
@@ -177,7 +176,7 @@ describe('Configuration Service', () => {
               conso: 100,
               posteConso: {
                 name: 'Eclairage',
-                description: 'Energie consommée pour l\'éclairage',
+                description: "Energie consommée pour l'éclairage",
               },
               percentageOfGlobal: 2,
             },
@@ -203,7 +202,7 @@ describe('Configuration Service', () => {
             },
           ],
         },
-      })
+      });
     });
   });
-})
+});
