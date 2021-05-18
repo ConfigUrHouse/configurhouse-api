@@ -36,6 +36,7 @@ import { userRoleRouter } from './components/user-role/user-role.router';
 import { valueRouter } from './components/value/value.router';
 import { utilsRouter } from './components/utils/utils.router';
 import { initData } from './components/config/init-data.config';
+import path from 'path';
 
 declare const module: WebpackHotModule;
 
@@ -86,6 +87,7 @@ declare const module: WebpackHotModule;
    * View engine
    */
   app.set('view engine', 'pug');
+  app.set('views', path.join(__dirname, "views"))
 
   /**
    * Database initialization

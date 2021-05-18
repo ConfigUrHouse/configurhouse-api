@@ -6,4 +6,23 @@ html
   body
     h1 Estimation de consommation
     h2 Contexte
-    p Consommation en kWh par an, pour #{consommations.context.occupants} habitants
+    p Consommation d'énergie par an, pour #{consommations.context.occupants} habitants
+    p Options choisies :
+    each option in consommations.context.options
+      li #{option.option} : #{option.value}
+    h2 Consommation globale
+    p Consommation de la configuration : #{consommations.global.config} kWh
+    p Consommation de référence (pour un logement équivalent) : #{consommations.global.reference} kWh
+    p Différence de consommation par rapport à la consommation de référence : #{consommations.global.diffPercentage}%
+    h2 Consommation par poste
+    each poste in consommations.byPosteConso.config
+      li= poste.posteConso + ' : ' + poste.conso + 'kWh (' + (parseInt(poste.diffPercentageOfPosteConsoReference) > 0 ? '+' : '') + poste.diffPercentageOfPosteConsoReference + '%)'
+    h3 Répartition des postes
+    each poste in consommations.byPosteConso.config
+      li #{poste.posteConso} : #{poste.percentageOfGlobalConfig}%
+    h2 Consommation de référence
+    h3 Détail des postes
+    each poste in consommations.byPosteConso.reference
+      li #{poste.posteConso.name} : #{poste.posteConso.description}
+      p #{poste.conso}kWh (#{poste.percentageOfGlobal}%)
+

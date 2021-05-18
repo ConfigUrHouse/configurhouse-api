@@ -207,45 +207,39 @@ export function initModels(sequelize: Sequelize) {
   });
   Consommation.belongsToMany(HouseModel, {
     as: 'consommationHouseModels',
-    through: ConsommationHouseModelPosteConso as typeof Model,
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
     foreignKey: 'id_Consommation',
     otherKey: 'id_HouseModel',
-    uniqueKey: 'ConsommationHouseModelPosteConso_Conso_HouseModel_un',
   });
   Consommation.belongsToMany(PosteConso, {
     as: 'consommationPosteConsos',
-    through: ConsommationHouseModelPosteConso as typeof Model,
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
     foreignKey: 'id_Consommation',
     otherKey: 'id_PosteConso',
-    uniqueKey: 'ConsommationHouseModelPosteConso_Conso_PosteConso_un',
   });
   PosteConso.belongsToMany(HouseModel, {
     as: 'posteConsoHouseModels',
-    through: ConsommationHouseModelPosteConso as typeof Model,
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
     foreignKey: 'id_PosteConso',
     otherKey: 'id_HouseModel',
-    uniqueKey: 'ConsommationHouseModelPosteConso_PosteConso_HouseModel_un',
   });
   PosteConso.belongsToMany(Consommation, {
     as: 'posteConsoConsommations',
-    through: ConsommationHouseModelPosteConso as typeof Model,
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
     foreignKey: 'id_PosteConso',
     otherKey: 'id_Consommation',
-    uniqueKey: 'ConsommationHouseModelPosteConso_PosteConso_Conso_un',
   });
   HouseModel.belongsToMany(PosteConso, {
     as: 'houseModelPosteConsos',
-    through: ConsommationHouseModelPosteConso as typeof Model,
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
     foreignKey: 'id_HouseModel',
     otherKey: 'id_PosteConso',
-    uniqueKey: 'ConsommationHouseModelPosteConso_HouseModel_PosteConso_un',
   });
   HouseModel.belongsToMany(Consommation, {
     as: 'houseModelConsommations',
-    through: ConsommationHouseModelPosteConso as typeof Model,
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
     foreignKey: 'id_HouseModel',
     otherKey: 'id_Consommation',
-    uniqueKey: 'ConsommationHouseModelPosteConso_HouseModel_Conso_un',
   });
   HouseModel.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
   Asset.hasMany(HouseModel, { as: 'houseModels', foreignKey: 'id_Asset' });

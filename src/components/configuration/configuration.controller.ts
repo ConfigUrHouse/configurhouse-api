@@ -113,6 +113,7 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
 export const downloadConfigurationConsommation = async (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
   const consommations = await ConfigurationService.getConsommations(id);
+  res.render("./consommation", { consommations: consommations })
   res.writeHead(200, {
     'Content-Type': 'application/octet-stream',
     'Content-Disposition': 'attachment; filename*=UTF-8\'\'' + 'consommations' + ".pdf",
@@ -129,5 +130,5 @@ export const downloadConfigurationConsommation = async (req: Request, res: Respo
   }).toStream((error: Error, stream: ReadStream) => {
     if (error) throw new ErrorHandler(500, error.message)
     stream.pipe(res)
-  })
+  });
 };

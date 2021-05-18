@@ -31,9 +31,7 @@ export interface Consommations {
     }[];
     config: {
       conso: number;
-      posteConso: {
-        name: string;
-      };
+      posteConso: string;
       percentageOfGlobalConfig: number;
       diffPercentageOfPosteConsoReference: number;
     }[];
@@ -110,17 +108,29 @@ export default class ConfigurationService {
       }));
     const consoBase = config.houseModel.consommationHouseModelPosteConsos
       .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 0)
-      .reduce((a, b) => a + b.consommation.conso, 0);
+    const consoBaseTotal = consoBase.reduce((a, b) => a + b.consommation.conso, 0);
     const globalReference = consoReference.reduce((a, b) => a + b.conso, 0);
-    const valuePosteConsos = config.configurationValues.flatMap(
-      (configurationValue) => configurationValue.value.valuePosteConsos
-    );
+    const valuePosteConsos = config.configurationValues.flatMap(configurationValue => configurationValue.value.valuePosteConsos);
     const posteConsos = groupBy(valuePosteConsos, (valuePosteConso) => valuePosteConso.posteConso.name);
-    const consoByPoste = Object.keys(posteConsos).map((posteConso) => ({
-      posteConso: { name: posteConso },
-      conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0),
+    const consoBasePosteConsos = groupBy(consoBase, consommationHouseModelPosteConso => consommationHouseModelPosteConso.posteConso.name);
+    const consoBaseByPoste = Object.keys(consoBasePosteConsos).map(posteConso => ({
+      posteConso,
+      conso: consoBasePosteConsos[posteConso].reduce((a, b) => a + b.consommation.conso, 0)
     }));
-    const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBase;
+    const consoOptionsByPoste = Object.keys(posteConsos).map(posteConso => ({
+      posteConso,
+      conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0)
+    }));
+    const consoConfigByPoste = consoBaseByPoste.concat(consoOptionsByPoste).reduce((a: Array<{posteConso: string, conso: number}>, b) => {
+      const index = a.findIndex(item => item.posteConso === b.posteConso)
+      if (index === -1) {
+        return a.concat(b)
+      } else {
+        a[index].conso += b.conso
+        return a
+      }
+    }, []);
+    const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
     const consommations = {
       context: {
         occupants: config.houseModel.occupants,
@@ -136,13 +146,13 @@ export default class ConfigurationService {
           ...conso,
           percentageOfGlobal: Math.round((conso.conso / globalReference) * 100),
         })),
-        config: consoByPoste.map((conso) => ({
+        config: consoConfigByPoste.map((conso) => ({
           ...conso,
           percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
           diffPercentageOfPosteConsoReference:
             Math.round(
               (conso.conso /
-                (consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso.name) as typeof conso)
+                (consoReference.find(someConso => someConso.posteConso.name === conso.posteConso) as any)
                   .conso) *
               100
             ) - 100,

@@ -80,7 +80,7 @@ export class ConsommationHouseModelPosteConso
             name: 'PRIMARY',
             unique: true,
             using: 'BTREE',
-            fields: [{ name: 'id_HouseModel' }, { name: 'id_PosteConso' }],
+            fields: [{ name: 'id_HouseModel' }, { name: 'id_PosteConso' }, { name: 'id_Consommation'}],
           },
           {
             name: 'ConsommationHouseModelPosteConso_PosteConso0_FK',

@@ -512,6 +512,13 @@ async function initConsommations() {
       is_reference: 1,
     });
   }
+  if (!(await Consommation.findOne({ where: { name: 'Eclairage référence 2 personnes 30m²' } }))) {
+    Consommation.create({
+      name: 'Eclairage référence 2 personnes 30m²',
+      conso: 100,
+      is_reference: 1,
+    });
+  }
 }
 
 async function initConsommationHouseModelPosteConsos() {
@@ -520,6 +527,7 @@ async function initConsommationHouseModelPosteConsos() {
   const consoBaseAmpoules = await Consommation.findOne({ where: { name: 'Ampoules' } });
   const consoRefChauffage = await Consommation.findOne({ where: { name: 'Chauffage référence 2 personnes 30m²' } });
   const consoRefEauChaude = await Consommation.findOne({ where: { name: 'Eau chaude référence 2 personnes 30m²' } });
+  const consoRefEclairage = await Consommation.findOne({ where: { name: 'Eclairage référence 2 personnes 30m²' } });
   const posteConsoEclairage = await PosteConso.findOne({ where: { name: 'Eclairage' } });
   const posteConsoChauffage = await PosteConso.findOne({ where: { name: 'Chauffage' } });
   const posteConsoEauChaude = await PosteConso.findOne({ where: { name: 'Eau chaude' } });
@@ -563,6 +571,21 @@ async function initConsommationHouseModelPosteConsos() {
       id_HouseModel: model1.id,
       id_PosteConso: posteConsoEauChaude.id,
       id_Consommation: consoRefEauChaude.id,
+    });
+  }
+
+  if (
+    model1 &&
+    posteConsoEclairage &&
+    consoRefEclairage &&
+    !(await ConsommationHouseModelPosteConso.findOne({
+      where: { id_HouseModel: model1.id, id_PosteConso: posteConsoEclairage.id, id_Consommation: consoRefEclairage.id },
+    }))
+  ) {
+    ConsommationHouseModelPosteConso.create({
+      id_HouseModel: model1.id,
+      id_PosteConso: posteConsoEclairage.id,
+      id_Consommation: consoRefEclairage.id,
     });
   }
 }
