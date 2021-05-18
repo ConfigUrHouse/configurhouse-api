@@ -113,7 +113,6 @@ export const getConfigurationConsommation = async (req: Request, res: Response, 
 export const downloadConfigurationConsommation = async (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
   const consommations = await ConfigurationService.getConsommations(id);
-  res.render("./consommation", { consommations: consommations })
   res.writeHead(200, {
     'Content-Type': 'application/octet-stream',
     'Content-Disposition': 'attachment; filename*=UTF-8\'\'' + 'consommations' + ".pdf",
@@ -126,7 +125,15 @@ export const downloadConfigurationConsommation = async (req: Request, res: Respo
   const html = compileFile(path.join(__dirname, "../../views/consommation.pug"))({ title: "My Beautiful Title", message: "Hello !", consommations: consommations })
   pdf.create(html, {
     phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
-    script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js')
+    script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
+    border: {
+      top: "1in",
+      right: "1in",
+      bottom: "1in",
+      left: "1in"
+    },
+    format: "A4",
+    orientation: "portrait"
   }).toStream((error: Error, stream: ReadStream) => {
     if (error) throw new ErrorHandler(500, error.message)
     stream.pipe(res)
