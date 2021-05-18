@@ -122,7 +122,7 @@ export const downloadConfigurationConsommation = async (req: Request, res: Respo
     "Content-Transfer-Encoding": "binary",
     "Pragma": "public",
   });
-  const html = compileFile(path.join(__dirname, "../../views/consommation.pug"))({ title: "My Beautiful Title", message: "Hello !", consommations: consommations })
+  const html = compileFile(path.join(__dirname, "../../views/consommation.pug"))({ consommations })
   pdf.create(html, {
     phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
     script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),

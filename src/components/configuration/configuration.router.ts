@@ -1,5 +1,6 @@
-import { Router } from 'express';
+import { NextFunction, Router, Request, Response } from 'express';
 import auth from '../../middleware/auth';
+import { validateRequest } from '../../middleware/validate-request';
 import { validateAdminRole } from '../../middleware/validate-role';
 import {
   findAll,
@@ -10,6 +11,7 @@ import {
   getConfigurationConsommation,
   downloadConfigurationConsommation,
 } from './configuration.controller';
+import joi from 'joi';
 
 /**
  * @swagger
@@ -129,11 +131,23 @@ export const configurationRouter = Router();
 configurationRouter.get('/', findAll);
 //#endregion
 
-configurationRouter.get('/:id', findOne);
+configurationRouter.get('/:id', (req: Request, res: Response, next: NextFunction) => {
+  validateRequest(req, next, joi.object(), joi.object({
+    id: joi.number().required()
+  }));
+}, findOne);
 
-configurationRouter.put('/:id', [auth, validateAdminRole], update);
+configurationRouter.put('/:id', [(req: Request, res: Response, next: NextFunction) => {
+  validateRequest(req, next, joi.object(), joi.object({
+    id: joi.number().required()
+  }));
+}, auth, validateAdminRole], update);
 
-configurationRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
+configurationRouter.delete('/:id', [(req: Request, res: Response, next: NextFunction) => {
+  validateRequest(req, next, joi.object(), joi.object({
+    id: joi.number().required()
+  }));
+}, auth, validateAdminRole], deleteOne);
 
 configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
@@ -163,7 +177,11 @@ configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
  *         404:
  *           description: Configuration not found
  */
-configurationRouter.get('/:id/conso', getConfigurationConsommation);
+configurationRouter.get('/:id/conso', (req: Request, res: Response, next: NextFunction) => {
+  validateRequest(req, next, joi.object(), joi.object({
+    id: joi.number().required()
+  }));
+}, getConfigurationConsommation);
 //#endregion
 
 //#region GET /configuration/:id/conso
@@ -192,5 +210,9 @@ configurationRouter.get('/:id/conso', getConfigurationConsommation);
  *         404:
  *           description: Configuration not found
  */
- configurationRouter.get('/:id/conso/download', downloadConfigurationConsommation);
+configurationRouter.get('/:id/conso/download', (req: Request, res: Response, next: NextFunction) => {
+  validateRequest(req, next, joi.object({}), joi.object({
+    id: joi.number()
+  }));
+}, downloadConfigurationConsommation);
  //#endregion
