@@ -1,346 +1,482 @@
 {
-  "info": {
-    "_postman_id": "196d63c5-42c6-40ff-82f5-8e8f6552279c",
-    "name": "configurhouse-api",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "User",
-      "item": [
-        {
-          "name": "GET /user",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET /user with pagination",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user?page=1&size=2",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "size",
-                  "value": "2"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET /user with pagination and filters",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=User",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "0"
-                },
-                {
-                  "key": "size",
-                  "value": "10"
-                },
-                {
-                  "key": "firstname",
-                  "value": "Marine"
-                },
-                {
-                  "key": "lastname",
-                  "value": "Minard"
-                },
-                {
-                  "key": "role",
-                  "value": "User"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "POST /user Benjamin",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\":\"wilmaxys@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstName\":\"Benjamin\",\n    \"lastName\":\"Ragot\",\n    \"phoneNumber\":\"0649140791\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "POST /user Marine",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\":\"marine.khornya@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstname\":\"Marine\",\n    \"lastname\":\"Minard\",\n    \"phonenumber\":\"0649140791\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "POST /user Peter",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\":\"peter.e.baudry@gmail.com\",\n    \"password\":\"password\",\n    \"firstname\":\"Peter\",\n    \"lastname\":\"Baudry\",\n    \"phonenumber\":\"0649140791\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET /user/resend Marine",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/resend?email=marine.khornya@gmail.com",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "resend"],
-              "query": [
-                {
-                  "key": "email",
-                  "value": "marine.khornya@gmail.com"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "POST /user/login",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"peter.e.baudry@gmail.com\",\n    \"password\": \"testtest\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/login",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "login"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET /user/1",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/1",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET /user/password-reset",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/password-reset?email=peter.e.baudry@gmail.com",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "password-reset"],
-              "query": [
-                {
-                  "key": "email",
-                  "value": "peter.e.baudry@gmail.com"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "POST /user/password-reset",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"peter.e.baudry@gmail.com\",\n    \"password\": \"testtest\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/password-reset?token=",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "password-reset"],
-              "query": [
-                {
-                  "key": "token",
-                  "value": ""
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "DELETE /user/1",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/1",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "PUT /user/1/update-roles",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjE1ODk2NTI2LCJleHAiOjE2MTU4OTc0MjZ9.wQnhz4vVHTsc2DgxX8zCb_kfVpDLopfWUifwXLml0D4",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{configurhouseapi-url}}/user/1/update-roles?roles=1&roles=2&roles=3",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["user", "1", "update-roles"],
-              "query": [
-                {
-                  "key": "roles",
-                  "value": "1"
-                },
-                {
-                  "key": "roles",
-                  "value": "2"
-                },
-                {
-                  "key": "roles",
-                  "value": "3"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GET /userRole/1",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{configurhouseapi-url}}/userRole/1",
-              "host": ["{{configurhouseapi-url}}"],
-              "path": ["userRole", "1"]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "configurhouseapi-url",
-      "value": "http://localhost:7000"
-    }
-  ]
+	"info": {
+		"_postman_id": "50700380-83f7-45be-b652-b65960d364a0",
+		"name": "configurhouse-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GET /user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user with pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user?page=1&size=2",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user with pagination and filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user?page=0&size=10&firstname=Marine&lastname=Minard&role=User",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "firstname",
+									"value": "Marine"
+								},
+								{
+									"key": "lastname",
+									"value": "Minard"
+								},
+								{
+									"key": "role",
+									"value": "User"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /user Benjamin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"wilmaxys@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstName\":\"Benjamin\",\n    \"lastName\":\"Ragot\",\n    \"phoneNumber\":\"0649140791\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /user Marine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"marine.khornya@gmail.com\",\n    \"password\":\"testtest\",\n    \"firstname\":\"Marine\",\n    \"lastname\":\"Minard\",\n    \"phonenumber\":\"0649140791\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /user Peter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"peter.e.baudry@gmail.com\",\n    \"password\":\"password\",\n    \"firstname\":\"Peter\",\n    \"lastname\":\"Baudry\",\n    \"phonenumber\":\"0649140791\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user/resend Marine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/resend?email=marine.khornya@gmail.com",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"resend"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "marine.khornya@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /user/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"peter.e.baudry@gmail.com\",\n    \"password\": \"testtest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/login",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/1",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /user/password-reset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/password-reset?email=peter.e.baudry@gmail.com",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"password-reset"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "peter.e.baudry@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /user/password-reset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"peter.e.baudry@gmail.com\",\n    \"password\": \"testtest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/password-reset?token=",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"password-reset"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /user/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/1",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /user/1/update-roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjE1ODk2NTI2LCJleHAiOjE2MTU4OTc0MjZ9.wQnhz4vVHTsc2DgxX8zCb_kfVpDLopfWUifwXLml0D4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{configurhouseapi-url}}/user/1/update-roles?roles=1&roles=2&roles=3",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"user",
+								"1",
+								"update-roles"
+							],
+							"query": [
+								{
+									"key": "roles",
+									"value": "1"
+								},
+								{
+									"key": "roles",
+									"value": "2"
+								},
+								{
+									"key": "roles",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /userRole/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/userRole/1",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"userRole",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Configuration",
+			"item": [
+				{
+					"name": "ConfigurationValue",
+					"item": [
+						{
+							"name": "GET /configurationValue/1-1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{configurhouseapi-url}}/configurationValue/1-1",
+									"host": [
+										"{{configurhouseapi-url}}"
+									],
+									"path": [
+										"configurationValue",
+										"1-1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET /configuration/1/conso",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/configuration/1/conso",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"configuration",
+								"1",
+								"conso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /configuration/1/conso/download",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{configurhouseapi-url}}/configuration/1/conso/download",
+							"host": [
+								"{{configurhouseapi-url}}"
+							],
+							"path": [
+								"configuration",
+								"1",
+								"conso",
+								"download"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "configurhouseapi-url",
+			"value": "http://localhost:7000"
+		}
+	]
 }
