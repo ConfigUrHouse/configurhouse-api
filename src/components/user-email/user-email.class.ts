@@ -11,7 +11,7 @@ export type UserEmailPk = 'id_User' | 'id_Email';
 export type UserEmailId = UserEmail[UserEmailPk];
 export type UserEmailCreationAttributes = Optional<UserEmailAttributes, UserEmailPk>;
 
-export class UserEmail extends Model<UserEmailAttributes, UserEmailCreationAttributes> implements UserEmailAttributes {
+export class UserEmail extends Model implements UserEmailAttributes {
   id_User!: number;
   id_Email!: number;
 

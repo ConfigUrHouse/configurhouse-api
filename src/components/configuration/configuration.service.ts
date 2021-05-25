@@ -1,6 +1,7 @@
 import { groupBy } from 'lodash';
 import { Model } from 'sequelize/types';
 import { ErrorHandler } from '../../middleware/error-handler';
+import { ConfigurationValueAttributes } from '../config/init-models.config';
 import { ConfigurationValue } from '../configuration-value/configuration-value.class';
 import { ConsommationHouseModelPosteConso } from '../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class';
 import { Consommation } from '../consommation/consommation.class';
@@ -43,25 +44,25 @@ export default class ConfigurationService {
     const config = await Configuration.findByPk(id, {
       include: [
         {
-          model: ConfigurationValue as typeof Model,
+          model: ConfigurationValue,
           as: 'configurationValues',
           include: [
             {
-              model: Value as typeof Model,
+              model: Value,
               as: 'value',
               attributes: ['name'],
               include: [
                 {
-                  model: OptionConf as typeof Model,
+                  model: OptionConf,
                   as: 'optionConf',
                   attributes: ['name'],
                 },
                 {
-                  model: ValuePosteConso as typeof Model,
+                  model: ValuePosteConso,
                   as: 'valuePosteConsos',
                   include: [
                     {
-                      model: PosteConso as typeof Model,
+                      model: PosteConso,
                       as: 'posteConso',
                       attributes: ['name', 'description'],
                     },
@@ -74,19 +75,19 @@ export default class ConfigurationService {
           attributes: ['id_Value'],
         },
         {
-          model: HouseModel as typeof Model,
+          model: HouseModel,
           as: 'houseModel',
           include: [
             {
-              model: ConsommationHouseModelPosteConso as typeof Model,
+              model: ConsommationHouseModelPosteConso,
               as: 'consommationHouseModelPosteConsos',
               include: [
                 {
-                  model: Consommation as typeof Model,
+                  model: Consommation,
                   as: 'consommation',
                 },
                 {
-                  model: PosteConso as typeof Model,
+                  model: PosteConso,
                   as: 'posteConso',
                 },
               ],

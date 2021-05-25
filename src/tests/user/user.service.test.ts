@@ -237,7 +237,7 @@ describe('User Service', () => {
 
   describe('sendPasswordResetEmail', () => {
     let findByEmailSpy: jest.SpyInstance<Promise<User>>;
-    let sendMailSpy: jest.SpyInstance<Promise<void>>;
+    let sendMailSpy: jest.SpyInstance<Promise<SentMessageInfo>>;
 
     beforeEach(() => {
       findByEmailSpy = jest.spyOn(UserService, 'findByEmail').mockResolvedValue(user);

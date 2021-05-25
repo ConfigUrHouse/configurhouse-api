@@ -15,7 +15,7 @@ export type TokenTypePk = 'id';
 export type TokenTypeId = TokenType[TokenTypePk];
 export type TokenTypeCreationAttributes = Optional<TokenTypeAttributes, TokenTypePk>;
 
-export class TokenType extends Model<TokenTypeAttributes, TokenTypeCreationAttributes> implements TokenTypeAttributes {
+export class TokenType extends Model implements TokenTypeAttributes {
   id!: number;
   name!: string;
 

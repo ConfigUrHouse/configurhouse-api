@@ -18,7 +18,7 @@ export type ConsommationId = Consommation[ConsommationPk];
 export type ConsommationCreationAttributes = Optional<ConsommationAttributes, ConsommationPk>;
 
 export class Consommation
-  extends Model<ConsommationAttributes, ConsommationCreationAttributes>
+  extends Model
   implements ConsommationAttributes {
   id!: number;
   name!: string;

@@ -14,7 +14,7 @@ export type AssetPk = 'id';
 export type AssetId = Asset[AssetPk];
 export type AssetCreationAttributes = Optional<AssetAttributes, AssetPk>;
 
-export class Asset extends Model<AssetAttributes, AssetCreationAttributes> implements AssetAttributes {
+export class Asset extends Model implements AssetAttributes {
   id!: number;
   value!: string;
   id_AssetType!: number;

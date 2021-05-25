@@ -18,7 +18,7 @@ export type PosteConsoId = PosteConso[PosteConsoPk];
 export type PosteConsoCreationAttributes = Optional<PosteConsoAttributes, PosteConsoPk>;
 
 export class PosteConso
-  extends Model<PosteConsoAttributes, PosteConsoCreationAttributes>
+  extends Model
   implements PosteConsoAttributes {
   id!: number;
   name!: string;

@@ -21,7 +21,7 @@ export type TokenPk = 'id';
 export type TokenId = Token[TokenPk];
 export type TokenCreationAttributes = Optional<TokenAttributes, TokenPk>;
 
-export class Token extends Model<TokenAttributes, TokenCreationAttributes> implements TokenAttributes {
+export class Token extends Model implements TokenAttributes {
   id!: number;
   value!: string;
   expired_at!: Date;

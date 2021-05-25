@@ -19,7 +19,7 @@ export type ValuePk = 'id';
 export type ValueId = Value[ValuePk];
 export type ValueCreationAttributes = Optional<ValueAttributes, ValuePk>;
 
-export class Value extends Model<ValueAttributes, ValueCreationAttributes> implements ValueAttributes {
+export class Value extends Model implements ValueAttributes {
   id!: number;
   name!: string;
   price!: number;
