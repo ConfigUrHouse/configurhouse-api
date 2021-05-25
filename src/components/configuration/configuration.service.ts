@@ -1,7 +1,5 @@
 import { groupBy } from 'lodash';
-import { Model } from 'sequelize/types';
 import { ErrorHandler } from '../../middleware/error-handler';
-import { ConfigurationValueAttributes } from '../config/init-models.config';
 import { ConfigurationValue } from '../configuration-value/configuration-value.class';
 import { ConsommationHouseModelPosteConso } from '../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class';
 import { Consommation } from '../consommation/consommation.class';
@@ -15,6 +13,10 @@ import { Configuration } from './configuration.class';
 export interface Consommations {
   context: {
     occupants: number;
+    options: {
+      option: string;
+      value: string;
+    }[];
   };
   global: {
     reference: number;
@@ -140,7 +142,7 @@ export default class ConfigurationService {
         }
       }, []);
     const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
-    const consommations = {
+    return {
       context: {
         occupants: config.houseModel.occupants,
         options: config.configurationValues.map((configurationValue) => ({
@@ -170,6 +172,5 @@ export default class ConfigurationService {
         })),
       },
     };
-    return consommations;
   }
 }

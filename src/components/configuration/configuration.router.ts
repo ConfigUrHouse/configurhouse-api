@@ -1,6 +1,6 @@
-import { NextFunction, Router, Request, Response } from 'express';
+import { Router } from 'express';
 import auth from '../../middleware/auth';
-import { validateRequest } from '../../middleware/validate-request';
+import { validatePathId } from '../../middleware/validate-request';
 import { validateAdminRole } from '../../middleware/validate-role';
 import {
   findAll,
@@ -11,7 +11,6 @@ import {
   getConfigurationConsommation,
   downloadConfigurationConsommation,
 } from './configuration.controller';
-import joi from 'joi';
 
 /**
  * @swagger
@@ -133,32 +132,14 @@ configurationRouter.get('/', findAll);
 
 configurationRouter.get(
   '/:id',
-  (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(
-      req,
-      next,
-      joi.object(),
-      joi.object({
-        id: joi.number().required(),
-      })
-    );
-  },
+  validatePathId,
   findOne
 );
 
 configurationRouter.put(
   '/:id',
   [
-    (req: Request, res: Response, next: NextFunction) => {
-      validateRequest(
-        req,
-        next,
-        joi.object(),
-        joi.object({
-          id: joi.number().required(),
-        })
-      );
-    },
+    validatePathId,
     auth,
     validateAdminRole,
   ],
@@ -168,16 +149,7 @@ configurationRouter.put(
 configurationRouter.delete(
   '/:id',
   [
-    (req: Request, res: Response, next: NextFunction) => {
-      validateRequest(
-        req,
-        next,
-        joi.object(),
-        joi.object({
-          id: joi.number().required(),
-        })
-      );
-    },
+    validatePathId,
     auth,
     validateAdminRole,
   ],
@@ -214,16 +186,7 @@ configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
  */
 configurationRouter.get(
   '/:id/conso',
-  (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(
-      req,
-      next,
-      joi.object(),
-      joi.object({
-        id: joi.number().required(),
-      })
-    );
-  },
+  validatePathId,
   getConfigurationConsommation
 );
 //#endregion
@@ -256,16 +219,7 @@ configurationRouter.get(
  */
 configurationRouter.get(
   '/:id/conso/download',
-  (req: Request, res: Response, next: NextFunction) => {
-    validateRequest(
-      req,
-      next,
-      joi.object({}),
-      joi.object({
-        id: joi.number(),
-      })
-    );
-  },
+  validatePathId,
   downloadConfigurationConsommation
 );
 //#endregion

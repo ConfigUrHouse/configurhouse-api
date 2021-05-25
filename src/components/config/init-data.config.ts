@@ -523,7 +523,6 @@ async function initConsommations() {
 
 async function initConsommationHouseModelPosteConsos() {
   const model1 = await HouseModel.findOne({ where: { name: houseModelT2Name } });
-  const model2 = await HouseModel.findOne({ where: { name: houseModelT3Name } });
   const consoBaseAmpoules = await Consommation.findOne({ where: { name: 'Ampoules' } });
   const consoRefChauffage = await Consommation.findOne({ where: { name: 'Chauffage référence 2 personnes 30m²' } });
   const consoRefEauChaude = await Consommation.findOne({ where: { name: 'Eau chaude référence 2 personnes 30m²' } });

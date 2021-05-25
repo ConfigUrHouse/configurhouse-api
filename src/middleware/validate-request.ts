@@ -33,3 +33,14 @@ export const validateRequest = (
     next();
   }
 };
+
+export const validatePathId = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  validateRequest(
+    req,
+    next,
+    joi.object(),
+    joi.object({
+      id: joi.number().required(),
+    })
+  );
+}
