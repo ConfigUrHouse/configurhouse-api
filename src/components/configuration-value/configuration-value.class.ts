@@ -12,7 +12,7 @@ export type ConfigurationValueId = ConfigurationValue[ConfigurationValuePk];
 export type ConfigurationValueCreationAttributes = Optional<ConfigurationValueAttributes, ConfigurationValuePk>;
 
 export class ConfigurationValue
-  extends Model<ConfigurationValueAttributes, ConfigurationValueCreationAttributes>
+  extends Model
   implements ConfigurationValueAttributes {
   id_Value!: number;
   id_Configuration!: number;

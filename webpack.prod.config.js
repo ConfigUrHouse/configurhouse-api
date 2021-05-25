@@ -6,6 +6,10 @@ module.exports = {
   entry: ['./src/index.ts'],
   watch: false,
   target: 'node',
+  node: {
+    __dirname: true,
+    __filename: true,
+  },
   optimization: {
     minimize: true,
     splitChunks: {

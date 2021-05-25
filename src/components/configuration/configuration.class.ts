@@ -16,7 +16,7 @@ export type ConfigurationId = Configuration[ConfigurationPk];
 export type ConfigurationCreationAttributes = Optional<ConfigurationAttributes, ConfigurationPk>;
 
 export class Configuration
-  extends Model<ConfigurationAttributes, ConfigurationCreationAttributes>
+  extends Model
   implements ConfigurationAttributes {
   id!: number;
   name!: string;

@@ -17,7 +17,7 @@ export type UserRolePk = 'id_Role' | 'id_User';
 export type UserRoleId = UserRole[UserRolePk];
 export type UserRoleCreationAttributes = Optional<UserRoleAttributes, UserRolePk>;
 
-export class UserRole extends Model<UserRoleAttributes, UserRoleCreationAttributes> implements UserRoleAttributes {
+export class UserRole extends Model implements UserRoleAttributes {
   id_Role!: number;
   id_User!: number;
 

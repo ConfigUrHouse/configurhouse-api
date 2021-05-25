@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { SentMessageInfo } from 'nodemailer';
 import { emailTransporter } from '../../components/config/email.config';
 import { Role } from '../../components/role/role.class';
 import RoleService from '../../components/role/role.service';
@@ -173,7 +174,7 @@ describe('User Service', () => {
   });
 
   describe('sendVerificationEmail', () => {
-    let sendMailSpy: jest.SpyInstance<Promise<void>>;
+    let sendMailSpy: jest.SpyInstance<Promise<SentMessageInfo>>;
 
     beforeEach(() => {
       jest
@@ -236,7 +237,7 @@ describe('User Service', () => {
 
   describe('sendPasswordResetEmail', () => {
     let findByEmailSpy: jest.SpyInstance<Promise<User>>;
-    let sendMailSpy: jest.SpyInstance<Promise<void>>;
+    let sendMailSpy: jest.SpyInstance<Promise<SentMessageInfo>>;
 
     beforeEach(() => {
       findByEmailSpy = jest.spyOn(UserService, 'findByEmail').mockResolvedValue(user);

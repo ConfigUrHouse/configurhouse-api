@@ -12,7 +12,7 @@ export type EmailPk = 'id';
 export type EmailId = Email[EmailPk];
 export type EmailCreationAttributes = Optional<EmailAttributes, EmailPk>;
 
-export class Email extends Model<EmailAttributes, EmailCreationAttributes> implements EmailAttributes {
+export class Email extends Model implements EmailAttributes {
   id!: number;
   send_at!: string;
   description!: string;

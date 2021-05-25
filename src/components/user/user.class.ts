@@ -45,7 +45,7 @@ export type UserPk = 'id';
 export type UserId = User[UserPk];
 export type UserCreationAttributes = Optional<UserAttributes, UserPk>;
 
-export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+export class User extends Model implements UserAttributes {
   id!: number;
   firstname!: string;
   lastname!: string;

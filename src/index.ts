@@ -19,8 +19,6 @@ import { assetRouter } from './components/asset/asset.router';
 import { assetTypeRouter } from './components/asset-type/asset-type.router';
 import { configurationRouter } from './components/configuration/configuration.router';
 import { configurationValueRouter } from './components/configuration-value/configuration-value.router';
-import { consommationRouter } from './components/consommation/consommation.router';
-import { consommationPosteConsoRouter } from './components/consommation-poste-conso/consommation-poste-conso.router';
 import { emailRouter } from './components/email/email.router';
 import { houseModelRouter } from './components/house-model/house-model.router';
 import { meshRouter } from './components/mesh/mesh.router';
@@ -38,6 +36,7 @@ import { userRoleRouter } from './components/user-role/user-role.router';
 import { valueRouter } from './components/value/value.router';
 import { utilsRouter } from './components/utils/utils.router';
 import { initData } from './components/config/init-data.config';
+import path from 'path';
 
 declare const module: WebpackHotModule;
 
@@ -64,8 +63,6 @@ declare const module: WebpackHotModule;
   app.use('/assetType', assetTypeRouter);
   app.use('/configuration', configurationRouter);
   app.use('/configurationValue', configurationValueRouter);
-  app.use('/consommation', consommationRouter);
-  app.use('/consommationPosteConso', consommationPosteConsoRouter);
   app.use('/email', emailRouter);
   app.use('/houseModel', houseModelRouter);
   app.use('/mesh', meshRouter);
@@ -85,6 +82,12 @@ declare const module: WebpackHotModule;
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   app.use(handleNotFound);
   app.use(handleError);
+
+  /**
+   * View engine
+   */
+  app.set('view engine', 'pug');
+  app.set('views', path.join(__dirname, 'views'));
 
   /**
    * Database initialization

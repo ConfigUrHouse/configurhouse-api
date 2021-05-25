@@ -19,7 +19,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
   ValuePosteConso.findOne({
     where: {
       id_Value: idValue,
-      id_PosteConso: idPosteConso
+      id_PosteConso: idPosteConso,
     },
   })
     .then((data) => {
@@ -37,7 +37,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
   ValuePosteConso.update(req.body, {
     where: {
       id_Value: idValue,
-      id_PosteConso: idPosteConso
+      id_PosteConso: idPosteConso,
     },
   })
     .then((num: any) => {
@@ -61,7 +61,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
   ValuePosteConso.destroy({
     where: {
       id_Value: idValue,
-      id_PosteConso: idPosteConso
+      id_PosteConso: idPosteConso,
     },
   })
     .then((num) => {

@@ -10,13 +10,6 @@ import type {
   ConfigurationValueAttributes,
   ConfigurationValueCreationAttributes,
 } from '../configuration-value/configuration-value.class';
-import { Consommation } from '../consommation/consommation.class';
-import type { ConsommationAttributes, ConsommationCreationAttributes } from '../consommation/consommation.class';
-import { ConsommationPosteConso } from '../consommation-poste-conso/consommation-poste-conso.class';
-import type {
-  ConsommationPosteConsoAttributes,
-  ConsommationPosteConsoCreationAttributes,
-} from '../consommation-poste-conso/consommation-poste-conso.class';
 import { Email } from '../email/email.class';
 import type { EmailAttributes, EmailCreationAttributes } from '../email/email.class';
 import { HouseModel } from '../house-model/house-model.class';
@@ -48,6 +41,16 @@ import type { UserRoleAttributes, UserRoleCreationAttributes } from '../user-rol
 import { Value } from '../value/value.class';
 import type { ValueAttributes, ValueCreationAttributes } from '../value/value.class';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
+import {
+  Consommation,
+  ConsommationAttributes,
+  ConsommationCreationAttributes,
+} from '../consommation/consommation.class';
+import {
+  ConsommationHouseModelPosteConso,
+  ConsommationHouseModelPosteConsoAttributes,
+  ConsommationHouseModelPosteConsoCreationAttributes,
+} from '../consommation-house-model-poste-conso/consommation-house-model-poste-conso.class';
 
 export {
   Asset,
@@ -55,7 +58,7 @@ export {
   Configuration,
   ConfigurationValue,
   Consommation,
-  ConsommationPosteConso,
+  ConsommationHouseModelPosteConso,
   Email,
   HouseModel,
   Mesh,
@@ -84,8 +87,8 @@ export type {
   ConfigurationValueCreationAttributes,
   ConsommationAttributes,
   ConsommationCreationAttributes,
-  ConsommationPosteConsoAttributes,
-  ConsommationPosteConsoCreationAttributes,
+  ConsommationHouseModelPosteConsoAttributes,
+  ConsommationHouseModelPosteConsoCreationAttributes,
   EmailAttributes,
   EmailCreationAttributes,
   HouseModelAttributes,
@@ -124,7 +127,7 @@ export function initModels(sequelize: Sequelize) {
   Configuration.initModel(sequelize);
   ConfigurationValue.initModel(sequelize);
   Consommation.initModel(sequelize);
-  ConsommationPosteConso.initModel(sequelize);
+  ConsommationHouseModelPosteConso.initModel(sequelize);
   Email.initModel(sequelize);
   HouseModel.initModel(sequelize);
   Mesh.initModel(sequelize);
@@ -148,12 +151,6 @@ export function initModels(sequelize: Sequelize) {
     foreignKey: 'id_Configuration',
     otherKey: 'id_Value',
   });
-  Consommation.belongsToMany(PosteConso, {
-    as: 'posteConsos',
-    through: ConsommationPosteConso as typeof Model,
-    foreignKey: 'id_Consommation',
-    otherKey: 'id_PosteConso',
-  });
   Email.belongsToMany(User, {
     as: 'users',
     through: UserEmail as typeof Model,
@@ -165,12 +162,6 @@ export function initModels(sequelize: Sequelize) {
     through: UserPolice as typeof Model,
     foreignKey: 'id_Police',
     otherKey: 'id_User',
-  });
-  PosteConso.belongsToMany(Consommation, {
-    as: 'consommations',
-    through: ConsommationPosteConso as typeof Model,
-    foreignKey: 'id_PosteConso',
-    otherKey: 'id_Consommation',
   });
   Role.belongsToMany(User, {
     as: 'users',
@@ -214,6 +205,42 @@ export function initModels(sequelize: Sequelize) {
     foreignKey: 'id_PosteConso',
     otherKey: 'id_Value',
   });
+  Consommation.belongsToMany(HouseModel, {
+    as: 'consommationHouseModels',
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
+    foreignKey: 'id_Consommation',
+    otherKey: 'id_HouseModel',
+  });
+  Consommation.belongsToMany(PosteConso, {
+    as: 'consommationPosteConsos',
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
+    foreignKey: 'id_Consommation',
+    otherKey: 'id_PosteConso',
+  });
+  PosteConso.belongsToMany(HouseModel, {
+    as: 'posteConsoHouseModels',
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
+    foreignKey: 'id_PosteConso',
+    otherKey: 'id_HouseModel',
+  });
+  PosteConso.belongsToMany(Consommation, {
+    as: 'posteConsoConsommations',
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
+    foreignKey: 'id_PosteConso',
+    otherKey: 'id_Consommation',
+  });
+  HouseModel.belongsToMany(PosteConso, {
+    as: 'houseModelPosteConsos',
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
+    foreignKey: 'id_HouseModel',
+    otherKey: 'id_PosteConso',
+  });
+  HouseModel.belongsToMany(Consommation, {
+    as: 'houseModelConsommations',
+    through: { model: ConsommationHouseModelPosteConso as typeof Model, unique: false },
+    foreignKey: 'id_HouseModel',
+    otherKey: 'id_Consommation',
+  });
   HouseModel.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
   Asset.hasMany(HouseModel, { as: 'houseModels', foreignKey: 'id_Asset' });
   Mesh.belongsTo(Asset, { as: 'asset', foreignKey: 'id_Asset' });
@@ -224,14 +251,10 @@ export function initModels(sequelize: Sequelize) {
   AssetType.hasMany(Asset, { as: 'assets', foreignKey: 'id_AssetType' });
   ConfigurationValue.belongsTo(Configuration, { as: 'configuration', foreignKey: 'id_Configuration' });
   Configuration.hasMany(ConfigurationValue, { as: 'configurationValues', foreignKey: 'id_Configuration' });
-  ConsommationPosteConso.belongsTo(Consommation, { as: 'consommation', foreignKey: 'id_Consommation' });
-  Consommation.hasMany(ConsommationPosteConso, { as: 'consommationPosteConsos', foreignKey: 'id_Consommation' });
   UserEmail.belongsTo(Email, { as: 'email', foreignKey: 'id_Email' });
   Email.hasMany(UserEmail, { as: 'userEmails', foreignKey: 'id_Email' });
   Configuration.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
   HouseModel.hasMany(Configuration, { as: 'configurations', foreignKey: 'id_HouseModel' });
-  Consommation.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
-  HouseModel.hasMany(Consommation, { as: 'consommations', foreignKey: 'id_HouseModel' });
   OptionConf.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
   HouseModel.hasMany(OptionConf, { as: 'optionConfs', foreignKey: 'id_HouseModel' });
   OptionConf.belongsTo(Mesh, { as: 'mesh', foreignKey: 'id_Mesh' });
@@ -242,8 +265,6 @@ export function initModels(sequelize: Sequelize) {
   OptionConf.hasMany(Value, { as: 'values', foreignKey: 'id_OptionConf' });
   UserPolice.belongsTo(Police, { as: 'police', foreignKey: 'id_Police' });
   Police.hasMany(UserPolice, { as: 'userPolice', foreignKey: 'id_Police' });
-  ConsommationPosteConso.belongsTo(PosteConso, { as: 'posteConso', foreignKey: 'id_PosteConso' });
-  PosteConso.hasMany(ConsommationPosteConso, { as: 'consommationPosteConsos', foreignKey: 'id_PosteConso' });
   UserRole.belongsTo(Role, { as: 'role', foreignKey: 'id_Role' });
   Role.hasMany(UserRole, { as: 'userRoles', foreignKey: 'id_Role' });
   Token.belongsTo(TokenType, { as: 'tokenType', foreignKey: 'id_TokenType' });
@@ -264,6 +285,21 @@ export function initModels(sequelize: Sequelize) {
   Value.hasMany(ValuePosteConso, { as: 'valuePosteConsos', foreignKey: 'id_Value' });
   ValuePosteConso.belongsTo(PosteConso, { as: 'posteConso', foreignKey: 'id_PosteConso' });
   PosteConso.hasMany(ValuePosteConso, { as: 'valuePosteConsos', foreignKey: 'id_PosteConso' });
+  ConsommationHouseModelPosteConso.belongsTo(Consommation, { as: 'consommation', foreignKey: 'id_Consommation' });
+  Consommation.hasMany(ConsommationHouseModelPosteConso, {
+    as: 'consommationHouseModelPosteConsos',
+    foreignKey: 'id_Consommation',
+  });
+  ConsommationHouseModelPosteConso.belongsTo(HouseModel, { as: 'houseModel', foreignKey: 'id_HouseModel' });
+  HouseModel.hasMany(ConsommationHouseModelPosteConso, {
+    as: 'consommationHouseModelPosteConsos',
+    foreignKey: 'id_HouseModel',
+  });
+  ConsommationHouseModelPosteConso.belongsTo(PosteConso, { as: 'posteConso', foreignKey: 'id_PosteConso' });
+  PosteConso.hasMany(ConsommationHouseModelPosteConso, {
+    as: 'consommationHouseModelPosteConsos',
+    foreignKey: 'id_PosteConso',
+  });
 
   return {
     Asset: Asset,
@@ -271,7 +307,7 @@ export function initModels(sequelize: Sequelize) {
     Configuration: Configuration,
     ConfigurationValue: ConfigurationValue,
     Consommation: Consommation,
-    ConsommationPosteConso: ConsommationPosteConso,
+    ConsommationHouseModelPosteConso: ConsommationHouseModelPosteConso,
     Email: Email,
     HouseModel: HouseModel,
     Mesh: Mesh,
