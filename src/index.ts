@@ -11,7 +11,7 @@ import { handleNotFound, handleError } from './middleware/error-handler';
 import { specs } from './shared/swagger-specs';
 import { WebpackHotModule } from './interface/webpack-hot-module';
 import { initModels } from './components/config/init-models.config';
-
+import path from 'path';
 /**
  * Routers import
  */
@@ -59,6 +59,8 @@ declare const module: WebpackHotModule;
     next();
   }, cors());
   app.use(express.json());
+  app.use('/public', express.static('public'));
+
   app.use('/asset', assetRouter);
   app.use('/assetType', assetTypeRouter);
   app.use('/configuration', configurationRouter);
@@ -82,6 +84,7 @@ declare const module: WebpackHotModule;
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   app.use(handleNotFound);
   app.use(handleError);
+
 
   /**
    * View engine
