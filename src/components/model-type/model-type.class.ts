@@ -11,7 +11,7 @@ export type ModelTypePk = 'id';
 export type ModelTypeId = ModelType[ModelTypePk];
 export type ModelTypeCreationAttributes = Optional<ModelTypeAttributes, ModelTypePk>;
 
-export class ModelType extends Model<ModelTypeAttributes, ModelTypeCreationAttributes> implements ModelTypeAttributes {
+export class ModelType extends Model implements ModelTypeAttributes {
   id!: number;
   name!: string;
   description!: string;

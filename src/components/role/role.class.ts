@@ -12,7 +12,7 @@ export type RolePk = 'id';
 export type RoleId = Role[RolePk];
 export type RoleCreationAttributes = Optional<RoleAttributes, RolePk>;
 
-export class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
+export class Role extends Model implements RoleAttributes {
   id!: number;
   name!: string;
   description!: string;

@@ -12,7 +12,7 @@ export type MeshPk = 'id';
 export type MeshId = Mesh[MeshPk];
 export type MeshCreationAttributes = Optional<MeshAttributes, MeshPk>;
 
-export class Mesh extends Model<MeshAttributes, MeshCreationAttributes> implements MeshAttributes {
+export class Mesh extends Model implements MeshAttributes {
   id!: number;
   name!: string;
   id_Asset!: number;

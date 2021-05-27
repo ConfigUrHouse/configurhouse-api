@@ -12,7 +12,7 @@ export type PolicePk = 'id';
 export type PoliceId = Police[PolicePk];
 export type PoliceCreationAttributes = Optional<PoliceAttributes, PolicePk>;
 
-export class Police extends Model<PoliceAttributes, PoliceCreationAttributes> implements PoliceAttributes {
+export class Police extends Model implements PoliceAttributes {
   id!: number;
   name!: string;
   description!: string;
