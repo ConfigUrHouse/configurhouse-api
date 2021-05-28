@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import auth from '../../middleware/auth';
 import { validateAdminRole } from '../../middleware/validate-role';
-import { findAll, findOne, update, deleteAll, deleteOne } from './configuration-value.controller';
+import { findAll, findOne, update, deleteAll, deleteOne,findByConfigurationId } from './configuration-value.controller';
 
 export const configurationValueRouter = Router();
 
 configurationValueRouter.get('/', findAll);
+
+configurationValueRouter.get('/:idConfiguration', findByConfigurationId);
 
 configurationValueRouter.get('/:idValue-:idConfiguration', findOne);
 
