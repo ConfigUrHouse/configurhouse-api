@@ -14,9 +14,7 @@ export type OptionConfPk = 'id';
 export type OptionConfId = OptionConf[OptionConfPk];
 export type OptionConfCreationAttributes = Optional<OptionConfAttributes, OptionConfPk>;
 
-export class OptionConf
-  extends Model
-  implements OptionConfAttributes {
+export class OptionConf extends Model implements OptionConfAttributes {
   id!: number;
   name!: string;
   id_HouseModel!: number;

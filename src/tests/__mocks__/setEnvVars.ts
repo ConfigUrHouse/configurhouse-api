@@ -1,6 +1,7 @@
 process.env.PORT = '7000';
 process.env.ENVIRONMENT = 'test';
 process.env.API_BASE_URL = 'http://example:7000';
+process.env.APP_BASE_URL = 'http://example:3000';
 
 process.env.DB = 'database';
 process.env.DB_USER = 'user';

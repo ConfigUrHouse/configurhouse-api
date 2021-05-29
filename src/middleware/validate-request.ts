@@ -43,4 +43,4 @@ export const validatePathId = (req: express.Request, res: express.Response, next
       id: joi.number().required(),
     })
   );
-}
+};

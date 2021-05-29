@@ -11,9 +11,7 @@ export type UserPolicePk = 'id_Police' | 'id_User';
 export type UserPoliceId = UserPolice[UserPolicePk];
 export type UserPoliceCreationAttributes = Optional<UserPoliceAttributes, UserPolicePk>;
 
-export class UserPolice
-  extends Model
-  implements UserPoliceAttributes {
+export class UserPolice extends Model implements UserPoliceAttributes {
   id_Police!: number;
   id_User!: number;
 

@@ -15,4 +15,4 @@ assetRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 assetRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
-assetRouter.post('/',[auth, validateAdminRole], addOne);
+assetRouter.post('/', [auth, validateAdminRole], addOne);

@@ -22,9 +22,7 @@ export type HouseModelPk = 'id';
 export type HouseModelId = HouseModel[HouseModelPk];
 export type HouseModelCreationAttributes = Optional<HouseModelAttributes, HouseModelPk>;
 
-export class HouseModel
-  extends Model
-  implements HouseModelAttributes {
+export class HouseModel extends Model implements HouseModelAttributes {
   id!: number;
   name!: string;
   occupants!: number;
