@@ -17,9 +17,7 @@ export type ConsommationHouseModelPosteConsoCreationAttributes = Optional<
   ConsommationHouseModelPosteConsoPk
 >;
 
-export class ConsommationHouseModelPosteConso
-  extends Model
-  implements ConsommationHouseModelPosteConsoAttributes {
+export class ConsommationHouseModelPosteConso extends Model implements ConsommationHouseModelPosteConsoAttributes {
   id_HouseModel!: number;
   id_PosteConso!: number;
   id_Consommation!: number;

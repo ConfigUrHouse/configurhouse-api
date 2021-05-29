@@ -36,7 +36,6 @@ import { userRoleRouter } from './components/user-role/user-role.router';
 import { valueRouter } from './components/value/value.router';
 import { utilsRouter } from './components/utils/utils.router';
 import { initData } from './components/config/init-data.config';
-import path from 'path';
 
 declare const module: WebpackHotModule;
 
@@ -84,7 +83,6 @@ declare const module: WebpackHotModule;
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
   app.use(handleNotFound);
   app.use(handleError);
-
 
   /**
    * View engine

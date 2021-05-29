@@ -7,6 +7,7 @@ import * as pdf from 'html-pdf';
 import { compileFile } from 'pug';
 import { ReadStream } from 'node:fs';
 import path from 'path';
+import { emailTransporter } from '../config/email.config';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -140,4 +141,19 @@ export const downloadConfigurationConsommation = async (req: Request, res: Respo
       if (error) throw new ErrorHandler(500, error.message);
       stream.pipe(res);
     });
+};
+
+export const sendConfiguration = async (req: Request, res: Response, next: NextFunction) => {
+  const id = parseInt(req.params.id);
+  try {
+    await emailTransporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: 'Demande de devis',
+      html: `<p>Veuillez cliquer <a href="${process.env.APP_BASE_URL}/configuration/${id}">ici</a> pour consulter le détail de la configuration.</p>`,
+    });
+    res.status(200).send({ success: true, message: 'Configuration sent' });
+  } catch (error) {
+    throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+  }
 };

@@ -10,6 +10,7 @@ import {
   deleteOne,
   getConfigurationConsommation,
   downloadConfigurationConsommation,
+  sendConfiguration,
 } from './configuration.controller';
 
 /**
@@ -130,31 +131,11 @@ export const configurationRouter = Router();
 configurationRouter.get('/', findAll);
 //#endregion
 
-configurationRouter.get(
-  '/:id',
-  validatePathId,
-  findOne
-);
+configurationRouter.get('/:id', validatePathId, findOne);
 
-configurationRouter.put(
-  '/:id',
-  [
-    validatePathId,
-    auth,
-    validateAdminRole,
-  ],
-  update
-);
+configurationRouter.put('/:id', [validatePathId, auth, validateAdminRole], update);
 
-configurationRouter.delete(
-  '/:id',
-  [
-    validatePathId,
-    auth,
-    validateAdminRole,
-  ],
-  deleteOne
-);
+configurationRouter.delete('/:id', [validatePathId, auth, validateAdminRole], deleteOne);
 
 configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
@@ -184,14 +165,10 @@ configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
  *         404:
  *           description: Configuration not found
  */
-configurationRouter.get(
-  '/:id/conso',
-  validatePathId,
-  getConfigurationConsommation
-);
+configurationRouter.get('/:id/conso', validatePathId, getConfigurationConsommation);
 //#endregion
 
-//#region GET /configuration/:id/conso
+//#region GET /configuration/:id/conso/download
 /**
  * @swagger
  *
@@ -217,9 +194,32 @@ configurationRouter.get(
  *         404:
  *           description: Configuration not found
  */
-configurationRouter.get(
-  '/:id/conso/download',
-  validatePathId,
-  downloadConfigurationConsommation
-);
+configurationRouter.get('/:id/conso/download', validatePathId, downloadConfigurationConsommation);
+//#endregion
+
+//#region GET /configuration/:id/send
+/**
+ * @swagger
+ *
+ * paths:
+ *   /configuration/:id/send:
+ *     get:
+ *       summary: Send configuration to Deschampignons
+ *       tags:
+ *         - Configuration
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: integer
+ *           description: Id of the configuration
+ *       responses:
+ *         200:
+ *           description: Configuration sent
+ *         400:
+ *           description: Invalid request parameters
+ *         404:
+ *           description: Configuration not found
+ */
+configurationRouter.get('/:id/send', validatePathId, sendConfiguration);
 //#endregion

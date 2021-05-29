@@ -12,9 +12,7 @@ export type ValuePosteConsoPk = 'id_Value' | 'id_PosteConso';
 export type ValuePosteConsoId = ValuePosteConso[ValuePosteConsoPk];
 export type ValuePosteConsoCreationAttributes = Optional<ValuePosteConsoAttributes, ValuePosteConsoPk>;
 
-export class ValuePosteConso
-  extends Model
-  implements ValuePosteConsoAttributes {
+export class ValuePosteConso extends Model implements ValuePosteConsoAttributes {
   id_Value!: number;
   id_PosteConso!: number;
   conso!: number;

@@ -16,7 +16,7 @@ export const findByConfigurationId = (req: Request, res: Response, next: NextFun
 
   ConfigurationValue.findAll({
     where: {
-      id_Configuration: idConfiguration
+      id_Configuration: idConfiguration,
     },
   })
     .then((data) => {
