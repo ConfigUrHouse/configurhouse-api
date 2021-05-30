@@ -11,7 +11,7 @@ module.exports = {
     __filename: true,
   },
   optimization: {
-    minimize: true,
+    minimize: false,
     splitChunks: {
       chunks: 'all',
       automaticNameDelimiter: '~',
