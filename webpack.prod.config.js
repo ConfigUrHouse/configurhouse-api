@@ -9,6 +9,7 @@ module.exports = {
   node: {
     __dirname: true,
     __filename: true,
+    fs: 'empty',
   },
   optimization: {
     minimize: false,
