@@ -12,7 +12,7 @@ module.exports = {
     fs: 'empty',
   },
   optimization: {
-    minimize: false,
+    minimize: true,
     splitChunks: {
       chunks: 'all',
       automaticNameDelimiter: '~',
