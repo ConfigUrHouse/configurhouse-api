@@ -2,7 +2,7 @@ import { Asset, AssetAttributes } from './asset.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 import multer from 'multer';
-import * as fs from 'fs/promises';
+import * as fs from 'fs';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -58,7 +58,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
     } else {
       Asset.findByPk(id)
         .then((data) => {
-          fs.unlink('./' + data?.value);
+          fs.promises.unlink('./' + data?.value);
         })
         .catch(() => {
           next(new ErrorHandler(500, 'An error has occured'));
@@ -98,7 +98,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
         })
           .then((num) => {
             if (num == 1) {
-              fs.unlink('./' + data.value);
+              fs.promises.unlink('./' + data.value);
 
               res.send({
                 message: 'Asset deleted',

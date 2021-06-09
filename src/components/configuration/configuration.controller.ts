@@ -5,7 +5,7 @@ import { getPagination, getPagingData } from '../../shared/pagination';
 import ConfigurationService from './configuration.service';
 import * as pdf from 'html-pdf';
 import { compileFile } from 'pug';
-import { ReadStream } from 'node:fs';
+import { ReadStream } from 'fs';
 import path from 'path';
 import { emailTransporter } from '../config/email.config';
 

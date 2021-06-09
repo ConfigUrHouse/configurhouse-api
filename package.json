@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/index",
-    "build": "webpack --config webpack.prod.config.js",
+    "build": "npx tsc",
     "webpack": "webpack --config webpack.dev.config.js",
     "start2": "npx ts-node src/index.ts",
     "test": "jest --coverage"
