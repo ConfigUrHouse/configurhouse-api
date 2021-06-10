@@ -57,13 +57,16 @@ export const downloadEstimate = (req: Request, res: Response, next: NextFunction
       const estimate: { value: Value; option: OptionConf }[] = [];
       for (const option of data.optionConfs) {
         const value = await Value.findOne({ where: { is_default: true, id_OptionConf: option.id } });
-        if (value) {
-          estimate.push({ value, option });
+        if (!value) {
+          continue;
         }
+
+        estimate.push({ value, option });
       }
       const total = estimate
         .map((e) => e.value.price)
-        .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()));
+        .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()))
+        .toFixed(2);
 
       res.writeHead(200, {
         'Content-Type': 'application/octet-stream',
@@ -77,7 +80,7 @@ export const downloadEstimate = (req: Request, res: Response, next: NextFunction
       const html = compileFile(path.join(__dirname, '../../views/estimate.pug'))({
         estimate,
         total,
-        title: `Devis du modèle ${data.name}`,
+        title: `Devis du modèle "${data.name}"`,
       });
 
       pdf
