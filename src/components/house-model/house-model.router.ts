@@ -163,4 +163,4 @@ houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
-houseModelRouter.get('/:id/download', [auth, validateAdminRole], downloadEstimate);
+houseModelRouter.get('/:id/downloadEstimate', [auth, validateAdminRole], downloadEstimate);
