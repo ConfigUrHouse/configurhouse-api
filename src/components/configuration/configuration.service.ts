@@ -21,7 +21,7 @@ export interface Consommations {
   global: {
     reference: number;
     config: number;
-    diffPercentage: number;
+    diffPercentage: string;
   };
   byPosteConso: {
     reference: {
@@ -36,7 +36,7 @@ export interface Consommations {
       conso: number;
       posteConso: string;
       percentageOfGlobalConfig: number;
-      diffPercentageOfPosteConsoReference: number;
+      diffPercentageOfPosteConsoReference: string;
     }[];
   };
 }
@@ -142,6 +142,7 @@ export default class ConfigurationService {
         }
       }, []);
     const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
+    const diffPercentage = Math.round(((globalConfig - globalReference) / globalReference) * 100);
     return {
       context: {
         occupants: config.houseModel.occupants,
@@ -153,23 +154,27 @@ export default class ConfigurationService {
       global: {
         reference: globalReference,
         config: globalConfig,
-        diffPercentage: Math.round((globalConfig / globalReference) * 100) - 100,
+        diffPercentage: diffPercentage >= 0 ? '+' + diffPercentage + '%' : diffPercentage + '%',
       },
       byPosteConso: {
         reference: consoReference.map((conso) => ({
           ...conso,
           percentageOfGlobal: Math.round((conso.conso / globalReference) * 100),
         })),
-        config: consoConfigByPoste.map((conso) => ({
-          ...conso,
-          percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
-          diffPercentageOfPosteConsoReference:
-            Math.round(
-              (conso.conso /
-                (consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso) as any).conso) *
-                100
-            ) - 100,
-        })),
+        config: consoConfigByPoste.map((conso) => {
+          const reference = consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso);
+          const diffPercentageOfPosteConsoReference = Math.round(
+            ((conso.conso - (reference as any).conso) / (reference as any).conso) * 100
+          );
+          return {
+            ...conso,
+            percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
+            diffPercentageOfPosteConsoReference:
+              diffPercentageOfPosteConsoReference >= 0
+                ? '+' + diffPercentageOfPosteConsoReference + '%'
+                : diffPercentageOfPosteConsoReference + '%',
+          };
+        }),
       },
     };
   }

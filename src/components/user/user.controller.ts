@@ -43,7 +43,7 @@ export const findAll = async (req: Request, res: Response, next: NextFunction) =
       res.send(getPagingData(data, page, limit));
     }
   } catch (err) {
-    next(new ErrorHandler(500, err.message));
+    next(new ErrorHandler(err.statusCode, err.message));
   }
 };
 
@@ -153,7 +153,7 @@ export const sendVerificationEmail = async (req: Request, res: Response, next: N
     await UserService.sendVerificationEmail(req.query.email as string);
     res.json({ success: true, message: 'Verification email sent' });
   } catch (error) {
-    next(new ErrorHandler(500, error.message));
+    next(new ErrorHandler(error.statusCode, error.message));
   }
 };
 
