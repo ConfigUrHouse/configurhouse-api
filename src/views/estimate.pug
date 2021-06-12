@@ -1,0 +1,19 @@
+html
+  head
+    title= "Devis"
+    style
+      include css/estimate.css
+  body
+    h1 #{title}
+    each details in estimate
+        div.details
+            div.option #{details.option.name}
+            div.details-body
+                div.value-container
+                    span.value #{details.value.name}
+                    span.price #{details.value.price}
+    div.details
+        div.value-container
+            span.value Totale
+            span.price #{total}
+

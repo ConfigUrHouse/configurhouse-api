@@ -16,6 +16,7 @@
     "heroku"
   ],
   "dependencies": {
+    "@types/json2csv": "^5.0.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.3.1",
@@ -25,9 +26,10 @@
     "helmet": "^4.2.0",
     "html-pdf": "^3.0.1",
     "joi": "^17.4.0",
+    "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
-    "multer": "^1.4.2",
     "lodash": "^4.17.21",
+    "multer": "^1.4.2",
     "mysql2": "^2.2.5",
     "nodemailer": "^6.4.18",
     "prettier": "^2.2.1",
