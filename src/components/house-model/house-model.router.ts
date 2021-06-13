@@ -1,7 +1,16 @@
 import { Router } from 'express';
 import auth from '../../middleware/auth';
 import { validateAdminRole } from '../../middleware/validate-role';
-import { findAll, findOne, create, update, deleteAll, deleteOne, downloadEstimate } from './house-model.controller';
+import {
+  findAll,
+  findOne,
+  create,
+  update,
+  deleteAll,
+  deleteOne,
+  downloadEstimate,
+  getEstimate,
+} from './house-model.controller';
 
 export const houseModelRouter = Router();
 
@@ -163,4 +172,6 @@ houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
-houseModelRouter.get('/:id/download', [auth, validateAdminRole], downloadEstimate);
+houseModelRouter.get('/:id/estimate', [auth, validateAdminRole], getEstimate);
+
+houseModelRouter.get('/:id/estimate/download', downloadEstimate);
