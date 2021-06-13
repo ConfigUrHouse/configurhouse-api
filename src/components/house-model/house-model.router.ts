@@ -10,6 +10,7 @@ import {
   deleteOne,
   downloadEstimate,
   getConsommations,
+  getEstimate,
 } from './house-model.controller';
 
 export const houseModelRouter = Router();
@@ -172,6 +173,8 @@ houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
-houseModelRouter.get('/:id/downloadEstimate', [auth, validateAdminRole], downloadEstimate);
-
 houseModelRouter.get('/:id/conso', [auth, validateAdminRole], getConsommations);
+
+houseModelRouter.get('/:id/estimate', [auth, validateAdminRole], getEstimate);
+
+houseModelRouter.get('/:id/estimate/download', downloadEstimate);
