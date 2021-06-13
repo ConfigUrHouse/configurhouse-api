@@ -11,6 +11,7 @@ import {
   getConfigurationConsommation,
   downloadConfigurationConsommation,
   sendConfiguration,
+  downloadEstimate,
 } from './configuration.controller';
 
 /**
@@ -223,3 +224,5 @@ configurationRouter.get('/:id/conso/download', validatePathId, downloadConfigura
  */
 configurationRouter.get('/:id/send', validatePathId, sendConfiguration);
 //#endregion
+
+configurationRouter.get('/:id/downloadEstimate', validatePathId, downloadEstimate);

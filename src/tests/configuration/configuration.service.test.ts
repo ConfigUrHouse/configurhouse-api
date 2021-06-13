@@ -152,7 +152,7 @@ describe('Configuration Service', () => {
         global: {
           reference: 4654,
           config: 520,
-          diffPercentage: -89,
+          diffPercentage: '-89%',
         },
         byPosteConso: {
           reference: [
@@ -186,19 +186,19 @@ describe('Configuration Service', () => {
               posteConso: 'Eclairage',
               conso: 200,
               percentageOfGlobalConfig: 38,
-              diffPercentageOfPosteConsoReference: 100,
+              diffPercentageOfPosteConsoReference: '+100%',
             },
             {
               posteConso: 'Chauffage',
               conso: 230,
               percentageOfGlobalConfig: 44,
-              diffPercentageOfPosteConsoReference: -94,
+              diffPercentageOfPosteConsoReference: '-94%',
             },
             {
               posteConso: 'Eau chaude',
               conso: 90,
               percentageOfGlobalConfig: 17,
-              diffPercentageOfPosteConsoReference: -81,
+              diffPercentageOfPosteConsoReference: '-81%',
             },
           ],
         },

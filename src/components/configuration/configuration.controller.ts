@@ -8,6 +8,9 @@ import { compileFile } from 'pug';
 import { ReadStream } from 'fs';
 import path from 'path';
 import { emailTransporter } from '../config/email.config';
+import { Value } from '../value/value.class';
+import { OptionConf } from '../option-conf/option-conf.class';
+import json2csv from 'json2csv';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -105,42 +108,134 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+export const downloadEstimate = (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  const mode = ['csv', 'pdf'].includes(req.query.mode as string) ? (req.query.mode as string) : 'pdf';
+
+  Configuration.findByPk(id, {
+    include: ['configurationValues'],
+  })
+    .then(async (data) => {
+      if (!data) {
+        return next(new ErrorHandler(404, 'Configuration not found'));
+      }
+
+      const estimate: { value: Value; option: OptionConf }[] = [];
+      for (const cv of data.configurationValues) {
+        const value = await Value.findByPk(cv.id_Value);
+        if (!value) {
+          continue;
+        }
+        const option = await OptionConf.findByPk(value.id_OptionConf);
+        if (!option) {
+          continue;
+        }
+
+        estimate.push({ value, option });
+      }
+      switch (mode) {
+        case 'pdf':
+          const total = estimate
+            .map((e) => e.value.price)
+            .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()))
+            .toFixed(2);
+
+          res.writeHead(200, {
+            'Content-Type': 'application/octet-stream',
+            'Content-Disposition': "attachment; filename*=UTF-8''" + 'estimate' + '.pdf',
+            'Transfer-Encoding': 'chunked',
+            Expires: 0,
+            'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
+            'Content-Transfer-Encoding': 'binary',
+            Pragma: 'public',
+          });
+          const html = compileFile(path.join(__dirname, '../../views/estimate.pug'))({
+            estimate,
+            total,
+            title: `Devis de la configuration "${data.name}"`,
+          });
+
+          pdf
+            .create(html, {
+              phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
+              script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
+              border: {
+                top: '1in',
+                right: '1in',
+                bottom: '1in',
+                left: '1in',
+              },
+              format: 'A4',
+              orientation: 'portrait',
+            })
+            .toStream((error: Error, stream: ReadStream) => {
+              if (error) throw new ErrorHandler(500, error.message);
+              stream.pipe(res);
+            });
+          break;
+        case 'csv':
+          const csv = json2csv.parse(
+            estimate.map((e) => ({ option: e.option.name, value: e.value.name, price: e.value.price })),
+            { fields: ['option', 'value', 'price'], delimiter: ';' }
+          );
+
+          res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+          res.set('Content-Type', 'text/csv');
+          res.status(200).send(csv);
+          break;
+        default:
+          next(new ErrorHandler(500, 'Mode inconnu'));
+      }
+    })
+    .catch((err: Error) => {
+      next(new ErrorHandler(500, err.message));
+    });
+};
+
 export const getConfigurationConsommation = async (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
-  const consommations = await ConfigurationService.getConsommations(id);
-  res.send(consommations);
+  try {
+    const consommations = await ConfigurationService.getConsommations(id);
+    res.send(consommations);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const downloadConfigurationConsommation = async (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
-  const consommations = await ConfigurationService.getConsommations(id);
-  res.writeHead(200, {
-    'Content-Type': 'application/octet-stream',
-    'Content-Disposition': "attachment; filename*=UTF-8''" + 'consommations' + '.pdf',
-    'Transfer-Encoding': 'chunked',
-    Expires: 0,
-    'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
-    'Content-Transfer-Encoding': 'binary',
-    Pragma: 'public',
-  });
-  const html = compileFile(path.join(__dirname, '../../views/consommation.pug'))({ consommations });
-  pdf
-    .create(html, {
-      phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
-      script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
-      border: {
-        top: '1in',
-        right: '1in',
-        bottom: '1in',
-        left: '1in',
-      },
-      format: 'A4',
-      orientation: 'portrait',
-    })
-    .toStream((error: Error, stream: ReadStream) => {
-      if (error) throw new ErrorHandler(500, error.message);
-      stream.pipe(res);
+  try {
+    const consommations = await ConfigurationService.getConsommations(id);
+    res.writeHead(200, {
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': "attachment; filename*=UTF-8''" + 'consommations' + '.pdf',
+      'Transfer-Encoding': 'chunked',
+      Expires: 0,
+      'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
+      'Content-Transfer-Encoding': 'binary',
+      Pragma: 'public',
     });
+    const html = compileFile(path.join(__dirname, '../../views/consommation.pug'))({ consommations });
+    pdf
+      .create(html, {
+        phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
+        script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
+        border: {
+          top: '1in',
+          right: '1in',
+          bottom: '1in',
+          left: '1in',
+        },
+        format: 'A4',
+        orientation: 'portrait',
+      })
+      .toStream((error: Error, stream: ReadStream) => {
+        if (error) next(new ErrorHandler(500, error.message));
+        stream.pipe(res);
+      });
+  } catch (error) {
+    next(error)
+  }
 };
 
 export const sendConfiguration = async (req: Request, res: Response, next: NextFunction) => {
@@ -154,6 +249,6 @@ export const sendConfiguration = async (req: Request, res: Response, next: NextF
     });
     res.status(200).send({ success: true, message: 'Configuration sent' });
   } catch (error) {
-    throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+    next(new ErrorHandler(500, `Email not sent : ${error.message}`));
   }
 };
