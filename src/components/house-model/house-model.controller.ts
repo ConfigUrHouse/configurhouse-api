@@ -208,7 +208,7 @@ export const getConsommations = async (req: Request, res: Response, next: NextFu
         ],
       },
     ],
-    attributes: ['name'],
+    attributes: ['name', 'occupants'],
   });
   if (!houseModel) return next(new ErrorHandler(404, `House Model with id '${id}' not found`));
   const consoReference = houseModel.consommationHouseModelPosteConsos
