@@ -9,6 +9,7 @@ import {
   deleteAll,
   deleteOne,
   downloadEstimate,
+  getConsommations,
   getEstimate,
 } from './house-model.controller';
 
@@ -171,6 +172,8 @@ houseModelRouter.put('/:id', [auth, validateAdminRole], update);
 houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);
+
+houseModelRouter.get('/:id/conso', [auth, validateAdminRole], getConsommations);
 
 houseModelRouter.get('/:id/estimate', [auth, validateAdminRole], getEstimate);
 
