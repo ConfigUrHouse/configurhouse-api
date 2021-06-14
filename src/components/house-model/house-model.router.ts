@@ -1,5 +1,7 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
+import joi from 'joi';
 import auth from '../../middleware/auth';
+import { validatePathId, validateRequest } from '../../middleware/validate-request';
 import { validateAdminRole } from '../../middleware/validate-role';
 import {
   findAll,
@@ -11,6 +13,7 @@ import {
   downloadEstimate,
   getConsommations,
   getEstimate,
+  getConfigConsommations,
 } from './house-model.controller';
 
 export const houseModelRouter = Router();
@@ -174,6 +177,25 @@ houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
 houseModelRouter.get('/:id/conso', [auth, validateAdminRole], getConsommations);
+
+houseModelRouter.post(
+  '/:id/conso',
+  [
+    validatePathId,
+    (req: Request, res: Response, next: NextFunction) => {
+      validateRequest(
+        req,
+        next,
+        joi.object({
+          valueIds: joi.array().items(joi.number()),
+        })
+      );
+    },
+    auth,
+    validateAdminRole,
+  ],
+  getConfigConsommations
+);
 
 houseModelRouter.get('/:id/estimate', [auth, validateAdminRole], getEstimate);
 
