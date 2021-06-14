@@ -162,128 +162,20 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const getConsommations = async (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
-  const houseModel = await HouseModel.findByPk(id, {
-    include: [
-      {
-        model: OptionConf,
-        as: 'optionConfs',
-        include: [
-          {
-            model: Value,
-            as: 'values',
-            where: {
-              is_default: 1,
-            },
-            include: [
-              {
-                model: ValuePosteConso,
-                as: 'valuePosteConsos',
-                include: [
-                  {
-                    model: PosteConso,
-                    as: 'posteConso',
-                    attributes: ['name', 'description'],
-                  },
-                ],
-                attributes: ['conso'],
-              },
-            ],
-          },
-        ],
-        attributes: ['name'],
-      },
-      {
-        model: ConsommationHouseModelPosteConso,
-        as: 'consommationHouseModelPosteConsos',
-        include: [
-          {
-            model: Consommation,
-            as: 'consommation',
-          },
-          {
-            model: PosteConso,
-            as: 'posteConso',
-          },
-        ],
-      },
-    ],
-    attributes: ['name', 'occupants'],
-  });
-  if (!houseModel) return next(new ErrorHandler(404, `House Model with id '${id}' not found`));
-  const consoReference = houseModel.consommationHouseModelPosteConsos
-    .filter((consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 1)
-    .map((consommationHouseModelPosteConso) => ({
-      conso: consommationHouseModelPosteConso.consommation.conso,
-      posteConso: {
-        name: consommationHouseModelPosteConso.posteConso.name,
-        description: consommationHouseModelPosteConso.posteConso.description,
-      },
-    }));
-  const consoBase = houseModel.consommationHouseModelPosteConsos.filter(
-    (consommationHouseModelPosteConso) => consommationHouseModelPosteConso.consommation.is_reference === 0
-  );
-  const consoBaseTotal = consoBase.reduce((a, b) => a + b.consommation.conso, 0);
-  const globalReference = consoReference.reduce((a, b) => a + b.conso, 0);
-  const valuePosteConsos = houseModel.optionConfs.flatMap((optionConf) => optionConf.values[0].valuePosteConsos);
-  const posteConsos = groupBy(valuePosteConsos, (valuePosteConso) => valuePosteConso.posteConso.name);
-  const consoBasePosteConsos = groupBy(
-    consoBase,
-    (consommationHouseModelPosteConso) => consommationHouseModelPosteConso.posteConso.name
-  );
-  const consoBaseByPoste = Object.keys(consoBasePosteConsos).map((posteConso) => ({
-    posteConso,
-    conso: consoBasePosteConsos[posteConso].reduce((a, b) => a + b.consommation.conso, 0),
-  }));
-  const consoOptionsByPoste = Object.keys(posteConsos).map((posteConso) => ({
-    posteConso,
-    conso: posteConsos[posteConso].reduce((a, b) => a + b.conso, 0),
-  }));
-  const consoConfigByPoste = consoBaseByPoste
-    .concat(consoOptionsByPoste)
-    .reduce((a: Array<{ posteConso: string; conso: number }>, b) => {
-      const index = a.findIndex((item) => item.posteConso === b.posteConso);
-      if (index === -1) {
-        return a.concat(b);
-      } else {
-        a[index].conso += b.conso;
-        return a;
-      }
-    }, []);
-  const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
-  const diffPercentage = Math.round(((globalConfig - globalReference) / globalReference) * 100);
-  res.send({
-    context: {
-      occupants: houseModel.occupants,
-      options: houseModel.optionConfs.map((optionConf) => ({
-        option: optionConf.name,
-        value: optionConf.values[0].name,
-      })),
-    },
-    global: {
-      reference: globalReference,
-      config: globalConfig,
-      diffPercentage: diffPercentage >= 0 ? '+' + diffPercentage + '%' : diffPercentage + '%',
-    },
-    byPosteConso: {
-      reference: consoReference.map((conso) => ({
-        ...conso,
-        percentageOfGlobal: Math.round((conso.conso / globalReference) * 100),
-      })),
-      config: consoConfigByPoste.map((conso) => {
-        const reference = consoReference.find((someConso) => someConso.posteConso.name === conso.posteConso);
-        const diffPercentageOfPosteConsoReference = Math.round(
-          ((conso.conso - (reference as any).conso) / (reference as any).conso) * 100
-        );
-        return {
-          ...conso,
-          percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
-          diffPercentageOfPosteConsoReference:
-            diffPercentageOfPosteConsoReference >= 0
-              ? '+' + diffPercentageOfPosteConsoReference + '%'
-              : diffPercentageOfPosteConsoReference + '%',
-        };
-      }),
-    },
-  });
+  const id = parseInt(req.params.id);
+  try {
+    res.send(await HouseModelService.getConsommations(id));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getConfigConsommations = async (req: Request, res: Response, next: NextFunction) => {
+  const id = parseInt(req.params.id);
+  const valueIds = req.body.valueIds;
+  try {
+    res.send(await HouseModelService.getConsommations(id, valueIds));
+  } catch (error) {
+    next(error);
+  }
 };
