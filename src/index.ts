@@ -99,7 +99,9 @@ declare const module: WebpackHotModule;
   // Réinitialiser la BDD avec force
   // await mysql.instance.sync({ force: true });
 
-  await initData();
+  if (process.env.ENVIRONMENT === 'dev') {
+    await initData();
+  }
 
   /**
    * Port gestion
