@@ -1,15 +1,22 @@
 import { Role } from './role.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
+import { getPagination, getPagingData } from '../../shared/pagination';
 
-export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  Role.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+export const findAll = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const size = req.query.size ? parseInt(req.query.size as string) : undefined;
+    const page = req.query.page ? parseInt(req.query.page as string) : 0;
+    const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
+
+    const data = await Role.findAndCountAll({
+      limit: limit,
+      offset: offset,
     });
+    res.status(200).send({ success: true, ...getPagingData(data, page, limit) });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
 };
 
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
