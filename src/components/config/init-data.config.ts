@@ -17,6 +17,7 @@ import {
   UserRole,
   Consommation,
   ConsommationHouseModelPosteConso,
+  Police,
 } from './init-models.config';
 import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 
@@ -38,8 +39,10 @@ export async function initData() {
     await initValuePosteConsos();
     await initConsommations();
     await initConsommationHouseModelPosteConsos();
-  } catch (error) {
-    console.error(error);
+    await initPolicies();
+  }
+  catch(error){
+    console.log(error)
   }
 }
 
@@ -590,3 +593,32 @@ async function initConsommationHouseModelPosteConsos() {
     });
   }
 }
+
+
+
+async function initPolicies() {
+
+  const collectIntern = await Police.findOne({ where: { name: 'collectIntern' } });
+  const sharePartner = await Police.findOne({ where: { name: 'sharePartner' } });
+  const mailPartner = await Police.findOne({ where: { name: 'mailPartner' } });
+
+  if (!collectIntern) {
+    Police.create({
+      name: 'collectIntern',
+      description: 'J\'autorise la société Deschamps à collecter et utiliser les données personnelles récoltées sur l\'application.',
+    });
+  }
+  if (!sharePartner) {
+    Police.create({
+      name: 'sharePartner',
+      description: 'J\'autorise la société Deschamps à collecter et partager à ses partenaires les données personnelles récoltées sur l\'application.',
+    });
+  }
+  if (!mailPartner) {
+    Police.create({
+      name: 'mailPartner',
+      description: 'J\'autorise la société Deschamps à partager mes données personnelles afin d\'être recontacté par d\'éventuels partenaires.',
+    });
+  }
+}
+
