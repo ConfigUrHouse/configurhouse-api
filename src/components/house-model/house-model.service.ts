@@ -15,6 +15,7 @@ interface EstimateValue {
 }
 
 interface Estimate {
+  houseModel: HouseModel;
   estimate: EstimateValue[];
   total: number;
   title: string;
@@ -37,11 +38,14 @@ export default class HouseModelService {
       }
     }
 
-    const total = estimate
-      .map((e) => e.value.price)
-      .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
+    const total =
+      model.price +
+      estimate
+        .map((e) => e.value.price)
+        .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
 
     return {
+      houseModel: model,
       estimate,
       total,
       title: `Devis du modèle ${model.name}`,

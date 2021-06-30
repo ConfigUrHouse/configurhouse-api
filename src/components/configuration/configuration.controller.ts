@@ -75,14 +75,9 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
       id_User,
     })
       .then(async (config) => {
-        await Promise.all(
-          configurationValues.map((id_Value: number) =>
-            ConfigurationValue.create({
-              id_Value,
-              id_Configuration: config.id,
-            })
-          )
-        );
+        if (configurationValues.length > 0) {
+          await ConfigurationService.linkConfigurationToValues(config, configurationValues);
+        }
 
         res.status(201).send({ success: true, config, message: 'Configuration created successfully' });
       })
@@ -94,43 +89,27 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
-export const update = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
-  const { name, id_User, id_HouseModel, configurationValues = [] } = req.body;
+export const update = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
+    const configurationValues = req.body.configurationValues || [];
 
-  Configuration.update(
-    { name, id_User, id_HouseModel },
-    {
-      where: { id: id },
+    let configuration = await Configuration.findByPk(id);
+    if (!configuration) {
+      return next(new ErrorHandler(404, 'Configuration not found'));
     }
-  )
-    .then(async (num: any) => {
-      if (num == 1) {
-        if (configurationValues.length > 0) {
-          await ConfigurationValue.destroy({
-            where: {
-              id_Configuration: id,
-            },
-          });
-          await Promise.all(
-            configurationValues.map((id_Value: number) =>
-              ConfigurationValue.create({
-                id_Value,
-                id_Configuration: id,
-              })
-            )
-          );
-        }
-        res.status(201).send({
-          message: 'Message to define',
-        });
-      } else {
-        next(new ErrorHandler(500, 'Message to define'));
-      }
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+
+    configuration = await configuration.update(req.body);
+
+    if (configurationValues.length > 0) {
+      await ConfigurationService.linkConfigurationToValues(configuration, configurationValues);
+    }
+    res.status(200).send({
+      message: 'Configuration updated',
     });
+  } catch (error) {
+    next(new ErrorHandler(400, error.message));
+  }
 };
 
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
@@ -179,11 +158,8 @@ export const getEstimate = async (req: Request, res: Response, next: NextFunctio
 
 export const downloadEstimate = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('in');
-    console.log(req.query.mode);
-    console.log(req.params.id);
     const mode = ['csv', 'pdf'].includes(req.query.mode as string) ? (req.query.mode as string) : 'pdf';
-    const { estimate, total, title } = await ConfigurationService.getEstimate(parseInt(req.params.id));
+    const { houseModel, estimate, total, title } = await ConfigurationService.getEstimate(parseInt(req.params.id));
 
     switch (mode) {
       case 'pdf':
@@ -197,6 +173,7 @@ export const downloadEstimate = async (req: Request, res: Response, next: NextFu
           Pragma: 'public',
         });
         const html = compileFile(path.join(__dirname, '../../views/estimate.pug'))({
+          houseModel,
           estimate,
           total,
           title,
@@ -222,7 +199,10 @@ export const downloadEstimate = async (req: Request, res: Response, next: NextFu
         break;
       case 'csv':
         const csv = json2csv.parse(
-          estimate.map((e) => ({ option: e.option.name, value: e.value.name, price: e.value.price })),
+          [
+            { option: 'Modèle', value: houseModel.name, price: houseModel.price },
+            ...estimate.map((e) => ({ option: e.option.name, value: e.value.name, price: e.value.price })),
+          ],
           { fields: ['option', 'value', 'price'], delimiter: ';' }
         );
 

@@ -5,6 +5,12 @@ html
       include css/estimate.css
   body
     h1 #{title}
+    div.details
+        div.option Modèle
+        div.details-body
+            div.value-container
+                span.value #{houseModel.name}
+                span.price #{houseModel.price}
     each details in estimate
         div.details
             div.option #{details.option.name}
