@@ -8,9 +8,9 @@ import { compileFile } from 'pug';
 import { ReadStream } from 'fs';
 import path from 'path';
 import { emailTransporter } from '../config/email.config';
-import { Value } from '../value/value.class';
-import { OptionConf } from '../option-conf/option-conf.class';
 import json2csv from 'json2csv';
+import { ConfigurationValue } from '../configuration-value/configuration-value.class';
+import { HouseModel } from '../house-model/house-model.class';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -19,7 +19,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 
   const name = req.query.name as string;
   const id_HouseModel = req.query.id_HouseModel as string;
-  const id_User = req.query.id_User as string;
+  const id_User = (res.locals.userId || req.query.id_User) as string;
 
   const filters: { name?: string; id_HouseModel?: number; id_User?: number } = {};
   if (name) filters.name = name;
@@ -45,7 +45,9 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
 
-  Configuration.findByPk(id)
+  Configuration.findByPk(id, {
+    include: ['configurationValues', 'houseModel'],
+  })
     .then((data) => {
       res.send(data);
     })
@@ -54,14 +56,71 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id_HouseModel, configurationValues = [] } = req.body;
+    const id_User = res.locals.userId as number;
+    if (!id_User) {
+      return next(new ErrorHandler(404, 'User not found'));
+    }
+
+    const houseModel = await HouseModel.findByPk(id_HouseModel);
+    if (!houseModel) {
+      return next(new ErrorHandler(404, 'HouseModel not found'));
+    }
+
+    Configuration.create({
+      name: `${houseModel.name} du ${new Date(Date.now()).toLocaleDateString()}`,
+      id_HouseModel,
+      id_User,
+    })
+      .then(async (config) => {
+        await Promise.all(
+          configurationValues.map((id_Value: number) =>
+            ConfigurationValue.create({
+              id_Value,
+              id_Configuration: config.id,
+            })
+          )
+        );
+
+        res.status(201).send({ success: true, config, message: 'Configuration created successfully' });
+      })
+      .catch((err: Error) => {
+        next(new ErrorHandler(400, err.message));
+      });
+  } catch (error) {
+    next(new ErrorHandler(500, error.message));
+  }
+};
+
 export const update = (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
+  const { name, id_User, id_HouseModel, configurationValues = [] } = req.body;
 
-  Configuration.update(req.body, {
-    where: { id: id },
-  })
-    .then((num: any) => {
+  Configuration.update(
+    { name, id_User, id_HouseModel },
+    {
+      where: { id: id },
+    }
+  )
+    .then(async (num: any) => {
       if (num == 1) {
+        if (configurationValues.length > 0) {
+          await ConfigurationValue.destroy({
+            where: {
+              id_Configuration: id,
+            },
+          });
+          await Promise.all(
+            configurationValues.map((id_Value: number) =>
+              ConfigurationValue.create({
+                id_Value,
+                id_Configuration: id,
+              })
+            )
+          );
+        }
         res.status(201).send({
           message: 'Message to define',
         });
@@ -108,88 +167,75 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-export const downloadEstimate = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
-  const mode = ['csv', 'pdf'].includes(req.query.mode as string) ? (req.query.mode as string) : 'pdf';
+export const getEstimate = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const estimate = await ConfigurationService.getEstimate(parseInt(req.params.id));
 
-  Configuration.findByPk(id, {
-    include: ['configurationValues'],
-  })
-    .then(async (data) => {
-      if (!data) {
-        return next(new ErrorHandler(404, 'Configuration not found'));
-      }
+    res.status(200).send(estimate);
+  } catch (err: any) {
+    next(new ErrorHandler(500, err.message));
+  }
+};
 
-      const estimate: { value: Value; option: OptionConf }[] = [];
-      for (const cv of data.configurationValues) {
-        const value = await Value.findByPk(cv.id_Value);
-        if (!value) {
-          continue;
-        }
-        const option = await OptionConf.findByPk(value.id_OptionConf);
-        if (!option) {
-          continue;
-        }
+export const downloadEstimate = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    console.log('in');
+    console.log(req.query.mode);
+    console.log(req.params.id);
+    const mode = ['csv', 'pdf'].includes(req.query.mode as string) ? (req.query.mode as string) : 'pdf';
+    const { estimate, total, title } = await ConfigurationService.getEstimate(parseInt(req.params.id));
 
-        estimate.push({ value, option });
-      }
-      switch (mode) {
-        case 'pdf':
-          const total = estimate
-            .map((e) => e.value.price)
-            .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()))
-            .toFixed(2);
+    switch (mode) {
+      case 'pdf':
+        res.writeHead(200, {
+          'Content-Type': 'application/octet-stream',
+          'Content-Disposition': "attachment; filename*=UTF-8''" + 'estimate' + '.pdf',
+          'Transfer-Encoding': 'chunked',
+          Expires: 0,
+          'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
+          'Content-Transfer-Encoding': 'binary',
+          Pragma: 'public',
+        });
+        const html = compileFile(path.join(__dirname, '../../views/estimate.pug'))({
+          estimate,
+          total,
+          title,
+        });
 
-          res.writeHead(200, {
-            'Content-Type': 'application/octet-stream',
-            'Content-Disposition': "attachment; filename*=UTF-8''" + 'estimate' + '.pdf',
-            'Transfer-Encoding': 'chunked',
-            Expires: 0,
-            'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
-            'Content-Transfer-Encoding': 'binary',
-            Pragma: 'public',
+        pdf
+          .create(html, {
+            phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
+            script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
+            border: {
+              top: '1in',
+              right: '1in',
+              bottom: '1in',
+              left: '1in',
+            },
+            format: 'A4',
+            orientation: 'portrait',
+          })
+          .toStream((error: Error, stream: ReadStream) => {
+            if (error) throw new ErrorHandler(500, error.message);
+            stream.pipe(res);
           });
-          const html = compileFile(path.join(__dirname, '../../views/estimate.pug'))({
-            estimate,
-            total,
-            title: `Devis de la configuration "${data.name}"`,
-          });
+        break;
+      case 'csv':
+        const csv = json2csv.parse(
+          estimate.map((e) => ({ option: e.option.name, value: e.value.name, price: e.value.price })),
+          { fields: ['option', 'value', 'price'], delimiter: ';' }
+        );
 
-          pdf
-            .create(html, {
-              phantomPath: './node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
-              script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
-              border: {
-                top: '1in',
-                right: '1in',
-                bottom: '1in',
-                left: '1in',
-              },
-              format: 'A4',
-              orientation: 'portrait',
-            })
-            .toStream((error: Error, stream: ReadStream) => {
-              if (error) throw new ErrorHandler(500, error.message);
-              stream.pipe(res);
-            });
-          break;
-        case 'csv':
-          const csv = json2csv.parse(
-            estimate.map((e) => ({ option: e.option.name, value: e.value.name, price: e.value.price })),
-            { fields: ['option', 'value', 'price'], delimiter: ';' }
-          );
-
-          res.setHeader('Content-disposition', 'attachment; filename=data.csv');
-          res.set('Content-Type', 'text/csv');
-          res.status(200).send(csv);
-          break;
-        default:
-          next(new ErrorHandler(500, 'Mode inconnu'));
-      }
-    })
-    .catch((err: Error) => {
-      next(new ErrorHandler(500, err.message));
-    });
+        res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+        res.set('Content-Type', 'text/csv');
+        res.status(200).send(csv);
+        break;
+      default:
+        next(new ErrorHandler(500, 'Mode inconnu'));
+    }
+  } catch (err: any) {
+    next(new ErrorHandler(500, err.message));
+  }
 };
 
 export const getConfigurationConsommation = async (req: Request, res: Response, next: NextFunction) => {
@@ -234,7 +280,7 @@ export const downloadConfigurationConsommation = async (req: Request, res: Respo
         stream.pipe(res);
       });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 

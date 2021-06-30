@@ -41,6 +41,17 @@ export interface Consommations {
   };
 }
 
+interface EstimateValue {
+  value: Value;
+  option: OptionConf;
+}
+
+interface Estimate {
+  estimate: EstimateValue[];
+  total: number;
+  title: string;
+}
+
 export default class ConfigurationService {
   public static async getConsommations(id: number): Promise<Consommations> {
     const config = await Configuration.findByPk(id, {
@@ -176,6 +187,42 @@ export default class ConfigurationService {
           };
         }),
       },
+    };
+  }
+
+  public static async getEstimate(id: number): Promise<Estimate> {
+    const configuration = await Configuration.findByPk(id, {
+      include: [
+        {
+          model: ConfigurationValue,
+          as: 'configurationValues',
+          include: [
+            {
+              model: Value,
+              as: 'value',
+              include: ['optionConf'],
+            },
+          ],
+        },
+      ],
+    });
+    if (!configuration) {
+      throw new ErrorHandler(404, 'Configuration not found');
+    }
+
+    const estimate: EstimateValue[] = configuration.configurationValues.map((cv) => ({
+      value: cv.value,
+      option: cv.value.optionConf,
+    }));
+
+    const total = estimate
+      .map((e) => e.value.price)
+      .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
+
+    return {
+      estimate,
+      total,
+      title: `Devis de la configuration "${configuration.name}"`,
     };
   }
 }
