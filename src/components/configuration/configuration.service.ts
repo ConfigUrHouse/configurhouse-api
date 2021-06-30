@@ -47,6 +47,7 @@ interface EstimateValue {
 }
 
 interface Estimate {
+  houseModel: HouseModel;
   estimate: EstimateValue[];
   total: number;
   title: string;
@@ -193,6 +194,7 @@ export default class ConfigurationService {
   public static async getEstimate(id: number): Promise<Estimate> {
     const configuration = await Configuration.findByPk(id, {
       include: [
+        'houseModel',
         {
           model: ConfigurationValue,
           as: 'configurationValues',
@@ -215,14 +217,42 @@ export default class ConfigurationService {
       option: cv.value.optionConf,
     }));
 
-    const total = estimate
-      .map((e) => e.value.price)
-      .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
+    const total =
+      configuration.houseModel.price +
+      estimate
+        .map((e) => e.value.price)
+        .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
 
     return {
+      houseModel: configuration.houseModel,
       estimate,
       total,
       title: `Devis de la configuration "${configuration.name}"`,
     };
+  }
+
+  public static async linkConfigurationToValues(configuration: Configuration, values: number[]) {
+    const optionConfs = await OptionConf.findAll({
+      include: ['values'],
+      where: { id_HouseModel: configuration.id_HouseModel },
+    });
+
+    await ConfigurationValue.destroy({
+      where: {
+        id_Configuration: configuration.id,
+      },
+    });
+
+    optionConfs.forEach((oc) => {
+      const value = oc.values.find((val) => values.includes(val.id)) || oc.values.find((val) => val.is_default);
+
+      // Use value if it belongs to this optionConf, otherwise use default
+      if (value) {
+        ConfigurationValue.create({
+          id_Value: value.id,
+          id_Configuration: configuration.id,
+        });
+      }
+    });
   }
 }

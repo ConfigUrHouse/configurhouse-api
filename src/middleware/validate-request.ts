@@ -13,7 +13,7 @@ export const validateRequest = (
     allowUnknown: true, // ignore unknown props
     stripUnknown: true, // remove unknown props
   };
-  const objectToValidate = req.method === 'POST' ? req.body : req.query;
+  const objectToValidate = ['POST', 'PUT'].includes(req.method) ? req.body : req.query;
   const { error, value } = schema.validate(objectToValidate, options);
   if (pathSchema) {
     const pathValidationResult = pathSchema.validate(req.params, options);

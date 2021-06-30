@@ -138,9 +138,9 @@ configurationRouter.get('/:id', validatePathId, findOne);
 
 configurationRouter.post('/', auth, create);
 
-configurationRouter.put('/:id', [validatePathId, auth], update);
+configurationRouter.put('/:id', [auth, validatePathId], update);
 
-configurationRouter.delete('/:id', [validatePathId, auth], deleteOne);
+configurationRouter.delete('/:id', [auth, validatePathId], deleteOne);
 
 configurationRouter.delete('/', [auth], deleteAll);
 
