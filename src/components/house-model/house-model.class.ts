@@ -14,6 +14,7 @@ export interface HouseModelAttributes {
   id: number;
   name: string;
   occupants: number;
+  price: number;
   id_ModelType: number;
   id_Asset: number;
 }
@@ -26,6 +27,7 @@ export class HouseModel extends Model implements HouseModelAttributes {
   id!: number;
   name!: string;
   occupants!: number;
+  price!: number;
   id_ModelType!: number;
   id_Asset!: number;
 
@@ -136,6 +138,10 @@ export class HouseModel extends Model implements HouseModelAttributes {
         },
         occupants: {
           type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        price: {
+          type: DataTypes.FLOAT,
           allowNull: false,
         },
         id_ModelType: {

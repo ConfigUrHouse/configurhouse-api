@@ -98,6 +98,7 @@ async function initHouseModels() {
       occupants: 2,
       id_ModelType: type1.id,
       id_Asset: asset1.id,
+      price: 150000
     });
   }
 
@@ -109,6 +110,7 @@ async function initHouseModels() {
       occupants: 3,
       id_ModelType: type2.id,
       id_Asset: asset2.id,
+      price: 215000
     });
   }
 }
