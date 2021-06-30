@@ -9,12 +9,12 @@ import { ValuePosteConso } from '../value-poste-conso/value-poste-conso.class';
 import { Value } from '../value/value.class';
 import { HouseModel } from './house-model.class';
 
-export interface EstimateValue {
+interface EstimateValue {
   value: Value;
   option: OptionConf;
 }
 
-export interface Estimate {
+interface Estimate {
   estimate: EstimateValue[];
   total: number;
   title: string;

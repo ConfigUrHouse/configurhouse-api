@@ -122,14 +122,14 @@ export const deleteAll = async (req: Request, res: Response, next: NextFunction)
 };
 
 const getToken = (id: number) => {
-  const token = jwt.sign({ id }, process.env.APP_SECRET as string, { expiresIn: '15m' });
-  return { token, expiresAt: new Date(new Date(Date.now()).getTime() + 15 * 60000) };
+  const token = jwt.sign({ id }, process.env.APP_SECRET as string, { expiresIn: '59m' });
+  return { token, expiresAt: new Date(new Date(Date.now()).getTime() + 59 * 60000) };
 };
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await UserService.create(req.body as UserAttributes);
-    res.json({ message: 'Registration successful' });
+    res.json({ message: 'Registration successful', success: true });
   } catch (error) {
     next(new ErrorHandler(500, error.message));
   }

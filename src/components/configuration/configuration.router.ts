@@ -12,6 +12,8 @@ import {
   downloadConfigurationConsommation,
   sendConfiguration,
   downloadEstimate,
+  create,
+  getEstimate,
 } from './configuration.controller';
 
 /**
@@ -129,16 +131,18 @@ export const configurationRouter = Router();
  *         400:
  *           description: Invalid request parameters
  */
-configurationRouter.get('/', findAll);
+configurationRouter.get('/', auth, findAll);
 //#endregion
 
 configurationRouter.get('/:id', validatePathId, findOne);
 
-configurationRouter.put('/:id', [validatePathId, auth, validateAdminRole], update);
+configurationRouter.post('/', auth, create);
 
-configurationRouter.delete('/:id', [validatePathId, auth, validateAdminRole], deleteOne);
+configurationRouter.put('/:id', [validatePathId, auth], update);
 
-configurationRouter.delete('/', [auth, validateAdminRole], deleteAll);
+configurationRouter.delete('/:id', [validatePathId, auth], deleteOne);
+
+configurationRouter.delete('/', [auth], deleteAll);
 
 //#region GET /configuration/:id/conso
 /**
@@ -225,4 +229,6 @@ configurationRouter.get('/:id/conso/download', validatePathId, downloadConfigura
 configurationRouter.get('/:id/send', validatePathId, sendConfiguration);
 //#endregion
 
-configurationRouter.get('/:id/downloadEstimate', validatePathId, downloadEstimate);
+configurationRouter.get('/:id/estimate', [auth, validatePathId], getEstimate);
+
+configurationRouter.get('/:id/estimate/download', validatePathId, downloadEstimate);
