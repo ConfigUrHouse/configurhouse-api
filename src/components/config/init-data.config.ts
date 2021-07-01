@@ -40,9 +40,8 @@ export async function initData() {
     await initConsommations();
     await initConsommationHouseModelPosteConsos();
     await initPolicies();
-  }
-  catch(error){
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -98,7 +97,7 @@ async function initHouseModels() {
       occupants: 2,
       id_ModelType: type1.id,
       id_Asset: asset1.id,
-      price: 150000
+      price: 150000,
     });
   }
 
@@ -110,7 +109,7 @@ async function initHouseModels() {
       occupants: 3,
       id_ModelType: type2.id,
       id_Asset: asset2.id,
-      price: 215000
+      price: 215000,
     });
   }
 }
@@ -591,10 +590,7 @@ async function initConsommationHouseModelPosteConsos() {
   }
 }
 
-
-
 async function initPolicies() {
-
   const collectIntern = await Police.findOne({ where: { name: 'collectIntern' } });
   const sharePartner = await Police.findOne({ where: { name: 'sharePartner' } });
   const mailPartner = await Police.findOne({ where: { name: 'mailPartner' } });
@@ -602,20 +598,22 @@ async function initPolicies() {
   if (!collectIntern) {
     Police.create({
       name: 'collectIntern',
-      description: 'J\'autorise la société Deschamps à collecter et utiliser les données personnelles récoltées sur l\'application.',
+      description:
+        "J'autorise la société Deschamps à collecter et utiliser les données personnelles récoltées sur l'application.",
     });
   }
   if (!sharePartner) {
     Police.create({
       name: 'sharePartner',
-      description: 'J\'autorise la société Deschamps à collecter et partager à ses partenaires les données personnelles récoltées sur l\'application.',
+      description:
+        "J'autorise la société Deschamps à collecter et partager à ses partenaires les données personnelles récoltées sur l'application.",
     });
   }
   if (!mailPartner) {
     Police.create({
       name: 'mailPartner',
-      description: 'J\'autorise la société Deschamps à partager mes données personnelles afin d\'être recontacté par d\'éventuels partenaires.',
+      description:
+        "J'autorise la société Deschamps à partager mes données personnelles afin d'être recontacté par d'éventuels partenaires.",
     });
   }
 }
-

@@ -186,8 +186,8 @@ export const downloadEstimate = async (req: Request, res: Response, next: NextFu
             border: {
               top: '1in',
               right: '0.5in',
-              bottom: '0.5in',
-              left: '1in',
+              bottom: '1in',
+              left: '0.5in',
             },
             format: 'A4',
             orientation: 'portrait',
@@ -248,9 +248,9 @@ export const downloadConfigurationConsommation = async (req: Request, res: Respo
         script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
         border: {
           top: '1in',
-          right: '1in',
+          right: '0.5in',
           bottom: '1in',
-          left: '1in',
+          left: '0.5in',
         },
         format: 'A4',
         orientation: 'portrait',
