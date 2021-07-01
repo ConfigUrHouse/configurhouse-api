@@ -64,20 +64,17 @@ async function initTokenTypes() {
 }
 
 async function initAssetTypes() {
-  if (!(await AssetType.findOne({ where: { name: 'Asset type 1' } }))) {
-    await AssetType.create({ name: 'Asset type 1', description: 'Temp asset type 1' });
-  }
-  if (!(await AssetType.findOne({ where: { name: 'Asset type 2' } }))) {
-    await AssetType.create({ name: 'Asset type 2', description: 'Temp asset type 2' });
+  if (!(await AssetType.findOne({ where: { name: 'Model' } }))) {
+    await AssetType.create({ name: 'Model', description: '3d house model' });
   }
 }
 
 async function initAssets() {
-  const type1 = await AssetType.findOne({ where: { name: 'Asset type 1' } });
+  const type1 = await AssetType.findOne({ where: { name: 'Model' } });
   if (!(await Asset.findOne({ where: { value: 'Asset 1' } })) && type1) {
     await Asset.create({ value: 'Asset 1', id_AssetType: type1.id });
   }
-  const type2 = await AssetType.findOne({ where: { name: 'Asset type 2' } });
+  const type2 = await AssetType.findOne({ where: { name: 'Model' } });
   if (!(await Asset.findOne({ where: { value: 'Asset 2' } })) && type2) {
     await Asset.create({ value: 'Asset 2', id_AssetType: type2.id });
   }
@@ -164,38 +161,38 @@ async function initValues() {
     where: { name: 'Système de chauffage', id_HouseModel: model?.id },
   });
   const optionConfCharpente = await OptionConf.findOne({ where: { name: 'Charpente', id_HouseModel: model?.id } });
-  if (!(await Value.findOne({ where: { name: 'Pompe à chaleur' } })) && asset1 && optionConfChauffage) {
+  if (!(await Value.findOne({ where: { name: 'Flame' } })) && asset1 && optionConfChauffage) {
     await Value.create({
-      name: 'Pompe à chaleur',
-      price: 1022.0,
-      id_Asset: asset1.id,
+      name: 'Flame',
+      value: '#D36135',
+      price: 1022,
       id_OptionConf: optionConfChauffage.id,
       is_default: 1,
     });
   }
   if (!(await Value.findOne({ where: { name: 'Radiateurs électriques' } })) && asset1 && optionConfChauffage) {
     await Value.create({
-      name: 'Radiateurs électriques',
-      price: 800.0,
-      id_Asset: asset1.id,
+      name: 'Chestnut',
+      value: '#A24936',
+      price: 1042,
       id_OptionConf: optionConfChauffage.id,
       is_default: 0,
     });
   }
-  if (!(await Value.findOne({ where: { name: 'Bois' } })) && asset2 && optionConfCharpente) {
+  if (!(await Value.findOne({ where: { name: 'Green Sheen' } })) && asset2 && optionConfCharpente) {
     await Value.create({
-      name: 'Bois',
-      price: 5000.0,
-      id_Asset: asset2.id,
+      name: 'Green Sheen',
+      value: '#83BCA9',
+      price: 1032,
       id_OptionConf: optionConfCharpente.id,
       is_default: 1,
     });
   }
-  if (!(await Value.findOne({ where: { name: 'Métal' } })) && asset2 && optionConfCharpente) {
+  if (!(await Value.findOne({ where: { name: 'Prussion Blue' } })) && asset2 && optionConfCharpente) {
     await Value.create({
-      name: 'Métal',
-      price: 8000.0,
-      id_Asset: asset2.id,
+      name: 'Prussion Blue',
+      value: '#003459',
+      price: 902,
       id_OptionConf: optionConfCharpente.id,
       is_default: 0,
     });

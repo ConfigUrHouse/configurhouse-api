@@ -26,7 +26,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(new Error('File uploaded is not of types accepted.'), false);
   }
 };
-const upload = multer({ storage: storage, fileFilter: fileFilter }).single('images');
+const upload = multer({ storage: storage, fileFilter: fileFilter }).single('file');
 
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -142,6 +142,7 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
 export const addOne = (req: Request, res: Response, next: NextFunction) => {
   upload(req, res, (err: any) => {
     if (err instanceof multer.MulterError) {
+      console.log(err);
       res.send('file not uploaded');
     } else {
       let assetProperties: AssetAttributes = {
