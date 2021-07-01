@@ -99,6 +99,10 @@ export class Value extends Model implements ValueAttributes {
           type: DataTypes.STRING(200),
           allowNull: false,
         },
+        value: {
+          type: DataTypes.STRING(200),
+          allowNull: false,
+        },
         price: {
           type: DataTypes.DECIMAL(7, 2),
           allowNull: false,
@@ -117,7 +121,7 @@ export class Value extends Model implements ValueAttributes {
         },
         id_Asset: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
           references: {
             model: 'Asset',
             key: 'id',

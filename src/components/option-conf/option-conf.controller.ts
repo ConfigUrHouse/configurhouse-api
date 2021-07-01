@@ -43,6 +43,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     }
 
     res.status(201).send({
+      id: success.id,
       message: 'Option created successfully',
     });
   } catch (err) {
@@ -62,6 +63,7 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
     }
 
     res.status(200).send({
+      id: id,
       message: 'Option updated successfully',
     });
   } catch (err) {
