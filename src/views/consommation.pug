@@ -4,29 +4,60 @@ html
     style
       include css/consommation.css
   body
-    h4 Estimation de consommation
-    h1 #{name}
-    h2 Contexte
-    p Consommation d'énergie par an, pour #{consommations.context.occupants} habitants
-    p Options choisies :
-    div.details-body
-      each option in consommations.context.options
-        div.value-container
-            span.value #{option.option}
-            span.right #{option.value}
-    h2 Consommation globale
-    p Consommation de la configuration : #{consommations.global.config} kWh
-    p Consommation de référence (pour un logement équivalent) : #{consommations.global.reference} kWh
-    p Différence de consommation par rapport à la consommation de référence : #{consommations.global.diffPercentage}%
-    h2 Consommation par poste
-    each poste in consommations.byPosteConso.config
-      li= poste.posteConso + ' : ' + poste.conso + 'kWh (' + (parseInt(poste.diffPercentageOfPosteConsoReference) > 0 ? '+' : '') + poste.diffPercentageOfPosteConsoReference + '%)'
-    h3 Répartition des postes
-    each poste in consommations.byPosteConso.config
-      li #{poste.posteConso} : #{poste.percentageOfGlobalConfig}%
-    h2 Consommation de référence
-    h3 Détail des postes
-    each poste in consommations.byPosteConso.reference
-      li #{poste.posteConso.name} : #{poste.posteConso.description}
-      p #{poste.conso}kWh (#{poste.percentageOfGlobal}%)
+    h5 Estimation de consommation
+    h2 #{consommations.title}
 
+    h3 Contexte
+    p Consommation d'énergie par an, pour #{consommations.context.occupants} habitants
+    table 
+      thead
+        tr
+          td.left Type d'option
+          td.right Option choisie
+      tbody
+        each option in consommations.context.options
+          tr 
+            td.left #{option.option}
+            td.right #{option.value}
+
+    h3 Consommation globale
+    table 
+      tbody
+        tr 
+          td.left Consommation de la configuration
+          td.right.energy #{consommations.global.config}
+        tr 
+          td.left Consommation de référence (pour un logement équivalent)
+          td.right.energy #{consommations.global.reference}
+        tr 
+          td.left Différence de consommation par rapport à la consommation de référence
+          td.right.percent #{consommations.global.diffPercentage}
+    
+    h3 Consommation par poste
+    table 
+      tbody
+        each poste in consommations.byPosteConso.config
+          tr 
+            td.left #{poste.posteConso}
+            td.right= poste.conso + 'kWh (' + poste.diffPercentageOfPosteConsoReference + '%)'
+
+    h4 Répartition des postes
+    table 
+      tbody
+        each poste in consommations.byPosteConso.config
+          tr 
+            td.left #{poste.posteConso}
+            td.right.percent #{poste.percentageOfGlobalConfig}
+
+    h3 Consommation de référence
+    h4 Détail des postes
+    each poste in consommations.byPosteConso.reference
+      table 
+        thead 
+          tr 
+            td.center 
+              p #{poste.posteConso.name}
+              p.details #{poste.posteConso.description}
+        tbody
+          tr 
+            td.center #{poste.conso}kWh (#{poste.percentageOfGlobal}%)

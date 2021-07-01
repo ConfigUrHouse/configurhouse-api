@@ -168,7 +168,7 @@ export default class ConfigurationService {
       global: {
         reference: globalReference,
         config: globalConfig,
-        diffPercentage: diffPercentage >= 0 ? '+' + diffPercentage + '%' : diffPercentage + '%',
+        diffPercentage: (diffPercentage >= 0 ? '+' : '') + diffPercentage,
       },
       byPosteConso: {
         reference: consoReference.map((conso) => ({
@@ -184,9 +184,7 @@ export default class ConfigurationService {
             ...conso,
             percentageOfGlobalConfig: Math.round((conso.conso / globalConfig) * 100),
             diffPercentageOfPosteConsoReference:
-              diffPercentageOfPosteConsoReference >= 0
-                ? '+' + diffPercentageOfPosteConsoReference + '%'
-                : diffPercentageOfPosteConsoReference + '%',
+              (diffPercentageOfPosteConsoReference >= 0 ? '+' : '') + diffPercentageOfPosteConsoReference,
           };
         }),
       },

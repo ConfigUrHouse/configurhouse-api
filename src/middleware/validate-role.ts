@@ -16,9 +16,8 @@ export async function validateAdminRole(req: Request, res: Response, next: NextF
       res.status(403).send({ success: 'false', message: 'Unauthorized' });
     }
   } catch (error) {
-    next(new ErrorHandler(error.statusCode, error.message))
+    next(new ErrorHandler(error.statusCode, error.message));
   }
-  
 }
 
 export async function validateCollaboratorRole(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -34,6 +33,6 @@ export async function validateCollaboratorRole(req: Request, res: Response, next
       res.status(403).send({ success: 'false', message: 'Unauthorized' });
     }
   } catch (error) {
-    next(new ErrorHandler(error.statusCode, error.message))
+    next(new ErrorHandler(error.statusCode, error.message));
   }
 }
