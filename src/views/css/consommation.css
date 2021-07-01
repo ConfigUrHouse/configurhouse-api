@@ -1,3 +1,35 @@
-h1 {
-  color: blueviolet;
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2 {
+  color: #1a7c7d;
+}
+
+.details-body {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.value-container {
+  margin-bottom: 1rem;
+  border-bottom: 2px dotted black;
+}
+
+.value-container > * {
+  display: inline-block;
+  line-height: 1;
+  margin-bottom: -2px;
+  padding: 0 3px;
+  border-bottom: 2px solid white;
+}
+
+.value {
+  max-width: 30%;
+}
+
+.right {
+  float: right;
+  clear: both;
 }

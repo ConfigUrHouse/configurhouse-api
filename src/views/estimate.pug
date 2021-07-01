@@ -4,22 +4,26 @@ html
     style
       include css/estimate.css
   body
-    h1 #{title}
-    div.details
-        div.option Modèle
-        div.details-body
-            div.value-container
-                span.value #{houseModel.name}
-                span.price #{houseModel.price}
-    each details in estimate
-        div.details
-            div.option #{details.option.name}
-            div.details-body
-                div.value-container
-                    span.value #{details.value.name}
-                    span.price #{details.value.price}
-    div.details
-        div.value-container
-            span.value Totale
-            span.price #{total}
+    h5 Devis détaillé
+    h2 #{title}
+    table 
+        thead
+            tr
+                td.left Type d'option
+                td.center Option choisie
+                td.right Prix de l'option
+        tbody
+            tr 
+                td.left Modèle 
+                td.center #{houseModel.name}
+                td.right.price #{houseModel.price}
+            each details in estimate
+                tr 
+                    td.left #{details.option.name}
+                    td.center #{details.value.name}
+                    td.right.price #{details.value.price}
+            tr.table-footer
+                td.left.total Totale
+                td.center
+                td.right.price #{total}
 

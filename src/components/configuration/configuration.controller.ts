@@ -185,8 +185,8 @@ export const downloadEstimate = async (req: Request, res: Response, next: NextFu
             script: path.join('./node_modules/html-pdf/lib/scripts', 'pdf_a4_portrait.js'),
             border: {
               top: '1in',
-              right: '1in',
-              bottom: '1in',
+              right: '0.5in',
+              bottom: '0.5in',
               left: '1in',
             },
             format: 'A4',
