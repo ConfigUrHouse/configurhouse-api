@@ -3,6 +3,7 @@ import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 import multer from 'multer';
 import * as fs from 'fs';
+import { getPagination, getPagingData } from '../../shared/pagination';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -25,16 +26,22 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(new Error('File uploaded is not of types accepted.'), false);
   }
 };
-const upload = multer({ storage: storage, fileFilter: fileFilter }).single('images');
+const upload = multer({ storage: storage, fileFilter: fileFilter }).single('file');
 
-export const findAll = (req: Request, res: Response, next: NextFunction) => {
-  Asset.findAll()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+export const findAll = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const size = req.query.size ? parseInt(req.query.size as string) : undefined;
+    const page = req.query.page ? parseInt(req.query.page as string) : 0;
+    const { limit, offset } = size ? getPagination(page, size) : { limit: undefined, offset: 0 };
+
+    const data = await Asset.findAndCountAll({
+      limit: limit,
+      offset: offset,
     });
+    res.status(200).send({ success: true, ...getPagingData(data, page, limit) });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
 };
 
 export const findOne = (req: Request, res: Response, next: NextFunction) => {
@@ -135,6 +142,7 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
 export const addOne = (req: Request, res: Response, next: NextFunction) => {
   upload(req, res, (err: any) => {
     if (err instanceof multer.MulterError) {
+      console.log(err);
       res.send('file not uploaded');
     } else {
       let assetProperties: AssetAttributes = {
