@@ -11,6 +11,7 @@ import { Value } from '../value/value.class';
 import { Configuration } from './configuration.class';
 
 export interface Consommations {
+  title: string;
   context: {
     occupants: number;
     options: {
@@ -42,14 +43,14 @@ export interface Consommations {
 }
 
 interface EstimateValue {
-  value: Value;
+  value: any;
   option: OptionConf;
 }
 
 interface Estimate {
-  houseModel: HouseModel;
+  houseModel: any;
   estimate: EstimateValue[];
-  total: number;
+  total: string;
   title: string;
 }
 
@@ -156,6 +157,7 @@ export default class ConfigurationService {
     const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
     const diffPercentage = Math.round(((globalConfig - globalReference) / globalReference) * 100);
     return {
+      title: config.name,
       context: {
         occupants: config.houseModel.occupants,
         options: config.configurationValues.map((configurationValue) => ({
@@ -213,21 +215,21 @@ export default class ConfigurationService {
     }
 
     const estimate: EstimateValue[] = configuration.configurationValues.map((cv) => ({
-      value: cv.value,
+      value: { name: cv.value.name, price: parseFloat(cv.value.price.toString()).toFixed(2) },
       option: cv.value.optionConf,
     }));
 
-    const total =
+    const total: number =
       configuration.houseModel.price +
       estimate
         .map((e) => e.value.price)
         .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
 
     return {
-      houseModel: configuration.houseModel,
+      houseModel: { name: configuration.houseModel.name, price: configuration.houseModel.price.toFixed(2) },
       estimate,
-      total,
-      title: `Devis de la configuration "${configuration.name}"`,
+      total: total.toFixed(2),
+      title: configuration.name,
     };
   }
 

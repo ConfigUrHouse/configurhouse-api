@@ -4,12 +4,16 @@ html
     style
       include css/consommation.css
   body
-    h1 Estimation de consommation
+    h4 Estimation de consommation
+    h1 #{name}
     h2 Contexte
     p Consommation d'énergie par an, pour #{consommations.context.occupants} habitants
     p Options choisies :
-    each option in consommations.context.options
-      li #{option.option} : #{option.value}
+    div.details-body
+      each option in consommations.context.options
+        div.value-container
+            span.value #{option.option}
+            span.right #{option.value}
     h2 Consommation globale
     p Consommation de la configuration : #{consommations.global.config} kWh
     p Consommation de référence (pour un logement équivalent) : #{consommations.global.reference} kWh

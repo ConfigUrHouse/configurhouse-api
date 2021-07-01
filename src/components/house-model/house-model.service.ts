@@ -10,14 +10,14 @@ import { Value } from '../value/value.class';
 import { HouseModel } from './house-model.class';
 
 interface EstimateValue {
-  value: Value;
+  value: any;
   option: OptionConf;
 }
 
 interface Estimate {
-  houseModel: HouseModel;
+  houseModel: any;
   estimate: EstimateValue[];
-  total: number;
+  total: string;
   title: string;
 }
 
@@ -34,21 +34,21 @@ export default class HouseModelService {
     for (const option of model.optionConfs) {
       const value = await Value.findOne({ where: { is_default: true, id_OptionConf: option.id } });
       if (value) {
-        estimate.push({ value, option });
+        estimate.push({ value: { name: value.name, price: value.price.toFixed(2) }, option });
       }
     }
 
-    const total =
+    const total: number =
       model.price +
       estimate
         .map((e) => e.value.price)
         .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
 
     return {
-      houseModel: model,
+      houseModel: { name: model.name, price: parseFloat(model.price.toString()).toFixed(2) },
       estimate,
-      total,
-      title: `Devis du modèle ${model.name}`,
+      total: total.toFixed(2),
+      title: model.name,
     } as Estimate;
   }
 
@@ -142,6 +142,7 @@ export default class HouseModelService {
     const globalConfig = valuePosteConsos.reduce((a, b) => a + b.conso, 0) + consoBaseTotal;
     const diffPercentage = Math.round(((globalConfig - globalReference) / globalReference) * 100);
     return {
+      title: houseModel.name,
       context: {
         occupants: houseModel.occupants,
         options: houseModel.optionConfs.map((optionConf) => ({
