@@ -145,7 +145,7 @@ houseModelRouter.post('/', create);
  *           description: Invalid request parameters
  */
 //#endregion
-houseModelRouter.put('/:id', [auth, validateAdminRole], update);
+houseModelRouter.put('/:id', [auth, validateAdminRole, validatePathId], update);
 
 //#region DELETE /houseModel/:id
 /**
@@ -176,7 +176,7 @@ houseModelRouter.delete('/:id', [auth, validateAdminRole], deleteOne);
 
 houseModelRouter.delete('/', [auth, validateAdminRole], deleteAll);
 
-houseModelRouter.get('/:id/conso', [auth, validateAdminRole], getConsommations);
+houseModelRouter.get('/:id/conso', auth, getConsommations);
 
 houseModelRouter.post(
   '/:id/conso',
@@ -192,7 +192,6 @@ houseModelRouter.post(
       );
     },
     auth,
-    validateAdminRole,
   ],
   getConfigConsommations
 );
