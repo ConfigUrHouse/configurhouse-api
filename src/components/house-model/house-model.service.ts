@@ -34,7 +34,7 @@ export default class HouseModelService {
     for (const option of model.optionConfs) {
       const value = await Value.findOne({ where: { is_default: true, id_OptionConf: option.id } });
       if (value) {
-        estimate.push({ value: { name: value.name, price: value.price.toFixed(2) }, option });
+        estimate.push({ value: { name: value.name, price: parseFloat(value.price.toString()).toFixed(2) }, option });
       }
     }
 

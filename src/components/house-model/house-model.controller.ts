@@ -106,24 +106,22 @@ export const create = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-export const update = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id;
+export const update = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let houseModel = await HouseModel.findByPk(req.params.id);
+    if (!houseModel) {
+      return next(new ErrorHandler(404, 'HouseModel not found'));
+    }
 
-  HouseModel.update(req.body, {
-    where: { id: id },
-  })
-    .then((num: any) => {
-      if (num == 1) {
-        res.status(200).send({
-          message: 'HouseModel updated successfully',
-        });
-      } else {
-        next(new ErrorHandler(404, 'HouseModel not found'));
-      }
-    })
-    .catch((err: Error) => {
-      next(new ErrorHandler(400, err.message));
+    houseModel = await houseModel.update(req.body);
+
+    res.status(200).send({
+      message: 'HouseModel updated successfully',
+      houseModel,
     });
+  } catch (error) {
+    next(new ErrorHandler(400, error.message));
+  }
 };
 
 export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
