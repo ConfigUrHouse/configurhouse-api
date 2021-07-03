@@ -457,6 +457,7 @@ async function initMeshs() {
   if (!(await Mesh.findOne({ where: { name: 'Mesh Chauffage' } })) && asset1) {
     await Mesh.create({
       name: 'Mesh Chauffage',
+      same: false,
       id_Asset: asset1.id,
     });
   }
@@ -465,6 +466,7 @@ async function initMeshs() {
   if (!(await Mesh.findOne({ where: { name: 'Mesh Charpente' } })) && asset2) {
     await Mesh.create({
       name: 'Mesh Charpente',
+      same: false,
       id_Asset: asset2.id,
     });
   }
