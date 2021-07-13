@@ -35,6 +35,25 @@ export const findOne = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
+export const findByHouseModel = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
+
+    const data = await OptionConf.findAll({
+      where: { id_HouseModel: id },
+    });
+
+    if (!data) {
+      return next(new ErrorHandler(404, 'Option not found'));
+    }
+
+    res.status(200).send(data);
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
+};
+
+
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const success = await OptionConf.create(req.body);

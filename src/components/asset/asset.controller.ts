@@ -26,7 +26,7 @@ const fileFilter = (req: any, file: any, cb: any) => {
     cb(new Error('File uploaded is not of types accepted.'), false);
   }
 };
-const upload = multer({ storage: storage, fileFilter: fileFilter }).single('file');
+const upload = multer({ storage: storage}).single('file');
 
 export const findAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -145,6 +145,7 @@ export const addOne = (req: Request, res: Response, next: NextFunction) => {
       console.log(err);
       res.send('file not uploaded');
     } else {
+
       let assetProperties: AssetAttributes = {
         id: 0,
         value: req.file.path,
@@ -152,7 +153,7 @@ export const addOne = (req: Request, res: Response, next: NextFunction) => {
       };
 
       Asset.create(assetProperties)
-        .then(() => res.json({ message: 'Asset created successfully' }))
+        .then((element: any) => res.json({ id:element.id, message: 'Asset created successfully' }))
         .catch(next);
     }
   });
