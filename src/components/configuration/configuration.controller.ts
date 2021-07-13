@@ -58,7 +58,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id_HouseModel, configurationValues = [] } = req.body;
+    const { id_HouseModel, configurationValues = [], has_furniture = true } = req.body;
     const id_User = res.locals.userId as number;
     if (!id_User) {
       return next(new ErrorHandler(404, 'User not found'));
@@ -71,6 +71,7 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
 
     Configuration.create({
       name: `${houseModel.name} du ${new Date(Date.now()).toLocaleDateString()}`,
+      has_furniture,
       id_HouseModel,
       id_User,
     })

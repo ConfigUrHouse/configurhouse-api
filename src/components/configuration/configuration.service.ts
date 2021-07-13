@@ -217,14 +217,16 @@ export default class ConfigurationService {
       option: cv.value.optionConf,
     }));
 
+    const houseModelPrice: number = configuration.houseModel.price - (configuration.has_furniture ? 0 : 11250);
+
     const total: number =
-      configuration.houseModel.price +
+      houseModelPrice +
       estimate
         .map((e) => e.value.price)
         .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
 
     return {
-      houseModel: { name: configuration.houseModel.name, price: configuration.houseModel.price.toFixed(2) },
+      houseModel: { name: configuration.houseModel.name, price: houseModelPrice.toFixed(2) },
       estimate,
       total: total.toFixed(2),
       title: configuration.name,

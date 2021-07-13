@@ -7,6 +7,7 @@ import type { Value, ValueId } from '../value/value.class';
 export interface ConfigurationAttributes {
   id: number;
   name: string;
+  has_furniture: boolean;
   id_User: number;
   id_HouseModel: number;
 }
@@ -18,6 +19,7 @@ export type ConfigurationCreationAttributes = Optional<ConfigurationAttributes, 
 export class Configuration extends Model implements ConfigurationAttributes {
   id!: number;
   name!: string;
+  has_furniture!: boolean;
   id_User!: number;
   id_HouseModel!: number;
 
@@ -68,6 +70,11 @@ export class Configuration extends Model implements ConfigurationAttributes {
         name: {
           type: DataTypes.STRING(200),
           allowNull: false,
+        },
+        has_furniture: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: true,
         },
         id_User: {
           type: DataTypes.INTEGER,
