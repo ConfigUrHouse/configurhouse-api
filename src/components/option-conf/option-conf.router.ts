@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import auth from '../../middleware/auth';
 import { validateAdminRole } from '../../middleware/validate-role';
-import { findAll, findOne, create, update, deleteAll, deleteOne } from './option-conf.controller';
+import { findAll, findOne, create, update, deleteAll, deleteOne, findByHouseModel } from './option-conf.controller';
 
 export const optionConfRouter = Router();
 
@@ -63,6 +63,8 @@ optionConfRouter.get('/', findAll);
  */
 //#endregion
 optionConfRouter.get('/:id', findOne);
+
+optionConfRouter.get('/by/:id', findByHouseModel);
 
 //#region POST /optionConf
 /**
