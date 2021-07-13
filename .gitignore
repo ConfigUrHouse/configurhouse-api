@@ -295,4 +295,4 @@ $RECYCLE.BIN/
 test-report.xml
 jest
 
-public/assets/*
+public/assets/*.glb
