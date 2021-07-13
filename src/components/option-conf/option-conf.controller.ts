@@ -86,8 +86,8 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
       message: 'Option deleted successfully',
     });
   } catch (err) {
-    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
-  }
+    next(new ErrorHandler(400, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : "Server error"));
+}
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {

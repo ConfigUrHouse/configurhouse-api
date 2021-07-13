@@ -60,7 +60,7 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
       }
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+        next(new ErrorHandler(500, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : err.message));
     });
 };
 
