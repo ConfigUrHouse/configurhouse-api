@@ -76,3 +76,35 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
       next(new ErrorHandler(500, 'Message to define'));
     });
 };
+
+export const create = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const success = await Mesh.create(req.body);
+    if (!success) {
+      return next(new ErrorHandler(400, 'Bad request'));
+    }
+
+    res.status(201).send({
+      id: success.id,
+      message: 'Option created successfully',
+    });
+  } catch (err) {
+    return next(new ErrorHandler(500, err?.message ?? 'Server error'));
+  }
+};
+
+export const findByAssetId = (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+
+  Mesh.findAll({
+    where: {
+      id_Asset: id,
+    },
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err: any) => {
+      next(new ErrorHandler(500, 'Message to define'));
+    });
+};

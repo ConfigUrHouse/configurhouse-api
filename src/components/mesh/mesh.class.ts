@@ -5,6 +5,7 @@ import type { OptionConf, OptionConfId } from '../option-conf/option-conf.class'
 export interface MeshAttributes {
   id: number;
   name: string;
+  same: boolean;
   id_Asset: number;
 }
 
@@ -15,6 +16,7 @@ export type MeshCreationAttributes = Optional<MeshAttributes, MeshPk>;
 export class Mesh extends Model implements MeshAttributes {
   id!: number;
   name!: string;
+  same!: boolean;
   id_Asset!: number;
 
   // Mesh belongsTo Asset via id_Asset
@@ -46,6 +48,10 @@ export class Mesh extends Model implements MeshAttributes {
         },
         name: {
           type: DataTypes.STRING(200),
+          allowNull: false,
+        },
+        same: {
+          type: DataTypes.BOOLEAN,
           allowNull: false,
         },
         id_Asset: {
