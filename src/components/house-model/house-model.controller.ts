@@ -136,11 +136,15 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
           message: 'HouseModel deleted successfully',
         });
       } else {
+        
         next(new ErrorHandler(404, 'HouseModel not found'));
       }
     })
     .catch((err: Error) => {
-      next(new ErrorHandler(400, err.message));
+        console.log(err.name)
+
+        
+      next(new ErrorHandler(400, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : err.message));
     });
 };
 
