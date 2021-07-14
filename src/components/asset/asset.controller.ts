@@ -4,6 +4,7 @@ import { ErrorHandler } from '../../middleware/error-handler';
 import multer from 'multer';
 import * as fs from 'fs';
 import { getPagination, getPagingData } from '../../shared/pagination';
+import { Mesh } from '../mesh/mesh.class';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -100,23 +101,28 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
   Asset.findByPk(id)
     .then((data) => {
       if (data) {
-        Asset.destroy({
-          where: { id: id },
-        })
-          .then((num) => {
-            if (num == 1) {
-              fs.promises.unlink('./' + data.value);
-
-              res.send({
-                message: 'Asset deleted',
-              });
-            } else {
-              next(new ErrorHandler(500, 'An error has occured'));
-            }
+        Mesh.destroy({
+          where: {id_Asset: id}
+        }).then((data : any) => {
+          Asset.destroy({
+            where: { id: id },
           })
-          .catch((err: any) => {
-            next(new ErrorHandler(500, 'An error has occured'));
-          });
+            .then((num) => {
+              if (num == 1) {
+                fs.promises.unlink('./' + data.value);
+  
+                res.send({
+                  message: 'Asset deleted',
+                });
+              } else {
+                next(new ErrorHandler(500, 'An error has occured'));
+              }
+            })
+            .catch((err: any) => {
+              next(new ErrorHandler(500, 'An error has occured'));
+            });
+        })
+        
       } else {
         next(new ErrorHandler(500, 'No existing asset with this id'));
       }
