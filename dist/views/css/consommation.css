@@ -1,0 +1,73 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h2,
+h3,
+h4 {
+  color: #1a7c7d;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+h4 {
+  font-weight: 500;
+}
+
+h5 {
+  margin-bottom: 0;
+  font-weight: 600;
+  color: #747474;
+}
+
+p {
+  font-size: 12px;
+}
+
+table {
+  margin-bottom: 15px;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+td {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+thead td {
+  color: white;
+  background-color: #1a7c7d;
+}
+
+.left {
+  width: 33%;
+  text-align: left;
+}
+
+.center {
+  width: 34%;
+  text-align: center;
+}
+
+.right {
+  width: 33%;
+  text-align: right;
+}
+
+.details {
+  font-size: 10px;
+}
+
+.percent::after {
+  content: '%';
+}
+
+.energy::after {
+  content: 'kWh';
+}
