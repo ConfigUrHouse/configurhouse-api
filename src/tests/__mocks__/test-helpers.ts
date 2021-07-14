@@ -15,7 +15,7 @@ export const testHelpers = {
     res.send = jest.fn();
     res.status = jest.fn().mockReturnValue(res);
     res.json = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
+    res.redirect = jest.fn();
     return res;
   },
   mockNext: () => {

@@ -1,4 +1,5 @@
 import { OptionConf } from './option-conf.class';
+import { Value } from '../value/value.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 import { getPagination, getPagingData } from '../../shared/pagination';
@@ -53,7 +54,6 @@ export const findByHouseModel = async (req: Request, res: Response, next: NextFu
   }
 };
 
-
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const success = await OptionConf.create(req.body);
@@ -93,20 +93,30 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
 export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id;
+    Value.destroy({
+      where: { id_OptionConf: id },
+    }).then(async (data) => {
+      const success = await OptionConf.destroy({
+        where: { id },
+      });
+      if (!success) {
+        return next(new ErrorHandler(400, 'Option failed to delete'));
+      }
 
-    const success = await OptionConf.destroy({
-      where: { id },
-    });
-    if (!success) {
-      return next(new ErrorHandler(400, 'Option failed to delete'));
-    }
-
-    res.status(200).send({
-      message: 'Option deleted successfully',
+      res.status(200).send({
+        message: 'Option deleted successfully',
+      });
     });
   } catch (err) {
-    next(new ErrorHandler(400, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : "Server error"));
-}
+    next(
+      new ErrorHandler(
+        400,
+        err.name == 'SequelizeForeignKeyConstraintError'
+          ? "L'objet devant être supprimé est utilisé ailleurs."
+          : 'Server error'
+      )
+    );
+  }
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
@@ -118,6 +128,6 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
       res.send({ message: 'Message to define' });
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };

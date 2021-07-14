@@ -226,7 +226,10 @@ export default class ConfigurationService {
         .reduce((sum, val) => parseFloat(sum.toString()) + parseFloat(val.toString()), 0);
 
     return {
-      houseModel: { name: configuration.houseModel.name, price: houseModelPrice.toFixed(2) },
+      houseModel: {
+        name: `${configuration.houseModel.name} (${configuration.has_furniture ? '' : 'non '}meublé)`,
+        price: houseModelPrice.toFixed(2),
+      },
       estimate,
       total: total.toFixed(2),
       title: configuration.name,

@@ -27,12 +27,14 @@ export async function initData() {
     await initAssetTypes();
     await initModelTypes();
     await initRoles();
-    await initUsers();
-    await initUserRoles();
     await initPostesConso();
-    await initConsommations();
-    await initConsommationHouseModelPosteConsos();
     await initPolicies();
+    if (process.env.ENVIRONMENT === 'dev') {
+      await initUsers();
+      await initUserRoles();
+      await initConsommations();
+      await initConsommationHouseModelPosteConsos();
+    }
   } catch (error) {
     console.log(error);
   }

@@ -145,7 +145,7 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
   if (!updatedToken) return next(new ErrorHandler(409, 'Email verification failed'));
   const updatedUser: User = await user.update({ active: 1 });
   if (!updatedUser) return next(new ErrorHandler(409, 'Email verification failed'));
-  res.json({ success: true, message: 'Email verification successful' });
+  res.redirect(`${process.env.APP_BASE_URL}/login?verified=true`);
 };
 
 export const sendVerificationEmail = async (req: Request, res: Response, next: NextFunction) => {
@@ -161,9 +161,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
   if (!user || !bcrypt.compareSync(password, user.password)) {
-    res.status(400).send({ success: false, message: 'Incorrect email or password' });
+    res.status(400).send({ success: false, message: "L'identifiant ou le mot de passe est incorrect" });
   } else if (!user.active) {
-    res.status(400).send({ success: false, message: 'Email not verified' });
+    res.status(400).send({ success: false, message: "L'adresse mail n'est pas vérifiée" });
   } else {
     res.status(200).send({ success: true, message: 'Login successful', ...getToken(user.id), userId: user.id });
   }

@@ -1,4 +1,3 @@
-import { ErrorHandler } from '../../middleware/error-handler';
 import { emailTransporter } from '../config/email.config';
 
 export default class UtilsService {
@@ -11,7 +10,7 @@ export default class UtilsService {
         html: content,
       },
       (error: Error | null) => {
-        if (error) throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+        if (error) throw new Error(`Email not sent : ${error.message}`);
       }
     );
   }
@@ -26,7 +25,7 @@ export default class UtilsService {
         html: content,
       },
       (error: Error | null) => {
-        if (error) throw new ErrorHandler(500, `Email not sent : ${error.message}`);
+        if (error) throw new Error(`Email not sent : ${error.message}`);
       }
     );
   }
