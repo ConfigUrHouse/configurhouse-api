@@ -24,7 +24,7 @@ export const handleNotFound = function (req: Request, res: Response, next: NextF
 export const handleError = function (error: ErrorHandler, req: Request, res: Response, next: NextFunction) {
   const statusCode: number = (error && error.statusCode) || 500;
   const message: string = (error && error.message) || 'Unhandled server error.';
-  console.log(error.stack);
+  if (error.originalError) console.log(error.originalError.stack);
   res.status(statusCode).json({
     status: 'error',
     statusCode,

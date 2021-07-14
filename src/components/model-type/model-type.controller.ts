@@ -8,7 +8,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
       res.send(data);
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };
 
@@ -20,7 +20,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
       res.send(data);
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };
 
@@ -40,7 +40,7 @@ export const update = (req: Request, res: Response, next: NextFunction) => {
       }
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };
 
@@ -60,7 +60,14 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
       }
     })
     .catch((err: any) => {
-        next(new ErrorHandler(500, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : err.message));
+      next(
+        new ErrorHandler(
+          500,
+          err.name == 'SequelizeForeignKeyConstraintError'
+            ? "L'objet devant être supprimé est utilisé ailleurs."
+            : err.message
+        )
+      );
     });
 };
 
@@ -73,6 +80,6 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
       res.send({ message: 'Message to define' });
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };

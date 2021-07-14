@@ -53,7 +53,6 @@ export const findByHouseModel = async (req: Request, res: Response, next: NextFu
   }
 };
 
-
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const success = await OptionConf.create(req.body);
@@ -105,8 +104,15 @@ export const deleteOne = async (req: Request, res: Response, next: NextFunction)
       message: 'Option deleted successfully',
     });
   } catch (err) {
-    next(new ErrorHandler(400, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : "Server error"));
-}
+    next(
+      new ErrorHandler(
+        400,
+        err.name == 'SequelizeForeignKeyConstraintError'
+          ? "L'objet devant être supprimé est utilisé ailleurs."
+          : 'Server error'
+      )
+    );
+  }
 };
 
 export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
@@ -118,6 +124,6 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
       res.send({ message: 'Message to define' });
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };
