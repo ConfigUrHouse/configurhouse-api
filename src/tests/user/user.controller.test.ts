@@ -281,7 +281,7 @@ describe('User Controller', () => {
       await register(req, res, next);
 
       expect(createUserSpy);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Registration successful' });
+      expect(res.json).toHaveBeenCalledWith({ message: 'Registration successful', success: true });
       expect(next).not.toHaveBeenCalled();
     });
 
@@ -307,7 +307,7 @@ describe('User Controller', () => {
       await verify(req, res, next);
 
       expect(next).not.toHaveBeenCalled();
-      expect(res.json).toHaveBeenCalledWith({ success: true, message: 'Email verification successful' });
+      expect(res.redirect).toHaveBeenCalled();
     });
   });
 
@@ -341,7 +341,7 @@ describe('User Controller', () => {
         success: true,
         message: 'Login successful',
         token: 'fakeToken',
-        expiresAt: new Date('2021-01-01T00:15:01.000Z'),
+        expiresAt: new Date('2021-01-01T00:59:01.000Z'),
         userId: user.id,
       });
     });
@@ -374,7 +374,7 @@ describe('User Controller', () => {
         success: true,
         message: 'Token refresh successful',
         token: 'fakeToken',
-        expiresAt: new Date('2021-01-01T00:15:01.000Z'),
+        expiresAt: new Date('2021-01-01T00:59:01.000Z'),
       });
     });
   });
