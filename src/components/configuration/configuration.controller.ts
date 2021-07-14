@@ -38,7 +38,7 @@ export const findAll = (req: Request, res: Response, next: NextFunction) => {
       res.send({ success: true, ...getPagingData(data, page, limit) });
     })
     .catch((err: any) => {
-      return next(err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Server error'));
+      return next(err instanceof ErrorHandler ? err : new ErrorHandler(500, err));
     });
 };
 
@@ -52,7 +52,7 @@ export const findOne = (req: Request, res: Response, next: NextFunction) => {
       res.send(data);
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };
 
@@ -61,12 +61,12 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     const { id_HouseModel, configurationValues = [], has_furniture = true } = req.body;
     const id_User = res.locals.userId as number;
     if (!id_User) {
-      return next(new ErrorHandler(404, 'User not found'));
+      return next(new ErrorHandler(404, new Error('User not found')));
     }
 
     const houseModel = await HouseModel.findByPk(id_HouseModel);
     if (!houseModel) {
-      return next(new ErrorHandler(404, 'HouseModel not found'));
+      return next(new ErrorHandler(404, new Error('HouseModel not found')));
     }
 
     Configuration.create({
@@ -83,10 +83,10 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
         res.status(201).send({ success: true, config, message: 'Configuration created successfully' });
       })
       .catch((err: Error) => {
-        next(new ErrorHandler(400, err.message));
+        next(new ErrorHandler(400, err));
       });
   } catch (error) {
-    next(new ErrorHandler(500, error.message));
+    next(new ErrorHandler(500, error));
   }
 };
 
@@ -130,7 +130,14 @@ export const deleteOne = (req: Request, res: Response, next: NextFunction) => {
       }
     })
     .catch((err: any) => {
-        next(new ErrorHandler(500, err.name == "SequelizeForeignKeyConstraintError" ? "L'objet devant être supprimé est utilisé ailleurs." : err.message));
+      next(
+        new ErrorHandler(
+          500,
+          err.name == 'SequelizeForeignKeyConstraintError'
+            ? "L'objet devant être supprimé est utilisé ailleurs."
+            : err.message
+        )
+      );
     });
 };
 
