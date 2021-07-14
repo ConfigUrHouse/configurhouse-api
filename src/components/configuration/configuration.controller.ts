@@ -11,6 +11,7 @@ import { emailTransporter } from '../config/email.config';
 import json2csv from 'json2csv';
 import { ConfigurationValue } from '../configuration-value/configuration-value.class';
 import { HouseModel } from '../house-model/house-model.class';
+import { emailHTML } from '../../shared/tools';
 
 export const findAll = (req: Request, res: Response, next: NextFunction) => {
   const size = req.query.size ? parseInt(req.query.size as string) : undefined;
@@ -279,7 +280,48 @@ export const sendConfiguration = async (req: Request, res: Response, next: NextF
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: 'Demande de devis',
-      html: `<p>Veuillez cliquer <a href="${process.env.APP_BASE_URL}/configuration/${id}">ici</a> pour consulter le détail de la configuration.</p>`,
+      html: emailHTML(
+        'Demande de devis',
+        `
+          <p>Bonjour,</p>
+          <p>
+            Veuillez cliquer le lien ci-dessous pour consulter le détail de la configuration qui vient de vous être envoyée :
+          </p>
+          <table
+            role="presentation"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            class="btn btn-primary"
+          >
+            <tbody>
+              <tr>
+                <td align="left">
+                  <table
+                    role="presentation"
+                    border="0"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a
+                            href="${process.env.APP_BASE_URL}/configuration/${id}"
+                            target="_blank"
+                          >
+                            Cliquer ici 
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `
+      ),
     });
     res.status(200).send({ success: true, message: 'Configuration sent' });
   } catch (error) {
