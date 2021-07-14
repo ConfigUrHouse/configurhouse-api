@@ -150,7 +150,7 @@ export const deleteAll = (req: Request, res: Response, next: NextFunction) => {
       res.send({ message: 'Message to define' });
     })
     .catch((err: any) => {
-      next(new ErrorHandler(500, 'Message to define'));
+      next(new ErrorHandler(500, err));
     });
 };
 
