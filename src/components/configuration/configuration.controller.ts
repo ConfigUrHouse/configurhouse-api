@@ -109,7 +109,7 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
       message: 'Configuration updated',
     });
   } catch (error) {
-    next(new ErrorHandler(400, error.message));
+    next(new ErrorHandler(400, error));
   }
 };
 
@@ -160,7 +160,7 @@ export const getEstimate = async (req: Request, res: Response, next: NextFunctio
 
     res.status(200).send(estimate);
   } catch (err: any) {
-    next(new ErrorHandler(500, err.message));
+    next(new ErrorHandler(500, err));
   }
 };
 
@@ -201,7 +201,7 @@ export const downloadEstimate = async (req: Request, res: Response, next: NextFu
             orientation: 'portrait',
           })
           .toStream((error: Error, stream: ReadStream) => {
-            if (error) throw new ErrorHandler(500, error.message);
+            if (error) throw new ErrorHandler(500, error);
             stream.pipe(res);
           });
         break;
@@ -222,7 +222,7 @@ export const downloadEstimate = async (req: Request, res: Response, next: NextFu
         next(new ErrorHandler(500, 'Mode inconnu'));
     }
   } catch (err: any) {
-    next(new ErrorHandler(500, err.message));
+    next(new ErrorHandler(500, err));
   }
 };
 
