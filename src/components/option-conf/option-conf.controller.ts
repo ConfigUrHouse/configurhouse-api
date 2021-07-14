@@ -1,4 +1,5 @@
 import { OptionConf } from './option-conf.class';
+import { Value } from '../value/value.class';
 import { Response, Request, NextFunction } from 'express';
 import { ErrorHandler } from '../../middleware/error-handler';
 import { getPagination, getPagingData } from '../../shared/pagination';
@@ -91,18 +92,23 @@ export const update = async (req: Request, res: Response, next: NextFunction) =>
 
 export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
   try {
+   
     const id = req.params.id;
-
-    const success = await OptionConf.destroy({
-      where: { id },
+    Value.destroy({
+      where: {id_OptionConf: id}
+    }).then(async data => {
+      const success = await OptionConf.destroy({
+        where: { id },
+      });
+      if (!success) {
+        return next(new ErrorHandler(400, 'Option failed to delete'));
+      }
+  
+      res.status(200).send({
+        message: 'Option deleted successfully',
+      });
     });
-    if (!success) {
-      return next(new ErrorHandler(400, 'Option failed to delete'));
-    }
-
-    res.status(200).send({
-      message: 'Option deleted successfully',
-    });
+   
   } catch (err) {
     next(
       new ErrorHandler(
