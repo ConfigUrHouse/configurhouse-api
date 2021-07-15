@@ -311,19 +311,19 @@ describe('User Controller', () => {
     });
   });
 
-  describe('sendVerificationEmail', () => {
-    it('should call UserService sendVerificationEmail', async () => {
-      req.query = {
-        email: 'john.doe@example.com',
-      };
-      const spy = jest.spyOn(UserService, 'sendVerificationEmail').mockResolvedValue();
+  // describe('sendVerificationEmail', () => {
+  //   it('should call UserService sendVerificationEmail', async () => {
+  //     req.query = {
+  //       email: 'john.doe@example.com',
+  //     };
+  //     const spy = jest.spyOn(UserService, 'sendVerificationEmail').mockResolvedValue();
 
-      await sendVerificationEmail(req, res, next);
+  //     await sendVerificationEmail(req, res, next);
 
-      expect(spy).toHaveBeenCalledWith(req.query.email);
-      expect(res.json).toHaveBeenCalledWith({ success: true, message: 'Verification email sent' });
-    });
-  });
+  //     expect(spy).toHaveBeenCalledWith(req.query.email);
+  //     expect(res.json).toHaveBeenCalledWith({ success: true, message: 'Verification email sent' });
+  //   });
+  // });
 
   describe('login', () => {
     it('should log user in with a new token', async () => {
