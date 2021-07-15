@@ -33,7 +33,7 @@ export default class UserService {
       lastname: params.lastname.trim(),
       email: params.email,
       password: hashedPassword,
-      active: 0,
+      active: 1,
     });
     if (!user) {
       throw new ErrorHandler(409, 'User registration failed');
@@ -46,7 +46,7 @@ export default class UserService {
     if (!userRole) {
       throw new ErrorHandler(409, 'UserRole creation failed');
     }
-    await this.sendVerificationEmail(params.email, user);
+    // await this.sendVerificationEmail(params.email, user);
   }
 
   public static async findByEmail(email: string) {
@@ -63,6 +63,7 @@ export default class UserService {
     const tokenType: TokenType = await TokenService.findTokenTypeByName(TokenTypes.EmailVerification);
     const token: Token = await TokenService.add(user, tokenType);
     try {
+      return true;
       await emailTransporter.sendMail({
         from: process.env.EMAIL_USER,
         to: email,
@@ -124,6 +125,7 @@ export default class UserService {
     const tokenType = await TokenService.findTokenTypeByName(TokenTypes.PasswordReset);
     const token = await TokenService.add(user, tokenType);
     try {
+      return true;
       await emailTransporter.sendMail({
         from: process.env.EMAIL_USER,
         to: user.email,

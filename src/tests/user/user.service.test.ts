@@ -88,7 +88,7 @@ describe('User Service', () => {
       bcryptSpy = jest.spyOn(bcrypt, 'hashSync').mockReturnValue('hashedPassword');
       jest.spyOn(RoleService, 'findRoleByName').mockResolvedValue(userRole);
       createRoleSpy = jest.spyOn(UserRole, 'create').mockResolvedValue({ id: 1 } as any);
-      sendEmailSpy = jest.spyOn(UserService, 'sendVerificationEmail').mockResolvedValue();
+      // sendEmailSpy = jest.spyOn(UserService, 'sendVerificationEmail').mockResolvedValue();
     });
 
     it('should hash password and create user', async () => {
