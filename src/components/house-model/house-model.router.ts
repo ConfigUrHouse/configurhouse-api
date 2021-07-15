@@ -191,7 +191,6 @@ houseModelRouter.post(
         })
       );
     },
-    auth,
   ],
   getConfigConsommations
 );
